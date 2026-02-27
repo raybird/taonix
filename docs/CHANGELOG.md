@@ -2,6 +2,21 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v1.9.0] - 2026-02-28
+
+### Added
+
+- **個人助理 Agent** - 賦予 TeleNexus AI 助理能力
+  - `agents/assistant/index.js` - 助理主程式
+  - `agents/assistant/lib/scheduler-helper.js` - 排程助手
+  - `agents/assistant/lib/memory-helper.js` - 記憶助手
+  - `agents/assistant/lib/analyzer.js` - 請求分析器
+  - `agents/assistant/test.js` - 測試檔案
+  - Agent 總數從 7 個擴充至 8 個
+- **進化方向調整** - 以「AI 助理」為核心持續進化
+
+---
+
 ## [v1.8.0] - 2026-02-28
 
 ### Added

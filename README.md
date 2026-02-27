@@ -8,7 +8,7 @@ Taonix (Taonix = Tao + Nexus，道之樞紐) 是一個賦予 TeleNexus 擁有多
 
 ## 特性
 
-- **多 Agent 協作** - 7 種專家 Agent，分工明確
+- **多 Agent 協作** - 8 種專家 Agent，分工明確
 - **CLI 獨立運作** - 每個 Agent 可單獨使用
 - **MCP Server 整合** - 統一入口，被 TeleNexus 調用
 - **技能框架** - 11 個專業技能，自動匹配
