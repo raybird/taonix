@@ -8,29 +8,30 @@ Taonix (Taonix = Tao + Nexus，道之樞紐) 是一個賦予 TeleNexus 擁有多
 
 ## 特性
 
-- **多 Agent 協作** - 4+1 種專家 Agent，分工明確
+- **多 Agent 協作** - 7 種專家 Agent，分工明確
 - **CLI 獨立運作** - 每個 Agent 可單獨使用
 - **MCP Server 整合** - 統一入口，被 TeleNexus 調用
 - **技能框架** - 8 個專業技能，自動匹配
 - **自我學習** - 記住使用者偏好與統計數據
+- **Party Mode** - 多 Agent 並行協作
 
 ## 專案結構
 
 ```
 taonix/
-├── agents/           # Agent CLI 工具（4個）
+├── agents/           # Agent CLI 工具（7個）
 │   ├── explorer/    # 搜尋、爬蟲 Agent
 │   ├── coder/       # 程式開發 Agent
 │   ├── oracle/      # 架構分析 Agent
-│   └── reviewer/    # 程式碼審查 Agent
+│   ├── reviewer/    # 程式碼審查 Agent
+│   ├── designer/    # UI/UX 設計 Agent
+│   ├── product/     # 產品規劃 Agent
+│   └── tester/      # 測試 Agent
 ├── mcp-server/      # MCP Server (13 tools, port 3916)
 ├── ai-engine/       # AI 調度引擎（意圖理解、Agent 分配）
 ├── skills/          # 技能框架
-│   ├── registry.js  # 技能註冊
-│   ├── matcher.js   # 技能匹配
-│   └── skills/      # 8 個專業技能
 ├── memory/          # 自我學習模組
-├── integration/     # TeleNexus 整合
+├── party/           # Party Mode
 └── docs/            # 設計文件
 ```
 
@@ -42,6 +43,9 @@ taonix/
 | Coder    | 小碼 | 嚴謹務實 | 讀寫檔案、執行指令、Debug |
 | Oracle   | 小析 | 冷靜理性 | 架構分析、依賴分析        |
 | Reviewer | 把關 | 毒舌中肯 | 品質檢查、格式檢查        |
+| Designer | 小設 | 創意美觀 | UI/UX 設計、元件生成      |
+| Product  | 小產 | 邏輯清晰 | 產品規劃、需求分析        |
+| Tester   | 小測 | 細心嚴謹 | 測試生成、測試計劃        |
 
 ## 技能框架
 
@@ -118,6 +122,7 @@ node party/cli.js clear
 
 | 版本   | 內容                                             |
 | ------ | ------------------------------------------------ |
+| v1.2.0 | 生態擴展 - 更多領域 Agent                        |
 | v1.1.0 | Party Mode - 狀態儀表板                          |
 | v1.0.0 | 初始版本：4 Agent CLI + MCP Server + Skills Core |
 

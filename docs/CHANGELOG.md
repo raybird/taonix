@@ -2,25 +2,24 @@
 
 All notable changes to Taonix will be documented in this file.
 
-## [v0.6.0] - 2026-02-27
+## [v1.2.0] - 2026-02-27
 
 ### Added
 
-- **規模自適應** - 根據任務複雜度自動選擇 Agent 組合
-  - 簡單任務 → Explorer
-  - 中等任務 → Explorer + Coder
-  - 複雜任務 → Explorer + Coder + Oracle + Reviewer (Party Mode)
-- **任務歷史追蹤** - 記錄並查詢歷史任務
-  - 自動記錄輸入、技能、Agent、執行時間
-  - 支援按技能篩選、統計分析
-- **多對話上下文記憶** - 跨對話保持上下文連貫
-  - Session 管理、訊息歷史儲存
-  - 支援查詢過往對話記錄
-- **跨 session 偏好延續** - 使用者設定跨對話持久化
-  - 使用者 Profile 管理（名稱、時區、語言）
-  - 工作流追蹤與常用建議
-- **ROADMAP.md** - 發展藍圖文件
-- **SOP 文件同步規則** - 每次發布後必須同步文件
+- **更多領域 Agent** - 新增 3 個專業 Agent
+  - **Designer** (小設) - UI/UX 設計專家
+    - UI 版面配置建議
+    - 元件設計生成
+    - UX 流程分析
+  - **Product** (小產) - 產品規劃專家
+    - PRD 產品需求文檔生成
+    - 功能需求分析
+    - 使用者故事建立
+  - **Tester** (小測) - 測試專家
+    - 測試案例自動生成
+    - 測試執行
+    - 測試計劃建立
+- **Agent 團隊擴展** - 從 4 個擴展到 7 個
 
 ---
 
