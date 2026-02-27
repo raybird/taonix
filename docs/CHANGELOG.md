@@ -2,6 +2,18 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v1.6.0] - 2026-02-28
+
+### Added
+
+- **MCP Server 擴展** - 新增 7 個工具
+  - Designer: generate_ui, generate_component, analyze_ux
+  - Product: generate_prd, analyze_feature, create_story
+  - Tester: create_test_plan
+  - 版本更新至 1.6.0
+
+---
+
 ## [v1.5.0] - 2026-02-28
 
 ### Added

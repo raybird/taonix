@@ -7,6 +7,13 @@ import {
 
 import { getGithubTrending } from "../agents/explorer/lib/github-trending.js";
 import { searchWeb } from "../agents/explorer/lib/web-search.js";
+import { generateUI } from "../agents/designer/lib/ui-generator.js";
+import { generateComponent } from "../agents/designer/lib/component-generator.js";
+import { analyzeUX } from "../agents/designer/lib/ux-analyzer.js";
+import { generatePRD } from "../agents/product/lib/prd-generator.js";
+import { analyzeFeature } from "../agents/product/lib/feature-analyzer.js";
+import { createUserStory } from "../agents/product/lib/user-story.js";
+import { createTestPlan } from "../agents/tester/lib/test-plan.js";
 import {
   readFile,
   writeFile,
@@ -168,12 +175,99 @@ const tools = [
       required: ["filepath"],
     },
   },
+  {
+    name: "designer_generate_ui",
+    description: "生成 UI 設計建議",
+    inputSchema: {
+      type: "object",
+      properties: {
+        type: {
+          type: "string",
+          description: "類型 (mobile|desktop|dashboard)",
+        },
+        color: { type: "string", description: "色彩配置", default: "default" },
+      },
+      required: ["type"],
+    },
+  },
+  {
+    name: "designer_generate_component",
+    description: "生成元件設計",
+    inputSchema: {
+      type: "object",
+      properties: {
+        name: { type: "string", description: "元件名稱" },
+        type: { type: "string", description: "類型", default: "card" },
+      },
+      required: ["name"],
+    },
+  },
+  {
+    name: "designer_analyze_ux",
+    description: "分析 UX 流程",
+    inputSchema: {
+      type: "object",
+      properties: {
+        directory: { type: "string", description: "專案目錄" },
+      },
+      required: ["directory"],
+    },
+  },
+  {
+    name: "product_generate_prd",
+    description: "生成產品需求文檔",
+    inputSchema: {
+      type: "object",
+      properties: {
+        title: { type: "string", description: "產品標題" },
+        type: { type: "string", description: "產品類型", default: "web" },
+      },
+      required: ["title"],
+    },
+  },
+  {
+    name: "product_analyze_feature",
+    description: "分析功能需求",
+    inputSchema: {
+      type: "object",
+      properties: {
+        feature: { type: "string", description: "功能名稱" },
+        description: { type: "string", description: "功能描述" },
+      },
+      required: ["feature"],
+    },
+  },
+  {
+    name: "product_create_story",
+    description: "生成使用者故事",
+    inputSchema: {
+      type: "object",
+      properties: {
+        role: { type: "string", description: "使用者角色" },
+        action: { type: "string", description: "想要做什麼" },
+        benefit: { type: "string", description: "獲得什麼價值" },
+      },
+      required: ["role", "action", "benefit"],
+    },
+  },
+  {
+    name: "tester_create_plan",
+    description: "生成測試計劃",
+    inputSchema: {
+      type: "object",
+      properties: {
+        feature: { type: "string", description: "功能名稱" },
+        description: { type: "string", description: "功能描述" },
+      },
+      required: ["feature"],
+    },
+  },
 ];
 
 class TaonixServer {
   constructor() {
     this.server = new Server(
-      { name: "taonix-mcp-server", version: "1.0.0" },
+      { name: "taonix-mcp-server", version: "1.6.0" },
       { capabilities: { tools: {} } },
     );
 
@@ -232,6 +326,31 @@ class TaonixServer {
             break;
           case "reviewer_check_logic":
             result = await checkLogic(args.filepath);
+            break;
+          case "designer_generate_ui":
+            result = await generateUI(args.type, args.color || "default");
+            break;
+          case "designer_generate_component":
+            result = await generateComponent(args.name, args.type || "card");
+            break;
+          case "designer_analyze_ux":
+            result = await analyzeUX(args.directory);
+            break;
+          case "product_generate_prd":
+            result = await generatePRD(args.title, args.type || "web");
+            break;
+          case "product_analyze_feature":
+            result = await analyzeFeature(args.feature, args.description || "");
+            break;
+          case "product_create_story":
+            result = await createUserStory(
+              args.role,
+              args.action,
+              args.benefit,
+            );
+            break;
+          case "tester_create_plan":
+            result = await createTestPlan(args.feature, args.description || "");
             break;
           default:
             throw new Error(`Unknown tool: ${name}`);
