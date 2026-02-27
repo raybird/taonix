@@ -1,0 +1,22 @@
+{
+  "name": "@taonix/mcp-server",
+  "version": "1.0.0",
+  "description": "Taonix MCP Server - 統一入口包裝所有 Agent",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "taonix",
+    "mcp",
+    "server",
+    "agent"
+  ],
+  "author": "Taonix Team",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0"
+  }
+}
