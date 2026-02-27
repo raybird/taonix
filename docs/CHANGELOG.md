@@ -24,6 +24,18 @@ All notable changes to Taonix will be documented in this file.
 
 ---
 
+## [v1.1.0] - 2026-02-27
+
+### Added
+
+- **狀態儀表板** - Party Mode 即時狀態監控
+  - CLI 命令查看會話狀態
+  - 顯示所有 Agent 執行狀態與時間
+  - 支援清除會話
+- **Git Config 身份設定** - TeleNexus Orchestrator
+
+---
+
 ## [v1.0.0] - 2026-02-27
 
 ### Added

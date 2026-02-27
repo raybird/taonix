@@ -93,6 +93,19 @@ node index.js
 # Server 運行於 http://localhost:3916
 ```
 
+### Party Mode 狀態儀表板
+
+```bash
+# 查看儀表板
+node party/cli.js status
+
+# 查看所有會話
+node party/cli.js sessions
+
+# 清除所有會話
+node party/cli.js clear
+```
+
 ### API 端點
 
 | Method | Path        | 說明           |
@@ -105,6 +118,7 @@ node index.js
 
 | 版本   | 內容                                             |
 | ------ | ------------------------------------------------ |
+| v1.1.0 | Party Mode - 狀態儀表板                          |
 | v1.0.0 | 初始版本：4 Agent CLI + MCP Server + Skills Core |
 
 ## 技術栈
