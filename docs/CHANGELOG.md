@@ -10,6 +10,9 @@ All notable changes to Taonix will be documented in this file.
   - 簡單任務 → Explorer
   - 中等任務 → Explorer + Coder
   - 複雜任務 → Explorer + Coder + Oracle + Reviewer (Party Mode)
+- **任務歷史追蹤** - 記錄並查詢歷史任務
+  - 自動記錄輸入、技能、Agent、執行時間
+  - 支援按技能篩選、統計分析
 - **ROADMAP.md** - 發展藍圖文件
 - **SOP 文件同步規則** - 每次發布後必須同步文件
 
