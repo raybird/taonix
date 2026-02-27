@@ -2,6 +2,22 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v1.4.0] - 2026-02-28
+
+### Added
+
+- **長期規劃** - 子目標分解與追蹤
+  - `planning/goal-tracker.js` - 目標追蹤器
+  - `planning/planning-engine.js` - 規劃引擎
+  - `planning/cli.js` - 長期規劃 CLI
+  - 支援建立目標、子目標、進度追蹤
+- **主動式建議** - 主動預測使用者需求
+  - `planning/suggestion-engine.js` - 建議引擎
+  - `planning/proactive-engine.js` - 主動式引擎
+  - 根據使用模式生成智慧建議
+
+---
+
 ## [v1.3.0] - 2026-02-27
 
 ### Added
