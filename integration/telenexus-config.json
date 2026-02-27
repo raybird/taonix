@@ -1,0 +1,94 @@
+{
+  "mcpServers": {
+    "taonix": {
+      "command": "node",
+      "args": ["../mcp-server/index.js"],
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "enabled": true
+    }
+  },
+  "tools": {
+    "explorer": {
+      "github_trending": {
+        "mcpTool": "explorer_github_trending",
+        "description": "取得 GitHub Trending 專案"
+      },
+      "web_search": {
+        "mcpTool": "explorer_web_search",
+        "description": "搜尋網頁內容"
+      }
+    },
+    "coder": {
+      "read_file": {
+        "mcpTool": "coder_read_file",
+        "description": "讀取檔案內容"
+      },
+      "write_file": {
+        "mcpTool": "coder_write_file",
+        "description": "寫入檔案"
+      },
+      "list_files": {
+        "mcpTool": "coder_list_files",
+        "description": "列出目錄檔案"
+      },
+      "run_command": {
+        "mcpTool": "coder_run_command",
+        "description": "執行指令"
+      },
+      "code_review": {
+        "mcpTool": "coder_code_review",
+        "description": "Code Review"
+      }
+    },
+    "oracle": {
+      "analyze_structure": {
+        "mcpTool": "oracle_analyze_structure",
+        "description": "分析專案結構"
+      },
+      "analyze_dependencies": {
+        "mcpTool": "oracle_analyze_dependencies",
+        "description": "分析專案依賴"
+      },
+      "suggest_architecture": {
+        "mcpTool": "oracle_suggest_architecture",
+        "description": "提供架構建議"
+      }
+    },
+    "reviewer": {
+      "check_quality": {
+        "mcpTool": "reviewer_check_quality",
+        "description": "檢查程式碼品質"
+      },
+      "check_format": {
+        "mcpTool": "reviewer_check_format",
+        "description": "檢查程式碼格式"
+      },
+      "check_logic": {
+        "mcpTool": "reviewer_check_logic",
+        "description": "檢查邏輯一致性"
+      }
+    }
+  },
+  "agentMapping": {
+    "小探": ["explorer.github_trending", "explorer.web_search"],
+    "小碼": [
+      "coder.read_file",
+      "coder.write_file",
+      "coder.list_files",
+      "coder.run_command",
+      "coder.code_review"
+    ],
+    "小析": [
+      "oracle.analyze_structure",
+      "oracle.analyze_dependencies",
+      "oracle.suggest_architecture"
+    ],
+    "把關": [
+      "reviewer.check_quality",
+      "reviewer.check_format",
+      "reviewer.check_logic"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@taonix/integration",
+  "version": "1.0.0",
+  "description": "Taonix TeleNexus 整合模組",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "register": "node scripts/register.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "taonix",
+    "telenexus",
+    "integration"
+  ],
+  "author": "Taonix Team",
+  "license": "MIT"
+}
