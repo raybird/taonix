@@ -6,14 +6,19 @@
 
 ## Taonix 現況
 
-| 模組       | 狀態 | 說明                                 |
-| ---------- | ---- | ------------------------------------ |
-| Agents CLI | ✅   | Explorer / Coder / Oracle / Reviewer |
-| MCP Server | ✅   | 13 tools                             |
-| AI Engine  | ✅   | 意圖理解 + 複雜度分析                |
-| Skills     | ✅   | 8 個技能                             |
-| Memory     | ✅   | 偏好學習                             |
-| 規模自適應 | ✅   | 根據複雜度調度                       |
+| 模組       | 狀態 | 說明                              |
+| ---------- | ---- | --------------------------------- |
+| Agents CLI | ✅   | 7 種專業 Agent                    |
+| MCP Server | ✅   | 20 tools                          |
+| AI Engine  | ✅   | 意圖理解 + 複雜度分析             |
+| Skills     | ✅   | 8+ 個技能 + 技能市場              |
+| Memory     | ✅   | 偏好學習 + 跨 session             |
+| Party Mode | ✅   | 多 Agent 並行 + 任務分片 + 儀表板 |
+| 規模自適應 | ✅   | 根據複雜度調度                    |
+| Web 控制台 | ✅   | 圖形化監控面板                    |
+| 長期規劃   | ✅   | 子目標分解與追蹤                  |
+| 主動式建議 | ✅   | 智慧建議系統                      |
+| i18n       | ✅   | 中英日多語言                      |
 
 **GitHub:** `https://github.com/raybird/taonix`
 
