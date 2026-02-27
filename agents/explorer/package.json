@@ -1,0 +1,23 @@
+{
+  "name": "@taonix/explorer-agent",
+  "version": "1.0.0",
+  "description": "Taonix Explorer Agent - 搜尋、爬蟲 Agent",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "taonix-explorer": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "taonix",
+    "agent",
+    "explorer",
+    "search",
+    "crawler"
+  ],
+  "author": "Taonix Team",
+  "license": "MIT"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@taonix/oracle-agent",
+  "version": "1.0.0",
+  "description": "Taonix Oracle Agent - 架構分析 Agent",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "taonix-oracle": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "taonix",
+    "agent",
+    "oracle",
+    "architecture",
+    "analysis"
+  ],
+  "author": "Taonix Team",
+  "license": "MIT"
+}

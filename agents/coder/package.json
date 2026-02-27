@@ -1,0 +1,22 @@
+{
+  "name": "@taonix/coder-agent",
+  "version": "1.0.0",
+  "description": "Taonix Coder Agent - 程式開發 Agent",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "taonix-coder": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "taonix",
+    "agent",
+    "coder",
+    "development"
+  ],
+  "author": "Taonix Team",
+  "license": "MIT"
+}
