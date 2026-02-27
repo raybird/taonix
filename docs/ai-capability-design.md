@@ -157,14 +157,36 @@
 
 ## 六、技術選型
 
-- **意圖理解**: LLM API + 正則表達式 fallback
-- **智能決策**: 規則引擎 + LLM 輔助
-- **內容生成**: LLM API + 模板
+- **AI 引擎**: 使用 Opencode CLI (`opencode run`)
+- **意圖理解**: Opencode + 規則引擎
+- **智能決策**: Opencode + 規則引擎
+- **內容生成**: Opencode + 提示詞模板
 
 ---
 
-## 七、待討論事項
+## 七、實現方式
 
-1. 使用哪個 LLM provider？（OpenAI / Claude / 本地模型）
-2. 是否需要本地部署？
-3. 優先順序？
+### 使用 Opencode CLI
+
+```bash
+# 意圖理解
+opencode run "分析這個指令的意圖：帮我看看最近 python 有什么好玩的"
+
+# 智能決策
+opencode run "判斷需要哪些 Agent：帮我分析项目代码质量"
+
+# 內容生成
+opencode run "根據以下數據生成報告：..."
+```
+
+### 優勢
+
+- 無需額外 LLM API 整合
+- 利用現有 Opencode 強大能力
+- 統一入口，維護簡單
+
+---
+
+## 八、待討論事項
+
+1. 優先順序？（意圖理解 → 智能決策 → 內容生成）
