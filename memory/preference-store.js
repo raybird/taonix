@@ -9,6 +9,14 @@ class PreferenceStore {
   constructor() {
     this.preferences = new Map();
     this.stats = new Map();
+    this.userProfile = {
+      name: null,
+      timezone: "Asia/Taipei",
+      language: "zh-TW",
+      createdAt: new Date().toISOString(),
+      lastActive: new Date().toISOString(),
+    };
+    this.workflows = new Map();
     this.ensureDataDir();
     this.load();
   }
@@ -22,6 +30,8 @@ class PreferenceStore {
   load() {
     const prefFile = path.join(DATA_DIR, "preferences.json");
     const statsFile = path.join(DATA_DIR, "stats.json");
+    const profileFile = path.join(DATA_DIR, "user-profile.json");
+    const workflowsFile = path.join(DATA_DIR, "workflows.json");
 
     if (fs.existsSync(prefFile)) {
       const data = JSON.parse(fs.readFileSync(prefFile, "utf-8"));
@@ -32,17 +42,59 @@ class PreferenceStore {
       const data = JSON.parse(fs.readFileSync(statsFile, "utf-8"));
       this.stats = new Map(Object.entries(data));
     }
+
+    if (fs.existsSync(profileFile)) {
+      const data = JSON.parse(fs.readFileSync(profileFile, "utf-8"));
+      this.userProfile = { ...this.userProfile, ...data };
+    }
+
+    if (fs.existsSync(workflowsFile)) {
+      const data = JSON.parse(fs.readFileSync(workflowsFile, "utf-8"));
+      this.workflows = new Map(Object.entries(data));
+    }
   }
 
   save() {
     const prefFile = path.join(DATA_DIR, "preferences.json");
     const statsFile = path.join(DATA_DIR, "stats.json");
+    const profileFile = path.join(DATA_DIR, "user-profile.json");
+    const workflowsFile = path.join(DATA_DIR, "workflows.json");
 
     fs.writeFileSync(
       prefFile,
       JSON.stringify(Object.fromEntries(this.preferences)),
     );
     fs.writeFileSync(statsFile, JSON.stringify(Object.fromEntries(this.stats)));
+    fs.writeFileSync(profileFile, JSON.stringify(this.userProfile, null, 2));
+    fs.writeFileSync(
+      workflowsFile,
+      JSON.stringify(Object.fromEntries(this.workflows), null, 2),
+    );
+  }
+
+  setUserProfile(key, value) {
+    this.userProfile[key] = value;
+    this.userProfile.lastActive = new Date().toISOString();
+    this.save();
+  }
+
+  getUserProfile() {
+    return { ...this.userProfile };
+  }
+
+  recordWorkflow(workflowId, steps) {
+    const existing = this.workflows.get(workflowId) || { count: 0, steps: [] };
+    existing.count += 1;
+    existing.lastUsed = new Date().toISOString();
+    this.workflows.set(workflowId, existing);
+    this.save();
+  }
+
+  getTopWorkflows(limit = 5) {
+    return Array.from(this.workflows.entries())
+      .sort((a, b) => b[1].count - a[1].count)
+      .slice(0, limit)
+      .map(([id, v]) => ({ id, count: v.count, lastUsed: v.lastUsed }));
   }
 
   set(key, value) {

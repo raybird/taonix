@@ -73,9 +73,19 @@ export class LearningModule {
   getPreferences() {
     return {
       stats: this.store.getStats(),
+      userProfile: this.store.getUserProfile(),
+      topWorkflows: this.store.getTopWorkflows(),
       favoriteLanguage: this.store.get("language"),
       favoriteFramework: this.store.get("framework"),
     };
+  }
+
+  setUserProfile(key, value) {
+    this.store.setUserProfile(key, value);
+  }
+
+  recordWorkflow(workflowId, steps) {
+    this.store.recordWorkflow(workflowId, steps);
   }
 
   setPreference(key, value) {
