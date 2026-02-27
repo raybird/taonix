@@ -2,6 +2,18 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v1.5.0] - 2026-02-28
+
+### Added
+
+- **多語言支援** - 支援中英日翻譯
+  - `i18n/index.js` - i18n 核心模組
+  - `i18n/cli.js` - 多語言 CLI
+  - 支援語言: 中文、英文、日文
+  - 可擴充翻譯
+
+---
+
 ## [v1.4.0] - 2026-02-28
 
 ### Added
