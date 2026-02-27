@@ -2,6 +2,17 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v2.1.0] - 2026-02-28
+
+### Added
+
+- **Assistant Agent 數據分析** - 強化 AI 助理分析能力
+  - `agents/assistant/lib/analytics-helper.js` - 數據分析助手
+  - 支援統計分析、數據分佈、異常偵測
+  - 可生成數據報告
+
+---
+
 ## [v2.0.0] - 2026-02-28
 
 ### Added
