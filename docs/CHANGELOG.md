@@ -2,6 +2,18 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v1.7.0] - 2026-02-28
+
+### Added
+
+- **測試覆蓋強化** - 為新增 Agent 完善測試
+  - `agents/designer/test.js` - UI/UX 測試
+  - `agents/product/test.js` - 產品管理測試
+  - `agents/tester/test.js` - 測試生成與計劃測試
+  - 使用 Node.js native test runner
+
+---
+
 ## [v1.6.0] - 2026-02-28
 
 ### Added
