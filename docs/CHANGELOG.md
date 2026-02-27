@@ -2,6 +2,17 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v2.2.0] - 2026-02-28
+
+### Added
+
+- **Assistant Agent 通知系統** - 強化 AI 助理提醒能力
+  - `agents/assistant/lib/notification-helper.js` - 通知助手
+  - 支援即時通知、排程提醒、多管道通知
+  - 可透過 Telegram、Email、Console 發送通知
+
+---
+
 ## [v2.1.0] - 2026-02-28
 
 ### Added
