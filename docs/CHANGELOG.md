@@ -16,6 +16,9 @@ All notable changes to Taonix will be documented in this file.
 - **多對話上下文記憶** - 跨對話保持上下文連貫
   - Session 管理、訊息歷史儲存
   - 支援查詢過往對話記錄
+- **跨 session 偏好延續** - 使用者設定跨對話持久化
+  - 使用者 Profile 管理（名稱、時區、語言）
+  - 工作流追蹤與常用建議
 - **ROADMAP.md** - 發展藍圖文件
 - **SOP 文件同步規則** - 每次發布後必須同步文件
 
