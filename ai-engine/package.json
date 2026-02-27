@@ -1,0 +1,19 @@
+{
+  "name": "@taonix/ai-engine",
+  "version": "1.0.0",
+  "description": "Taonix AI Engine - 意圖理解、智能決策、內容生成",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "taonix",
+    "ai",
+    "engine",
+    "intent"
+  ],
+  "author": "Taonix Team",
+  "license": "MIT"
+}
