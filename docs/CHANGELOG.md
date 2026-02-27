@@ -2,6 +2,19 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v0.6.0] - 2026-02-27
+
+### Added
+
+- **規模自適應** - 根據任務複雜度自動選擇 Agent 組合
+  - 簡單任務 → Explorer
+  - 中等任務 → Explorer + Coder
+  - 複雜任務 → Explorer + Coder + Oracle + Reviewer (Party Mode)
+- **ROADMAP.md** - 發展藍圖文件
+- **SOP 文件同步規則** - 每次發布後必須同步文件
+
+---
+
 ## [v1.0.0] - 2026-02-27
 
 ### Added

@@ -90,9 +90,23 @@ git push
 
 ---
 
-## 演化規則
+## 文件同步規則
 
 每次 Taonix 進化完成後必須：
 
-1. 執行 SOP 文件對齊
-2. Commit 並 push 到 GitHub
+1. 更新 `ROADMAP.md` - 標記已完成項目、新增規劃項目
+2. 更新 `README.md` - 確保功能說明與實際一致
+3. 更新 `CHANGELOG.md` - 記錄版本變更
+4. Commit 並 push 到 GitHub
+
+### 文件清單
+
+| 文件                    | 說明                |
+| ----------------------- | ------------------- |
+| README.md               | 專案總覽與快速開始  |
+| SOP.md                  | 標準作業程序        |
+| ROADMAP.md              | 發展藍圖與版本規劃  |
+| CHANGELOG.md            | 版本變更記錄        |
+| taonix-design.md        | 設計文件與架構說明  |
+| ai-capability-design.md | AI 能力設計文件     |
+| cli-mcp-plan.md         | CLI 與 MCP 開發計畫 |
