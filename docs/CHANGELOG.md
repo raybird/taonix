@@ -2,6 +2,18 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v1.8.0] - 2026-02-28
+
+### Added
+
+- **技能框架擴充** - 新增 3 個專業技能
+  - `skills/skills/security-audit.js` - 安全審計技能
+  - `skills/skills/doc-generator.js` - 文檔生成技能
+  - `skills/skills/performance-optimization.js` - 效能優化技能
+  - 技能總數從 8 個擴充至 11 個
+
+---
+
 ## [v1.7.0] - 2026-02-28
 
 ### Added
