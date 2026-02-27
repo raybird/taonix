@@ -1,3 +1,8 @@
+import {
+  analyzeComplexity,
+  getComplexityLabel,
+} from "./complexity-analyzer.js";
+
 const agentCapabilities = {
   explorer: {
     name: "小探",
@@ -27,8 +32,13 @@ const agentCapabilities = {
   },
 };
 
-export async function dispatchAgent(intent) {
-  const { agent: primaryAgent, intent: intentType } = intent;
+export async function dispatchAgent(intent, options = {}) {
+  const { agent: primaryAgent, intent: intentType, input } = intent;
+  const useAdaptive = options.adaptive ?? true;
+
+  const complexity = input
+    ? analyzeComplexity(input)
+    : { level: "low", agents: ["explorer"] };
 
   const selectedAgents = [];
 
@@ -38,6 +48,16 @@ export async function dispatchAgent(intent) {
       ...agentCapabilities[primaryAgent],
       matchedIntent: intentType,
     });
+  } else if (useAdaptive) {
+    for (const agentName of complexity.agents) {
+      if (agentCapabilities[agentName]) {
+        selectedAgents.push({
+          agent: agentName,
+          ...agentCapabilities[agentName],
+          matchedIntent: null,
+        });
+      }
+    }
   } else {
     for (const [agentName, capabilities] of Object.entries(agentCapabilities)) {
       selectedAgents.push({
@@ -52,6 +72,10 @@ export async function dispatchAgent(intent) {
     primary: selectedAgents[0] || null,
     all: selectedAgents,
     count: selectedAgents.length,
+    complexity: {
+      level: complexity.level,
+      label: getComplexityLabel(complexity.level),
+    },
   };
 }
 

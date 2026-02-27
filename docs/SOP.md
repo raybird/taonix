@@ -43,10 +43,11 @@ git push
 | 模組          | 路徑                | 功能                           |
 | ------------- | ------------------- | ------------------------------ |
 | Explorer      | `agents/explorer/`  | 搜尋、爬蟲、網頁擷取           |
-| Coder         | `agents/coder/`     | 讀寫檔案、執行指令、Debug      |
+| Coder         | `agents/coder/`     | 讀寫指令、Debug 檔案、執行     |
 | Oracle        | `agents/oracle/`    | 架構分析、依賴分析             |
 | Reviewer      | `agents/reviewer/`  | 品質檢查、格式檢查             |
 | AI Engine     | `ai-engine/`        | 意圖理解、Agent 調度、內容生成 |
+| Complexity    | `ai-engine/lib/`    | 規模自適應、複雜度分析         |
 | Skills Core   | `skills/`           | 技能框架核心、8 個技能自動觸發 |
 | Skill Matcher | `skills/matcher.js` | 根據輸入關鍵字自動選擇正確技能 |
 | Self-Learning | `memory/`           | 記住使用者偏好與統計數據       |
@@ -66,6 +67,17 @@ git push
 | writing-plans                  | 撰寫實作計劃                |
 | executing-plans                | 執行實作計劃                |
 | verification-before-completion | 完成前驗證                  |
+
+---
+
+## 規模自適應
+
+| 複雜度 | 關鍵字範例                  | Agent 組合                  |
+| ------ | --------------------------- | --------------------------- |
+| 簡單   | 什麼/怎麼/看看/list/查      | Explorer                    |
+| 中等   | debug/fix/improve/add/功能  | Explorer + Coder            |
+| 複雜   | architecture/重構/系統設計/ | Explorer + Coder + Oracle + |
+|        | compare/完整/end-to-end     | Reviewer (Party Mode)       |
 
 ---
 
