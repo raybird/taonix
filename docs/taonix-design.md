@@ -16,7 +16,7 @@
 - **複雜任務**：呼叫合適的 Agent 協助
 - **指定呼叫**：使用者可隨時 @ 指定 Agent
 
-### 團隊組成：5 人
+### 團隊組成：5 人 + 技能核心
 
 | Agent    | 角色       | 名字 | 風格                           |
 | -------- | ---------- | ---- | ------------------------------ |
@@ -25,6 +25,12 @@
 | Memory   | 記憶管理員 | 小記 | 溫和細心，擅長提醒往事         |
 | Analyzer | 分析師     | 小析 | 冷靜理性，愛拆解問題           |
 | Reviewer | 把關者     | 把關 | 毒舌但中肯，追求完美           |
+
+### 技能框架 (Skills Core)
+
+- **技能匹配引擎**：根據輸入關鍵字自動選擇正確技能
+- **自我學習模組**：記住使用者偏好與統計數據
+- **8 個專業技能**：brainstorming、systematic-debugging、test-driven-development、receiving-code-review、requesting-code-review、writing-plans、executing-plans、verification-before-completion
 
 ---
 

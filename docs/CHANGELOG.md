@@ -1,0 +1,59 @@
+# Changelog
+
+All notable changes to Taonix will be documented in this file.
+
+## [v1.0.0] - 2026-02-27
+
+### Added
+
+- **技能框架核心 (Skills Core)** - 8 個技能自動觸發
+  - brainstorming - 頭腦風暴
+  - systematic-debugging - 系統化除錯 (4 階段根因分析)
+  - test-driven-development - TDD 流程
+  - receiving-code-review - 接收審查回饋
+  - requesting-code-review - 請求程式碼審查
+  - writing-plans - 撰寫實作計劃
+  - executing-plans - 執行實作計劃
+  - verification-before-completion - 完成前驗證
+- **技能匹配引擎** - 根據輸入關鍵字自動選擇正確技能
+- **自我學習模組** - 記住使用者偏好與統計數據
+- **AI Engine** - 意圖理解、Agent 調度、內容生成
+- **SOP 文件** - 標準作業程序
+- **演化規則** - 每次進化完成後 SOP 對齊 + commit + push
+
+### Changed
+
+- 整合現 團隊 (有 4 AgentExplorer, Coder, Oracle, Reviewer)
+- 更新所有設計文件以反映最新架構
+
+---
+
+## [v0.3.0] - 2026-02-21
+
+### Added
+
+- **TeleNexus 整合** - 與主系統整合
+  - client.js
+  - agents.js
+  - telenexus-config.json
+
+---
+
+## [v0.2.0] - 2026-02-20
+
+### Added
+
+- **MCP Server** - 13 tools
+  - @modelcontextprotocol/sdk 整合
+
+---
+
+## [v0.1.0] - 2026-02-15
+
+### Added
+
+- **4 個 Agent CLI 框架**
+  - Explorer (小探) - 搜尋、爬蟲
+  - Coder (小碼) - 程式開發
+  - Oracle (小析) - 架構分析
+  - Reviewer (把關) - 程式碼審查

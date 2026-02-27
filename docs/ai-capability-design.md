@@ -190,3 +190,40 @@ opencode run "根據以下數據生成報告：..."
 ## 八、待討論事項
 
 1. 優先順序？（意圖理解 → 智能決策 → 內容生成）
+
+---
+
+## 九、技能框架 (Skills Core) - 已實現
+
+### 9.1 技能匹配引擎
+
+根據輸入關鍵字自動選擇正確技能執行
+
+### 9.2 專業技能
+
+| 技能                           | 功能                        |
+| ------------------------------ | --------------------------- |
+| brainstorming                  | 頭腦風暴                    |
+| systematic-debugging           | 系統化除錯 (4 階段根因分析) |
+| test-driven-development        | TDD 流程                    |
+| receiving-code-review          | 接收審查回饋                |
+| requesting-code-review         | 請求程式碼審查              |
+| writing-plans                  | 撰寫實作計劃                |
+| executing-plans                | 執行實作計劃                |
+| verification-before-completion | 完成前驗證                  |
+
+### 9.3 自我學習模組
+
+- 記住使用者偏好
+- 統計數據收集
+- 持續優化技能匹配
+
+---
+
+## 十、演化規則
+
+每次 Taonix 進化完成後必須：
+
+1. 執行 SOP 文件對齊
+2. 更新 CHANGELOG
+3. Commit 並 push 到 GitHub

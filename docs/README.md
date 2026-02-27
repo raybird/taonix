@@ -15,6 +15,10 @@ taonix/
 │   ├── coder/       # 程式開發 Agent
 │   ├── oracle/      # 架構分析 Agent
 │   └── reviewer/    # 程式碼審查 Agent
+├── ai-engine/       # AI Engine (意圖理解、Agent 調度、內容生成)
+├── skills/          # 技能框架核心 (8 個技能自動觸發)
+│   └── skills/      # 技能實作
+├── memory/          # 自我學習模組
 ├── mcp-server/      # MCP Server (13 tools)
 ├── integration/     # TeleNexus 整合
 │   ├── client.js
@@ -77,6 +81,8 @@ node index.js
 - **第一階段 (CLI)** - 4 個 Agent CLI 框架
 - **第二階段 (MCP)** - MCP Server 包裝
 - **第三階段 (整合)** - TeleNexus 整合
+- **第四階段 (AI Engine)** - 意圖理解、Agent 調度
+- **第五階段 (自主進化 v1)** - 技能框架核心、8 個技能自動觸發、自我學習
 
 ## 技術栈
 
