@@ -2,6 +2,19 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v2.0.0] - 2026-02-28
+
+### Added
+
+- **Assistant Agent 強化** - 擴充 AI 助理能力
+  - `agents/assistant/lib/system-helper.js` - 系統助手 (指令執行、狀態檢查)
+  - `agents/assistant/lib/web-helper.js` - 網路助手 (搜尋、擷取網頁)
+  - 支援指令執行、系統監控、網頁搜尋等功能
+- **排程調整** - 執行時間調整至 :15, :45 與其他排程錯開
+- **進化方向** - 以「AI 助理能力」為核心持續進化
+
+---
+
 ## [v1.9.0] - 2026-02-28
 
 ### Added
