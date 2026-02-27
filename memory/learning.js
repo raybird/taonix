@@ -1,5 +1,6 @@
 import { preferenceStore } from "./preference-store.js";
 import { taskHistory } from "./task-history.js";
+import { contextManager } from "./context-manager.js";
 
 let mcpMemoryCreateEntities = null;
 try {
@@ -15,7 +16,7 @@ export class LearningModule {
   }
 
   async learn(context) {
-    const { input, skill, agents, result, duration } = context;
+    const { input, skill, agents, result, duration, sessionId } = context;
 
     this.store.record(
       skill,
@@ -30,6 +31,13 @@ export class LearningModule {
       duration,
       result: result?.substring(0, 200),
     });
+
+    if (sessionId && input) {
+      contextManager.addMessage(sessionId, "user", input, { skill });
+      if (result) {
+        contextManager.addMessage(sessionId, "assistant", result, { skill });
+      }
+    }
 
     if (skill && result) {
       await this.saveToMemory(context);
@@ -100,5 +108,5 @@ export class LearningModule {
 }
 
 export const learning = new LearningModule();
-export { taskHistory };
+export { taskHistory, contextManager };
 export default learning;
