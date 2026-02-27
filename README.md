@@ -12,27 +12,23 @@ Taonix (Taonix = Tao + Nexus，道之樞紐) 是一個賦予 TeleNexus 擁有多
 - **CLI 獨立運作** - 每個 Agent 可單獨使用
 - **MCP Server 整合** - 統一入口，被 TeleNexus 調用
 - **技能框架** - 8 個專業技能，自動匹配
+- **技能市場** - 支援第三方技能擴展
 - **自我學習** - 記住使用者偏好與統計數據
 - **Party Mode** - 多 Agent 並行協作
+- **Web 控制台** - 圖形化監控面板
 
 ## 專案結構
 
 ```
 taonix/
 ├── agents/           # Agent CLI 工具（7個）
-│   ├── explorer/    # 搜尋、爬蟲 Agent
-│   ├── coder/       # 程式開發 Agent
-│   ├── oracle/      # 架構分析 Agent
-│   ├── reviewer/    # 程式碼審查 Agent
-│   ├── designer/    # UI/UX 設計 Agent
-│   ├── product/     # 產品規劃 Agent
-│   └── tester/      # 測試 Agent
-├── mcp-server/      # MCP Server (13 tools, port 3916)
-├── ai-engine/       # AI 調度引擎（意圖理解、Agent 分配）
-├── skills/          # 技能框架
-├── memory/          # 自我學習模組
-├── party/           # Party Mode
-└── docs/            # 設計文件
+├── mcp-server/       # MCP Server (13 tools)
+├── # AI 調度引擎
+├── skills/           # ai-engine/        技能框架 + 市場
+├── memory/           # 自我學習模組
+├── party/            # Party Mode
+├── web-console/      # Web 控制台
+└── docs/             # 設計文件
 ```
 
 ## Agent 團隊
@@ -110,6 +106,27 @@ node party/cli.js sessions
 node party/cli.js clear
 ```
 
+### 技能市場
+
+```bash
+# 列出所有技能
+node skills/marketplace/cli.js list
+
+# 安裝技能
+node skills/marketplace/cli.js install <name>
+
+# 移除技能
+node skills/marketplace/cli.js remove <name>
+```
+
+### Web 控制台
+
+```bash
+# 啟動 Web 控制台
+node web-console/server.js
+# 訪問 http://localhost:3000
+```
+
 ### API 端點
 
 | Method | Path        | 說明           |
@@ -122,6 +139,7 @@ node party/cli.js clear
 
 | 版本   | 內容                                             |
 | ------ | ------------------------------------------------ |
+| v1.3.0 | 生態擴展 - 技能市場 + Web 控制台                 |
 | v1.2.0 | 生態擴展 - 更多領域 Agent                        |
 | v1.1.0 | Party Mode - 狀態儀表板                          |
 | v1.0.0 | 初始版本：4 Agent CLI + MCP Server + Skills Core |

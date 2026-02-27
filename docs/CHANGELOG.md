@@ -2,6 +2,21 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v1.3.0] - 2026-02-27
+
+### Added
+
+- **第三方技能市場** - 允許載入外部技能
+  - `skills/marketplace/index.js` - 技能市場核心
+  - `skills/marketplace/cli.js` - 技能管理 CLI
+  - 支援安裝/移除外部技能
+- **Web UI 控制台** - 圖形化控制面板
+  - `web-console/index.html` - 控制台頁面
+  - `web-console/server.js` - HTTP 伺服器
+  - 即時查看 Agent 狀態與統計
+
+---
+
 ## [v1.2.0] - 2026-02-27
 
 ### Added
