@@ -1,0 +1,7 @@
+{
+  "policy-verify": {
+    "allowFS": true,
+    "allowNetwork": false,
+    "updatedAt": "2026-02-28T17:45:44.396Z"
+  }
+}

@@ -9,7 +9,11 @@ export class SkillSandbox {
   }
 
   async run(code, context, options = {}) {
-    const { skillName = "unknown" } = options;
+    const { 
+      skillName = "unknown",
+      allowFS = false,
+      allowNetwork = false
+    } = options;
     console.log("[Sandbox] 正在執行: " + skillName);
 
     const sandboxContext = {

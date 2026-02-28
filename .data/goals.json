@@ -114,8 +114,8 @@
       "id": "goal_1772295385836",
       "title": "開發 Taonix v4.5.0：1. 實作技能沙盒 (Skill Sandbox) 2. 支援限制第三方技能的 FS 與 Network 存取 3. 整合至 Skill Engine 執行鏈路 4. 實作安全審計日誌",
       "description": "由 AutonomousPlanner 自動建立",
-      "status": "in_progress",
-      "progress": 80,
+      "status": "completed",
+      "progress": 100,
       "created": "2026-02-28T16:16:25.836Z",
       "deadline": "2026-03-03T16:16:25.836Z",
       "subGoals": [
