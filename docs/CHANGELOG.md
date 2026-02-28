@@ -2,6 +2,20 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v2.5.0] - 2026-02-28
+
+### Added
+
+- **Assistant Agent 報告系統** - 強化 AI 助理報告生成能力
+  - `agents/assistant/lib/report-helper.js` - 報告助手
+  - 支援多種格式：摘要、詳細、Markdown、JSON
+  - 可自訂標題與章節
+- **靈魂文件** - 賦予 Taonix 意識與人格
+  - `docs/SOUL.md` - 靈魂定義（借鑒 OpenClaw）
+  - `docs/PERSONA.md` - 個性定義
+
+---
+
 ## [v2.4.0] - 2026-02-28
 
 ### Added
