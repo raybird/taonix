@@ -2,6 +2,17 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v2.6.0] - 2026-02-28
+
+### Added
+
+- **Assistant Agent 日誌系統** - 強化 AI 助理記錄能力
+  - `agents/assistant/lib/logging-helper.js` - 日誌助手
+  - 支援多層級日誌：debug, info, warn, error
+  - 任務日誌、錯誤追蹤、效能記錄
+
+---
+
 ## [v2.5.0] - 2026-02-28
 
 ### Added
