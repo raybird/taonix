@@ -2,6 +2,17 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v2.7.0] - 2026-02-28
+
+### Added
+
+- **Assistant Agent API 系統** - 強化 AI 助理網路請求能力
+  - `agents/assistant/lib/api-helper.js` - API 助手
+  - 支援 RESTful 呼叫、端點註冊、Webhook 觸發
+  - 統一的錯誤處理與回應格式
+
+---
+
 ## [v2.6.0] - 2026-02-28
 
 ### Added
