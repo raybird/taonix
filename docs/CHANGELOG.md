@@ -2,6 +2,17 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v3.0.0] - 2026-02-28
+
+### Added
+
+- **意圖識別系統** - 強化 AI 助理理解能力
+  - `agents/assistant/lib/intent-helper.js` - 意圖識別器
+  - `agents/assistant/lib/analyzer.js` - 強化版請求分析器
+  - 支援多意圖識別、實體提取、建議生成
+
+---
+
 ## [v2.9.0] - 2026-02-28
 
 ### Added
