@@ -2,6 +2,17 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v3.2.0] - 2026-02-28
+
+### Added
+
+- **技能框架擴充** - 新增智能代理協調技能
+  - `skills/skills/agent-coordinator.js` - 代理協調技能
+  - 支援任務分析、Agent 分派、執行計劃生成
+  - 技能總數從 11 個擴充至 12 個
+
+---
+
 ## [v3.1.0] - 2026-02-28
 
 ### Added
