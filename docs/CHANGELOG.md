@@ -2,6 +2,15 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v7.0.0] - 2026-03-01
+
+### Added
+- **外部邊界擴張 (External Boundary Expansion)** - 讓 Agent 感知並影響全網
+  - 實作 `APIConnector` 通用銜接器，統一管理外部請求與鑑權
+  - 實作 `WebhookReceiver` 接收器，支援外部信號（如 GitHub Hook）觸發內部工作流
+  - 實作 `NotificationCenter` 通知中心，支援向 Telegram/Slack 推送即時協作進度
+  - 實作 `ExternalAwareness` 主動感知器，定期同步外部環境狀態至全域黑板
+
 ## [v6.0.0] - 2026-03-01
 
 ### Added
