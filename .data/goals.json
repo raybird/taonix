@@ -109,6 +109,22 @@
         "sub_goal_1772293523001_3",
         "sub_goal_1772293523001_4"
       ]
+    },
+    "goal_1772295385836": {
+      "id": "goal_1772295385836",
+      "title": "開發 Taonix v4.5.0：1. 實作技能沙盒 (Skill Sandbox) 2. 支援限制第三方技能的 FS 與 Network 存取 3. 整合至 Skill Engine 執行鏈路 4. 實作安全審計日誌",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "in_progress",
+      "progress": 80,
+      "created": "2026-02-28T16:16:25.836Z",
+      "deadline": "2026-03-03T16:16:25.836Z",
+      "subGoals": [
+        "sub_goal_1772295385836_0",
+        "sub_goal_1772295385836_1",
+        "sub_goal_1772295385836_2",
+        "sub_goal_1772295385836_3",
+        "sub_goal_1772295385836_4"
+      ]
     }
   },
   "subGoals": {
@@ -375,6 +391,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-02-28T15:45:23.004Z"
+    },
+    "sub_goal_1772295385836_0": {
+      "id": "sub_goal_1772295385836_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T16:16:25.837Z"
+    },
+    "sub_goal_1772295385836_1": {
+      "id": "sub_goal_1772295385836_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T16:16:25.837Z"
+    },
+    "sub_goal_1772295385836_2": {
+      "id": "sub_goal_1772295385836_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T16:16:25.838Z"
+    },
+    "sub_goal_1772295385836_3": {
+      "id": "sub_goal_1772295385836_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T16:16:25.839Z"
+    },
+    "sub_goal_1772295385836_4": {
+      "id": "sub_goal_1772295385836_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T16:16:25.839Z"
     }
   }
 }

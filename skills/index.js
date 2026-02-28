@@ -1,5 +1,7 @@
 import { loadSkills } from "./registry.js";
 import { matchSkill } from "./matcher.js";
+import { skillSandbox } from "./sandbox.js";
+import { policyManager } from "./policy-manager.js";
 
 export class SkillEngine {
   constructor() {
@@ -23,7 +25,19 @@ export class SkillEngine {
       throw new Error(`技能不存在: ${skillName}`);
     }
 
-    const result = await skill.execute(context);
+    let result;
+    // 如果技能包含原始腳本碼 (通常是外部載入的)，則使用沙盒執行
+    if (skill.scriptCode) {
+      const permissions = policyManager.getPermissions(skillName);
+      result = await skillSandbox.run(skill.scriptCode, context, {
+        skillName: skill.name,
+        allowFS: permissions.allowFS,
+        allowNetwork: permissions.allowNetwork
+      });
+    } else {
+      // 否則使用原生 execute 邏輯 (內建技能)
+      result = await skill.execute(context);
+    }
 
     this.history.push({
       skill: skillName,

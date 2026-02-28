@@ -1,0 +1,3 @@
+{"timestamp":"2026-02-28T16:46:22.366Z","skillName":"malicious-fs","status":"error","detail":"require is not defined"}
+{"timestamp":"2026-02-28T16:46:22.367Z","skillName":"malicious-process","status":"error","detail":"process is not defined"}
+{"timestamp":"2026-02-28T16:46:22.369Z","skillName":"safe-skill","status":"success","detail":""}

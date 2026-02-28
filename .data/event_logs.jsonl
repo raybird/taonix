@@ -11,3 +11,4 @@
 {"id":"evt_1772295332850_bp8h3","timestamp":"2026-02-28T16:15:32.850Z","name":"HUMAN_INTERVENTION_REQUIRED","source":"arbitrator","payload":{"issue":"手動決策測試","options":["A","B"],"timestamp":"2026-02-28T16:15:32.850Z"}}
 {"id":"evt_1772295332851_tz1th","timestamp":"2026-02-28T16:15:32.851Z","name":"BLACKBOARD_UPDATED","source":"blackboard","payload":{"summary":"State snapshot saved"}}
 {"id":"evt_1772295332851_fkc7g","timestamp":"2026-02-28T16:15:32.851Z","name":"FACT_DISCOVERED","source":"arbitrator","payload":{"key":"pending_decision","value":{"eventId":"evt_1772295332850_bp8h3","issue":"手動決策測試"}}}
+{"id":"evt_1772297182369_wx2s6","timestamp":"2026-02-28T16:46:22.369Z","name":"BLACKBOARD_UPDATED","source":"blackboard","payload":{"summary":"State snapshot saved"}}

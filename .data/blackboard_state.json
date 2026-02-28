@@ -21,6 +21,11 @@
       "timestamp": "2026-02-28T16:15:32.849Z",
       "agent": "arbitrator",
       "content": "偵測到 coder 在執行任務 err_1 時失敗。錯誤原因: FS error。啟動根因分析..."
+    },
+    {
+      "timestamp": "2026-02-28T16:46:22.369Z",
+      "agent": "sandbox:safe-skill",
+      "content": "沙盒內的正常思考"
     }
   ],
   "hypotheses": [],
