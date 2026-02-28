@@ -2,6 +2,17 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v2.4.0] - 2026-02-28
+
+### Added
+
+- **Assistant Agent 工作流系統** - 強化 AI 助理任務自動化
+  - `agents/assistant/lib/workflow-helper.js` - 工作流助手
+  - 支援建立工作流、順序執行步驟、錯誤處理
+  - 可用於自動化多步驟任務
+
+---
+
 ## [v2.3.0] - 2026-02-28
 
 ### Added
