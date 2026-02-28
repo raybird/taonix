@@ -45,6 +45,22 @@
         "sub_goal_1772282772447_3",
         "sub_goal_1772282772447_4"
       ]
+    },
+    "goal_1772286019476": {
+      "id": "goal_1772286019476",
+      "title": "開發 Taonix v4.1.0：1. 實作核心 Event Bus 模組 2. 讓 Assistant 發布任務事件 3. 讓 Coder 與 Explorer 訂閱並自發回應 4. 實作事件日誌追蹤",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "completed",
+      "progress": 100,
+      "created": "2026-02-28T13:40:19.476Z",
+      "deadline": "2026-03-03T13:40:19.476Z",
+      "subGoals": [
+        "sub_goal_1772286019476_0",
+        "sub_goal_1772286019476_1",
+        "sub_goal_1772286019476_2",
+        "sub_goal_1772286019476_3",
+        "sub_goal_1772286019476_4"
+      ]
     }
   },
   "subGoals": {
@@ -151,6 +167,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-02-28T12:46:12.449Z"
+    },
+    "sub_goal_1772286019476_0": {
+      "id": "sub_goal_1772286019476_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T13:40:19.477Z"
+    },
+    "sub_goal_1772286019476_1": {
+      "id": "sub_goal_1772286019476_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T13:40:19.477Z"
+    },
+    "sub_goal_1772286019476_2": {
+      "id": "sub_goal_1772286019476_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T13:40:19.477Z"
+    },
+    "sub_goal_1772286019476_3": {
+      "id": "sub_goal_1772286019476_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T13:40:19.477Z"
+    },
+    "sub_goal_1772286019476_4": {
+      "id": "sub_goal_1772286019476_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T13:40:19.478Z"
     }
   }
 }

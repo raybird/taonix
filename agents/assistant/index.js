@@ -7,6 +7,7 @@ import { evolutionEngine } from "../../memory/evolution-engine.js";
 import { conversationSummarizer } from "../../memory/conversation-summarizer.js";
 import { contextGuard } from "./lib/context-guard.js";
 import { proactiveWorkflow } from "./lib/proactive-workflow.js";
+import { eventBus } from "../../ai-engine/lib/event-bus.js";
 
 const args = process.argv.slice(2);
 
@@ -23,6 +24,8 @@ Taonix Assistant Agent
   assistant summarize                  - 對話摘要統計
   assistant guard <sessionId> [threshold] - 檢查並摘要上下文
   assistant cycle [context]            - 執行主動工作流分析
+  assistant broadcast <agent> <task>   - 發布廣播任務 (EventBus)
+  assistant monitor                    - 監控即時事件流
   `);
   process.exit(0);
 }
@@ -30,6 +33,29 @@ Taonix Assistant Agent
 const command = args[0];
 
 switch (command) {
+  case "broadcast":
+    const targetAgent = args[1];
+    const task = args.slice(2).join(" ");
+    if (!targetAgent || !task) {
+      console.error("用法: assistant broadcast <agent|all> <task>");
+      process.exit(1);
+    }
+    const taskId = `task_${Date.now()}`;
+    eventBus.publish("TASK_ASSIGNED", { taskId, targetAgent, task }, "assistant");
+    console.log(`📡 已發布廣播任務 [${taskId}] 指派給 ${targetAgent}`);
+    break;
+
+  case "monitor":
+    console.log("🖥️  啟動即時事件監控 (按 Ctrl+C 結束)...");
+    eventBus.subscribeAll((event) => {
+      const time = new Date(event.timestamp).toLocaleTimeString();
+      console.log(`[${time}] ${event.name.padEnd(15)} | 來源: ${event.source.padEnd(10)} | ID: ${event.id}`);
+      if (event.name === "TASK_ASSIGNED") console.log(`   ➔ 目標: ${event.payload.targetAgent}, 任務: ${event.payload.task}`);
+    });
+    // 保持程序運行
+    process.stdin.resume();
+    break;
+
   case "cycle":
     const ctx = args.slice(1).join(" ") || "General background check";
     const tasks = await proactiveWorkflow.runCycle({ context: ctx });

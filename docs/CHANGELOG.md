@@ -2,6 +2,15 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v4.1.0] - 2026-02-28
+
+### Added
+- **事件驅動架構原型 (Event-Driven Architecture)** - 開啟反應式協作新篇章
+  - 實作核心 `EventBus` 模組，支援非同步事件廣播與持久化日誌
+  - 建立 `AgentListener` 框架，賦予 Agent 自律反應能力
+  - Assistant 新增 `broadcast` 任務廣播功能與 `monitor` 事件流監控
+  - 通過端到端協作鏈路驗證，實現「任務->開始->完成」自動追蹤
+
 ## [v4.0.0] - 2026-02-28
 
 ### Added

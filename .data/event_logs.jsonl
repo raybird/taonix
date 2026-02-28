@@ -1,0 +1,4 @@
+{"id":"evt_1772286388501_49d90","timestamp":"2026-02-28T13:46:28.501Z","name":"TASK_ASSIGNED","source":"assistant","payload":{"taskId":"test_evt_123","targetAgent":"coder","task":"重構核心模組文檔"}}
+{"id":"evt_1772286400663_2wlbg","timestamp":"2026-02-28T13:46:40.663Z","name":"TASK_STARTED","source":"coder","payload":{"taskId":"test_evt_456","originalEventId":"evt_1772286400662_jxgfu"}}
+{"id":"evt_1772286400662_jxgfu","timestamp":"2026-02-28T13:46:40.662Z","name":"TASK_ASSIGNED","source":"assistant","payload":{"taskId":"test_evt_456","targetAgent":"coder","task":"驗證單進程事件鏈"}}
+{"id":"evt_1772286400664_zuign","timestamp":"2026-02-28T13:46:40.664Z","name":"TASK_COMPLETED","source":"coder","payload":{"taskId":"test_evt_456","result":{"status":"success","mock":true}}}
