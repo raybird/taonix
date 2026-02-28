@@ -130,8 +130,8 @@
       "id": "goal_1772300774193",
       "title": "開發 Taonix v5.0.0：1. 實作 Agent 註冊與發現 (Agent Discovery) 2. 建立動態小隊組建機制 (Dynamic Squad Formation) 3. 實作任務自動分解與共識協議 (Task Consensus) 4. 升級 Web 控制台以顯示小隊協作拓撲圖",
       "description": "由 AutonomousPlanner 自動建立",
-      "status": "in_progress",
-      "progress": 80,
+      "status": "completed",
+      "progress": 100,
       "created": "2026-02-28T17:46:14.193Z",
       "deadline": "2026-03-03T17:46:14.193Z",
       "subGoals": [
@@ -140,6 +140,22 @@
         "sub_goal_1772300774193_2",
         "sub_goal_1772300774193_3",
         "sub_goal_1772300774193_4"
+      ]
+    },
+    "goal_1772306128646": {
+      "id": "goal_1772306128646",
+      "title": "開發 Taonix v6.0.0：1. 實作協作評分系統 (Collaboration Scoring) 2. 建立集體經驗庫 (Collective Experience Base) 3. 實作基於成功率的動態 Agent 選擇 4. 自動化小隊後驗總結 (Squad Debriefing)",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "in_progress",
+      "progress": 80,
+      "created": "2026-02-28T19:15:28.646Z",
+      "deadline": "2026-03-03T19:15:28.646Z",
+      "subGoals": [
+        "sub_goal_1772306128646_0",
+        "sub_goal_1772306128646_1",
+        "sub_goal_1772306128646_2",
+        "sub_goal_1772306128646_3",
+        "sub_goal_1772306128646_4"
       ]
     }
   },
@@ -487,6 +503,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-02-28T17:46:14.197Z"
+    },
+    "sub_goal_1772306128646_0": {
+      "id": "sub_goal_1772306128646_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T19:15:28.647Z"
+    },
+    "sub_goal_1772306128646_1": {
+      "id": "sub_goal_1772306128646_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T19:15:28.648Z"
+    },
+    "sub_goal_1772306128646_2": {
+      "id": "sub_goal_1772306128646_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T19:15:28.649Z"
+    },
+    "sub_goal_1772306128646_3": {
+      "id": "sub_goal_1772306128646_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T19:15:28.649Z"
+    },
+    "sub_goal_1772306128646_4": {
+      "id": "sub_goal_1772306128646_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T19:15:28.649Z"
     }
   }
 }

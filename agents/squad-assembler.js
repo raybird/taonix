@@ -1,19 +1,20 @@
 import { agentRegistry } from "./registry.js";
 import { eventBus } from "../ai-engine/lib/event-bus.js";
 import { blackboard } from "../memory/blackboard.js";
+import { experienceBase } from "../memory/experience-base.js";
 
 /**
- * Taonix Squad Assembler (v5.0.0)
- * 負責根據任務需求，自動動態組建最適合的專家小隊。
+ * Taonix Squad Assembler (v5.0.0+)
+ * 負責根據任務需求與 Agent 歷史表現，自動動態組建最優專家小隊。
  */
 export class SquadAssembler {
   /**
    * 組建小隊
    * @param {string} taskId 任務 ID
-   * @param {string[]} requiredCapabilities 所需能力列表 (如: ["coding", "testing"])
+   * @param {string[]} requiredCapabilities 所需能力列表
    */
   assemble(taskId, requiredCapabilities) {
-    console.log(`[SquadAssembler] 正在為任務 ${taskId} 招募專家... (所需能力: ${requiredCapabilities.join(", ")})`);
+    console.log(`[SquadAssembler] 正在分析歷史數據並為任務 ${taskId} 招募最優專家...`);
     
     const members = [];
     const missing = [];
@@ -21,8 +22,17 @@ export class SquadAssembler {
     requiredCapabilities.forEach(cap => {
       const candidates = agentRegistry.findAgentsByCapability(cap);
       if (candidates.length > 0) {
-        // 簡單策略：選擇第一個可用的 Agent
-        members.push(candidates[0].name);
+        // 評分策略：成功率 * 0.6 + 平均得分 * 0.4
+        const scoredCandidates = candidates.map(agent => {
+          const stats = experienceBase.getAgentPerformance(agent.name);
+          const successRate = stats.totalTasks > 0 ? stats.successCount / stats.totalTasks : 0.5;
+          const score = (successRate * 6) + (stats.avgScore * 0.8);
+          return { name: agent.name, score };
+        });
+
+        // 挑選評分最高者
+        scoredCandidates.sort((a, b) => b.score - a.score);
+        members.push(scoredCandidates[0].name);
       } else {
         missing.push(cap);
       }

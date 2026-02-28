@@ -14,6 +14,19 @@
       },
       "source": "arbitrator",
       "updated": "2026-02-28T16:15:32.851Z"
+    },
+    "active_squad_task_demo_123": {
+      "value": {
+        "taskId": "task_demo_123",
+        "squadId": "squad_1772307970770",
+        "members": [
+          "coder",
+          "tester"
+        ],
+        "createdAt": "2026-02-28T19:46:10.770Z"
+      },
+      "source": "squad-assembler",
+      "updated": "2026-02-28T19:46:10.770Z"
     }
   },
   "thoughts": [
@@ -26,6 +39,11 @@
       "timestamp": "2026-02-28T16:46:22.369Z",
       "agent": "sandbox:safe-skill",
       "content": "沙盒內的正常思考"
+    },
+    {
+      "timestamp": "2026-02-28T19:46:10.771Z",
+      "agent": "squad-assembler",
+      "content": "成功為任務 task_demo_123 組建小隊。成員：coder, tester。"
     }
   ],
   "hypotheses": [],

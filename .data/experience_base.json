@@ -1,0 +1,28 @@
+{
+  "sessions": [
+    {
+      "timestamp": "2026-02-28T19:46:10.773Z",
+      "squadId": "squad_1772307970770",
+      "taskId": "task_demo_123",
+      "members": [
+        "coder",
+        "tester"
+      ],
+      "success": true,
+      "score": 5,
+      "feedback": "Auto-graded: Task completed normally"
+    }
+  ],
+  "agentStats": {
+    "coder": {
+      "totalTasks": 1,
+      "successCount": 1,
+      "avgScore": 5
+    },
+    "tester": {
+      "totalTasks": 1,
+      "successCount": 1,
+      "avgScore": 5
+    }
+  }
+}

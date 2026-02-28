@@ -2,6 +2,16 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v6.0.0] - 2026-03-01
+
+### Added
+- **集體智慧與自適應演進 (Collective Intelligence & Adaptive Evolution)**
+  - 實作 `ExperienceBase` 集體經驗庫，持久化紀錄所有小隊協作的歷史數據與效能指標
+  - 實作 `AutoScorer` 自動評分系統，基於任務成敗自動進行績效考核
+  - 實作 `SquadDebriefing` 後驗總結器，自動從推理鏈路中提取成功關鍵與改進建議
+  - 優化 `SquadAssembler` 組建策略，支援基於歷史得分的「最優專家」動態選員
+  - Web 控制台新增「Agent 英雄榜」，視覺化呈現各成員的成功率與平均評分
+
 ## [v4.5.0] - 2026-03-01
 
 ### Added

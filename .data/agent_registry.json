@@ -11,22 +11,16 @@
   },
   "coder": {
     "capabilities": [
-      "coding",
-      "refactoring",
-      "filesystem"
+      "coding"
     ],
-    "description": "鑄焰 - 負責程式實作與檔案操作",
-    "lastSeen": "2026-02-28T18:15:31.315Z",
+    "lastSeen": "2026-02-28T19:46:10.767Z",
     "status": "online"
   },
   "tester": {
     "capabilities": [
-      "testing",
-      "validation",
-      "ci"
+      "testing"
     ],
-    "description": "試煉 - 負責自動化測試與環境驗證",
-    "lastSeen": "2026-02-28T18:15:31.316Z",
+    "lastSeen": "2026-02-28T19:46:10.769Z",
     "status": "online"
   },
   "oracle": {

@@ -17,3 +17,10 @@
 {"id":"evt_1772302531316_sgik4","timestamp":"2026-02-28T18:15:31.316Z","name":"AGENT_REGISTERED","source":"registry","payload":{"name":"tester","capabilities":["testing","validation","ci"]}}
 {"id":"evt_1772302531316_8en80","timestamp":"2026-02-28T18:15:31.316Z","name":"AGENT_REGISTERED","source":"registry","payload":{"name":"oracle","capabilities":["analysis","architecture","reasoning"]}}
 {"id":"evt_1772302531317_j0nw3","timestamp":"2026-02-28T18:15:31.317Z","name":"AGENT_REGISTERED","source":"registry","payload":{"name":"assistant","capabilities":["planning","coordination","summarization"]}}
+{"id":"evt_1772307970768_o2j4h","timestamp":"2026-02-28T19:46:10.768Z","name":"AGENT_REGISTERED","source":"registry","payload":{"name":"coder","capabilities":["coding"]}}
+{"id":"evt_1772307970769_l5bkf","timestamp":"2026-02-28T19:46:10.769Z","name":"AGENT_REGISTERED","source":"registry","payload":{"name":"tester","capabilities":["testing"]}}
+{"id":"evt_1772307970770_rkgbh","timestamp":"2026-02-28T19:46:10.770Z","name":"BLACKBOARD_UPDATED","source":"blackboard","payload":{"summary":"State snapshot saved"}}
+{"id":"evt_1772307970771_9d1hv","timestamp":"2026-02-28T19:46:10.771Z","name":"FACT_DISCOVERED","source":"squad-assembler","payload":{"key":"active_squad_task_demo_123","value":{"taskId":"task_demo_123","squadId":"squad_1772307970770","members":["coder","tester"],"createdAt":"2026-02-28T19:46:10.770Z"}}}
+{"id":"evt_1772307970771_fwqve","timestamp":"2026-02-28T19:46:10.771Z","name":"BLACKBOARD_UPDATED","source":"blackboard","payload":{"summary":"State snapshot saved"}}
+{"id":"evt_1772307970772_13za2","timestamp":"2026-02-28T19:46:10.772Z","name":"SQUAD_FORMED","source":"squad-assembler","payload":{"taskId":"task_demo_123","squadId":"squad_1772307970770","members":["coder","tester"],"createdAt":"2026-02-28T19:46:10.770Z"}}
+{"id":"evt_1772307970772_gox9z","timestamp":"2026-02-28T19:46:10.772Z","name":"TASK_COMPLETED","source":"coder","payload":{"taskId":"task_demo_123","agent":"coder","result":{"status":"success"}}}
