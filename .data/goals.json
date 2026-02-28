@@ -83,7 +83,7 @@
       "title": "開發 Taonix v4.3.0：1. 實作 Git 感知器 (Git Observer) 2. 自動訂閱 Git Push 事件並觸發 Tester 3. 實作真實環境腳本執行器 4. 整合 Web 控制台顯示 Repo 狀態",
       "description": "由 AutonomousPlanner 自動建立",
       "status": "in_progress",
-      "progress": 40,
+      "progress": 80,
       "created": "2026-02-28T14:45:50.858Z",
       "deadline": "2026-03-03T14:45:50.858Z",
       "subGoals": [

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taonix 控制台 v4.2.0 - Blackboard Edition</title>
+    <title>Taonix 控制台 v4.3.0 - Environment Loop</title>
     <style>
       :root {
         --primary: #3b82f6;
@@ -17,6 +17,7 @@
         --danger: #ef4444;
         --thought: #fbbf24;
         --fact: #8b5cf6;
+        --git: #f43f5e;
       }
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
@@ -26,7 +27,7 @@
         min-height: 100vh;
         overflow-x: hidden;
       }
-      .container { max-width: 1600px; margin: 0 auto; padding: 20px; }
+      .container { max-width: 1800px; margin: 0 auto; padding: 20px; }
       header {
         display: flex;
         justify-content: space-between;
@@ -40,8 +41,8 @@
       
       .main-grid {
         display: grid;
-        grid-template-columns: 280px 1fr 1fr 320px;
-        gap: 20px;
+        grid-template-columns: 280px 1fr 1fr 1fr 320px;
+        gap: 15px;
       }
       
       .card {
@@ -51,27 +52,22 @@
         border: 1px solid var(--border);
         display: flex;
         flex-direction: column;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
       }
-      .card h2 { font-size: 14px; margin-bottom: 15px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+      .card h2 { font-size: 13px; margin-bottom: 15px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
       
-      /* List UI */
-      .scroll-area { flex: 1; overflow-y: auto; max-height: 450px; padding-right: 5px; }
+      .scroll-area { flex: 1; overflow-y: auto; max-height: 500px; padding-right: 5px; }
       .item { padding: 10px; border-bottom: 1px solid var(--border); font-size: 13px; }
       
-      /* Fact UI */
-      .fact-badge { font-size: 10px; background: var(--fact); color: #fff; padding: 2px 6px; border-radius: 4px; margin-bottom: 5px; display: inline-block; }
-      .fact-key { font-weight: bold; color: var(--fact); }
+      /* Environment UI */
+      .env-badge { font-size: 10px; background: var(--git); color: #fff; padding: 2px 6px; border-radius: 4px; margin-bottom: 5px; display: inline-block; }
+      .test-success { color: var(--success); font-weight: bold; }
+      .test-fail { color: var(--danger); font-weight: bold; }
       
       /* Thought UI */
       .thought-item { border-left: 3px solid var(--thought); padding-left: 10px; margin-bottom: 10px; background: rgba(251, 191, 36, 0.05); }
       .thought-agent { font-weight: bold; color: var(--thought); font-size: 11px; }
       
-      /* Timeline UI */
-      .timeline-item { position: relative; padding-left: 20px; border-left: 2px solid var(--border); padding-bottom: 15px; }
-      .timeline-item::after { content: ""; position: absolute; left: -6px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--primary); }
-
-      /* Goal Progress */
       .progress-container { height: 6px; background: #334155; border-radius: 3px; margin: 8px 0; }
       .progress-bar { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.5s; }
 
@@ -81,17 +77,17 @@
   <body>
     <div class="container">
       <header>
-        <h1>🚀 Taonix <span class="badge">v4.2.0</span></h1>
-        <div><span class="status-dot"></span>全域狀態同步中</div>
+        <h1>🚀 Taonix <span class="badge">v4.3.0</span></h1>
+        <div><span class="status-dot"></span>環境連動中</div>
       </header>
 
       <div class="main-grid">
-        <!-- Col 1: Team & Goals -->
+        <!-- Col 1: Team -->
         <div>
           <div class="card">
             <h2>👥 專家 Agent</h2>
-            <div id="agentList" style="font-size: 13px;">
-              <div style="padding:5px">🧭 Explorer</div><div style="padding:5px">💻 Coder</div><div style="padding:5px">🔮 Oracle</div><div style="padding:5px">🤖 Assistant</div>
+            <div id="agentList" style="font-size: 12px;">
+              <div style="padding:4px">🧭 Explorer</div><div style="padding:4px">💻 Coder</div><div style="padding:4px">🔮 Oracle</div><div style="padding:4px">🧪 Tester</div><div style="padding:4px">🤖 Assistant</div>
             </div>
           </div>
           <div class="card">
@@ -100,25 +96,29 @@
           </div>
         </div>
 
-        <!-- Col 2: Blackboard (Facts) -->
+        <!-- Col 2: Environment (Git & Test) -->
         <div class="card">
-          <h2>🧠 黑板 - 共識事實 (Facts)</h2>
-          <div class="scroll-area" id="factList">
-            <div style="text-align:center; padding:20px; color:var(--text-muted)">等待事實發現...</div>
+          <h2>🌐 環境狀態 (Git & CI)</h2>
+          <div class="scroll-area" id="envStatus">
+            <div style="text-align:center; padding:20px; color:var(--text-muted)">監控 Repo 中...</div>
           </div>
         </div>
 
-        <!-- Col 3: Reasoning (Thoughts) -->
+        <!-- Col 3: Blackboard (Facts) -->
         <div class="card">
-          <h2>💭 推理鏈路 (Reasoning)</h2>
-          <div class="scroll-area" id="thoughtList">
-            <div style="text-align:center; padding:20px; color:var(--text-muted)">等待思考流...</div>
-          </div>
+          <h2>🧠 黑板 - 共識事實</h2>
+          <div class="scroll-area" id="factList"></div>
         </div>
 
-        <!-- Col 4: Real-time Events -->
+        <!-- Col 4: Reasoning (Thoughts) -->
         <div class="card">
-          <h2>📡 事件流</h2>
+          <h2>💭 推理鏈路</h2>
+          <div class="scroll-area" id="thoughtList"></div>
+        </div>
+
+        <!-- Col 5: Events -->
+        <div class="card">
+          <h2>📡 即時事件</h2>
           <div class="scroll-area" id="eventList"></div>
         </div>
       </div>
@@ -127,45 +127,50 @@
     <script>
       async function update() {
         try {
-          // Blackboard
           const bbRes = await fetch('/.data/blackboard_state.json');
           if (bbRes.ok) {
             const bb = await bbRes.json();
+            renderEnv(bb.facts || {});
             renderFacts(bb.facts || {});
             renderThoughts(bb.thoughts || []);
           }
-
-          // Goals
           const gRes = await fetch('/.data/goals.json');
           if (gRes.ok) renderGoals((await gRes.json()).goals || {});
-
-          // Logs
           const lRes = await fetch('/.data/mcp_logs.json');
           if (lRes.ok) renderEvents(await lRes.json());
-
         } catch (e) { console.error(e); }
+      }
+
+      function renderEnv(facts) {
+        const container = document.getElementById('envStatus');
+        let html = '';
+        if (facts.latest_git_commit) {
+          const git = facts.latest_git_commit.value;
+          html += `<div class="item"><span class="env-badge">GIT COMMIT</span><br/><b>${git.subject}</b><br/><small style="color:var(--text-muted)">${git.hash.substring(0,8)}</small></div>`;
+        }
+        if (facts.last_test_result) {
+          const test = facts.last_test_result.value;
+          html += `<div class="item"><span class="env-badge" style="background:var(--success)">CI TEST</span><br/>
+            狀態: <span class="${test.success ? 'test-success' : 'test-fail'}">${test.success ? '通過' : '失敗'}</span><br/>
+            案例: ${test.passed || 0} 通過 / ${test.failed || 0} 失敗<br/>
+            覆蓋率: ${test.coverage || '--'}</div>`;
+        }
+        if (html) container.innerHTML = html;
       }
 
       function renderFacts(facts) {
         const container = document.getElementById('factList');
-        const entries = Object.entries(facts);
-        if (entries.length === 0) return;
-        container.innerHTML = entries.map(([key, f]) => `
-          <div class="item">
-            <span class="fact-badge">${f.source}</span><br/>
-            <span class="fact-key">${key}</span>: ${JSON.stringify(f.value)}
-          </div>
+        container.innerHTML = Object.entries(facts).map(([key, f]) => `
+          <div class="item"><span style="color:var(--fact); font-weight:bold">${key}</span>: ${JSON.stringify(f.value)}</div>
         `).join('');
       }
 
       function renderThoughts(thoughts) {
         const container = document.getElementById('thoughtList');
-        if (thoughts.length === 0) return;
-        container.innerHTML = thoughts.reverse().slice(0, 20).map(t => `
+        container.innerHTML = thoughts.reverse().slice(0, 15).map(t => `
           <div class="item thought-item">
             <div class="thought-agent">${t.agent.toUpperCase()}</div>
-            <div style="font-size: 12px; margin-top:4px">${t.content}</div>
-            <div style="font-size: 10px; color:var(--text-muted); margin-top:4px">${new Date(t.timestamp).toLocaleTimeString()}</div>
+            <div style="font-size: 12px; margin-top:2px">${t.content}</div>
           </div>
         `).join('');
       }
@@ -173,7 +178,7 @@
       function renderGoals(goals) {
         document.getElementById('goalList').innerHTML = Object.values(goals).map(g => `
           <div class="item" style="border:none">
-            <div style="font-size:12px">${g.title.substring(0, 25)}...</div>
+            <div style="font-size:11px">${g.title.substring(0, 25)}...</div>
             <div class="progress-container"><div class="progress-bar" style="width:${g.progress}%"></div></div>
           </div>
         `).join('');
@@ -181,8 +186,8 @@
 
       function renderEvents(logs) {
         document.getElementById('eventList').innerHTML = logs.slice(0, 15).map(l => `
-          <div class="timeline-item" style="font-size:11px">
-            <b style="color:var(--primary)">${l.routed_to}</b>: ${l.intent.substring(0, 30)}...
+          <div class="timeline-item" style="font-size:10px">
+            <b style="color:var(--primary)">${l.routed_to}</b>: ${l.intent.substring(0, 25)}...
           </div>
         `).join('');
       }
