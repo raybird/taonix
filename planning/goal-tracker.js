@@ -1,7 +1,45 @@
-class GoalTracker {
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DATA_PATH = path.resolve(__dirname, "..", ".data", "goals.json");
+
+export class GoalTracker {
   constructor() {
     this.goals = new Map();
     this.subGoals = new Map();
+    this.load();
+  }
+
+  load() {
+    try {
+      if (fs.existsSync(DATA_PATH)) {
+        const data = JSON.parse(fs.readFileSync(DATA_PATH, "utf-8"));
+        Object.entries(data.goals || {}).forEach(([id, goal]) =>
+          this.goals.set(id, goal),
+        );
+        Object.entries(data.subGoals || {}).forEach(([id, subGoal]) =>
+          this.subGoals.set(id, subGoal),
+        );
+      }
+    } catch (e) {
+      console.warn("[GoalTracker] 無法載入數據:", e.message);
+    }
+  }
+
+  save() {
+    try {
+      const dir = path.dirname(DATA_PATH);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      const data = {
+        goals: Object.fromEntries(this.goals),
+        subGoals: Object.fromEntries(this.subGoals),
+      };
+      fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2));
+    } catch (e) {
+      console.warn("[GoalTracker] 無法儲存數據:", e.message);
+    }
   }
 
   createGoal(goalId, title, description, deadline = null) {
@@ -16,6 +54,7 @@ class GoalTracker {
       subGoals: [],
     };
     this.goals.set(goalId, goal);
+    this.save();
     return goal;
   }
 
@@ -34,24 +73,26 @@ class GoalTracker {
 
     goal.subGoals.push(subGoalId);
     this.subGoals.set(subGoalId, subGoal);
+    this.save();
 
     return subGoal;
   }
 
   updateProgress(id, progress) {
+    let result = null;
     if (this.goals.has(id)) {
       const goal = this.goals.get(id);
       goal.progress = Math.min(100, Math.max(0, progress));
       goal.status = progress >= 100 ? "completed" : "in_progress";
-      return goal;
-    }
-    if (this.subGoals.has(id)) {
+      result = goal;
+    } else if (this.subGoals.has(id)) {
       const subGoal = this.subGoals.get(id);
       subGoal.progress = Math.min(100, Math.max(0, progress));
       subGoal.status = progress >= 100 ? "completed" : "in_progress";
-      return subGoal;
+      result = subGoal;
     }
-    return null;
+    if (result) this.save();
+    return result;
   }
 
   getGoal(goalId) {

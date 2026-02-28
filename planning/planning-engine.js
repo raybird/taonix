@@ -1,4 +1,4 @@
-class PlanningEngine {
+export class PlanningEngine {
   constructor() {
     this.goals = new Map();
     this.subGoals = new Map();

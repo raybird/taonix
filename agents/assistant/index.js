@@ -5,6 +5,8 @@ import { searchMemory } from "./lib/memory-helper.js";
 import { analyzeRequest } from "./lib/analyzer.js";
 import { evolutionEngine } from "../../memory/evolution-engine.js";
 import { conversationSummarizer } from "../../memory/conversation-summarizer.js";
+import { contextGuard } from "./lib/context-guard.js";
+import { proactiveWorkflow } from "./lib/proactive-workflow.js";
 
 const args = process.argv.slice(2);
 
@@ -19,6 +21,8 @@ Taonix Assistant Agent
   assistant feedback <rating> <agent> - 記錄反饋 (1-5)
   assistant evolution                  - 查看進化狀態
   assistant summarize                  - 對話摘要統計
+  assistant guard <sessionId> [threshold] - 檢查並摘要上下文
+  assistant cycle [context]            - 執行主動工作流分析
   `);
   process.exit(0);
 }
@@ -26,6 +30,53 @@ Taonix Assistant Agent
 const command = args[0];
 
 switch (command) {
+  case "cycle":
+    const ctx = args.slice(1).join(" ") || "General background check";
+    const tasks = await proactiveWorkflow.runCycle({ context: ctx });
+    if (tasks.length > 0) {
+      console.log(`✅ 已生成 ${tasks.length} 個主動建議任務。`);
+    } else {
+      console.log("ℹ️ 目前無主動建議任務。");
+    }
+    break;
+
+  case "guard":
+    const sessionId = args[1];
+    const threshold = parseInt(args[2]);
+    if (!sessionId) {
+      console.error("用法: assistant guard <sessionId> [threshold]");
+      process.exit(1);
+    }
+    if (!isNaN(threshold)) contextGuard.threshold = threshold;
+
+    // 模擬從 memory-helper 獲取歷史
+    try {
+      const { contextManager } = await import("../../memory/learning.js");
+      const history = contextManager.getMessages(sessionId);
+      if (history.length === 0) {
+        console.log(`[ContextGuard] 會話 ${sessionId} 無歷史紀錄`);
+        break;
+      }
+      const summary = await contextGuard.checkAndSummarize(sessionId, history);
+      if (summary) {
+        console.log("✅ 上下文摘要完成:");
+        console.log(summary.content);
+        // 記錄摘要到 memory
+        const { learning } = await import("../../memory/learning.js");
+        await learning.learn({
+          input: `Auto-summary for session ${sessionId}`,
+          skill: "context-guard",
+          result: summary.content,
+          sessionId: sessionId,
+        });
+      } else {
+        console.log("[ContextGuard] 未達摘要閾值或無需摘要");
+      }
+    } catch (e) {
+      console.error(`[ContextGuard] 錯誤: ${e.message}`);
+    }
+    break;
+
   case "schedule":
     if (args.length < 3) {
       console.error("用法: assistant schedule <task> <cron>");

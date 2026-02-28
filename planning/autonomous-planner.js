@@ -34,7 +34,11 @@ export class AutonomousPlanner {
       lowerInput.includes("目標") ||
       lowerInput.includes("goal") ||
       lowerInput.includes("規劃") ||
-      lowerInput.includes("计划")
+      lowerInput.includes("计划") ||
+      lowerInput.includes("進化") ||
+      lowerInput.includes("演進") ||
+      lowerInput.includes("開發") ||
+      lowerInput.includes("能力")
     ) {
       return { type: "goal", original: input };
     }

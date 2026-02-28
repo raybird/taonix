@@ -2,6 +2,38 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v3.8.0] - 2026-02-28
+
+### Added
+- **跨 Agent 知識鏈結 (Knowledge Bridge)** - 實現 Agent 間的資訊共享
+  - MCP Server (v1.8.0) 支援知識注入
+  - 統一的知識緩存機制
+- **自發式工作流 (Proactive Workflow)** - 助理主動偵測環境並提出建議
+- **Context Guard** - 對話長度自動監控與摘要，防止能力退化
+- **持久化增強** - 規劃目標跨 Session 儲存
+
+## [v3.7.0] - 2026-02-28
+
+### Added
+- **AI Caller 模組** - 讓內部 Agent 可調用外部 AI 增強能力
+  - `ai-engine/lib/ai-caller.js`
+  - 支援 OpenAI, Anthropic, Ollama CLI
+  - 實作雙層 Router 架構的執行層
+
+## [v3.6.0] - 2026-02-28
+
+### Added
+- **雙層 Router 架構** - 統一 MCP 入口
+  - 實作 `router_route` 工具作為唯一 MCP 入口
+  - 根據自然語言意圖自動分發到對應 Agent (Explorer, Coder, Oracle, etc.)
+  - 簡化 MCP Server 工具數量，提升調用成功率
+
+## [v3.5.0] - 2026-02-28
+
+### Added
+- **靈魂文件 (SOUL.md)** - 定義 Taonix 的核心使命與原則
+- **身分轉型** - Git 提交身分設定為 `TeleNexus Orchestrator`
+
 ## [v3.4.0] - 2026-02-28
 
 ### Added

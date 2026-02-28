@@ -1,4 +1,4 @@
-class ProactiveSuggestionEngine {
+export class ProactiveSuggestionEngine {
   constructor() {
     this.suggestions = [];
     this.history = [];

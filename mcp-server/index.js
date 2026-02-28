@@ -4,6 +4,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
+import { knowledgeBridge } from "../agents/assistant/lib/knowledge-bridge.js";
 
 const tools = [
   {
@@ -37,7 +38,7 @@ const tools = [
 class TaonixServer {
   constructor() {
     this.server = new Server(
-      { name: "taonix-mcp-server", version: "1.7.0" },
+      { name: "taonix-mcp-server", version: "1.8.0" },
       { capabilities: { tools: {} } },
     );
 
@@ -116,12 +117,27 @@ class TaonixServer {
                 targetTool = "explorer";
               }
             }
+            // 知識注入 (Knowledge Injection)
+            const relatedKnowledge = [];
+            try {
+              const allKnowledgeKeys = knowledgeBridge.list();
+              for (const key of allKnowledgeKeys) {
+                if (intent.includes(key.split(":")[1]) || key.toLowerCase().includes(targetTool)) {
+                  const data = knowledgeBridge.get(key);
+                  if (data) relatedKnowledge.push({ key, ...data });
+                }
+              }
+            } catch (e) {
+              console.error("[KnowledgeInjection] 錯誤:", e.message);
+            }
+
             result = {
               intent: args.intent,
               routed_to: targetTool,
               action: action,
               message: `已根據意圖 "${args.intent}" 路由到 ${targetTool} Agent`,
-              note: "Router 已將請求分發。實際執行需要調用對應的內部 Agent CLI。",
+              knowledge_injection: relatedKnowledge,
+              note: "Router 已將請求分發並注入相關知識。實際執行需要調用對應的內部 Agent CLI。",
             };
             break;
         }

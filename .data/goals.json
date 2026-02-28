@@ -1,0 +1,44 @@
+{
+  "goals": {
+    "goal_1772275356577": {
+      "id": "goal_1772275356577",
+      "title": "持續進化 Taonix，讓 TeleNexus 擁有強大的 AI 助理能力（包含自發式工作流、Context Guard、跨 Agent 知識共享）",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "in_progress",
+      "progress": 90,
+      "created": "2026-02-28T10:42:36.577Z",
+      "deadline": "2026-03-03T10:42:36.577Z",
+      "subGoals": [
+        "sub_goal_1772275356577_0",
+        "sub_goal_1772275356577_1",
+        "sub_goal_1772275356577_2"
+      ]
+    }
+  },
+  "subGoals": {
+    "sub_goal_1772275356577_0": {
+      "id": "sub_goal_1772275356577_0",
+      "title": "第一步",
+      "description": "開始行動",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T10:42:36.577Z"
+    },
+    "sub_goal_1772275356577_1": {
+      "id": "sub_goal_1772275356577_1",
+      "title": "第二步",
+      "description": "持續推進",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T10:42:36.577Z"
+    },
+    "sub_goal_1772275356577_2": {
+      "id": "sub_goal_1772275356577_2",
+      "title": "第三步",
+      "description": "完成目標",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T10:42:36.578Z"
+    }
+  }
+}

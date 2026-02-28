@@ -47,7 +47,7 @@ async function main() {
     case "progress":
       const progressGoalId = args[1];
       const progress = parseInt(args[2]);
-      if (!goalId || isNaN(progress)) {
+      if (!progressGoalId || isNaN(progress)) {
         console.log("用法: taonix-planning progress <目標ID> <進度百分比>");
         process.exit(1);
       }
