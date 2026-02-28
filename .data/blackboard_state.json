@@ -1,0 +1,14 @@
+{
+  "facts": {
+    "last_test_result": {
+      "value": {
+        "success": true
+      },
+      "source": "tester",
+      "updated": "2026-02-28T15:03:24.650Z"
+    }
+  },
+  "thoughts": [],
+  "hypotheses": [],
+  "activeTask": null
+}

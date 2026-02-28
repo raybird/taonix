@@ -2,6 +2,14 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v4.3.0-alpha] - 2026-02-28
+
+### Added
+- **環境閉環強化 (Environment Loop)** - 建立 Agent 與真實環境的連動
+  - 實作 `GitObserver` 監控工具，自動偵測倉庫變動並廣播事件
+  - 實作 `Reactive Tester`，自動對代碼變動執行驗證並回報黑板
+  - 通過端到端鏈路驗證：環境變動 -> 事件廣播 -> 自動回應 -> 心智更新
+
 ## [v4.2.0] - 2026-02-28
 
 ### Added

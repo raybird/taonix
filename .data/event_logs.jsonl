@@ -2,3 +2,7 @@
 {"id":"evt_1772286400663_2wlbg","timestamp":"2026-02-28T13:46:40.663Z","name":"TASK_STARTED","source":"coder","payload":{"taskId":"test_evt_456","originalEventId":"evt_1772286400662_jxgfu"}}
 {"id":"evt_1772286400662_jxgfu","timestamp":"2026-02-28T13:46:40.662Z","name":"TASK_ASSIGNED","source":"assistant","payload":{"taskId":"test_evt_456","targetAgent":"coder","task":"驗證單進程事件鏈"}}
 {"id":"evt_1772286400664_zuign","timestamp":"2026-02-28T13:46:40.664Z","name":"TASK_COMPLETED","source":"coder","payload":{"taskId":"test_evt_456","result":{"status":"success","mock":true}}}
+{"id":"evt_1772290995809_348db","timestamp":"2026-02-28T15:03:15.809Z","name":"GIT_COMMIT_DETECTED","source":"git-observer","payload":{"hash":"test_hash_1772290995809","subject":"feat: 新增環境感知功能","author":"TeleNexus"}}
+{"id":"evt_1772291004650_0cnve","timestamp":"2026-02-28T15:03:24.650Z","name":"BLACKBOARD_UPDATED","source":"blackboard","payload":{"summary":"State snapshot saved"}}
+{"id":"evt_1772291004650_5g91e","timestamp":"2026-02-28T15:03:24.650Z","name":"FACT_DISCOVERED","source":"tester","payload":{"key":"last_test_result","value":{"success":true}}}
+{"id":"evt_1772291004649_idv1l","timestamp":"2026-02-28T15:03:24.649Z","name":"GIT_COMMIT_DETECTED","source":"git-observer","payload":{"hash":"test_hash_final","subject":"Final verify","author":"TeleNexus"}}
