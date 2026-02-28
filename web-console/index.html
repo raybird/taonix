@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taonix 控制台 v6.0.0 - Collective Intelligence</title>
+    <title>Taonix 控制台 v9.0.0 - Orchestration Edition</title>
     <style>
       :root {
         --primary: #3b82f6;
@@ -15,7 +15,7 @@
         --success: #22c55e;
         --warning: #f59e0b;
         --danger: #ef4444;
-        --gold: #fbbf24;
+        --workflow: #818cf8;
       }
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
@@ -25,7 +25,7 @@
         min-height: 100vh;
         overflow-x: hidden;
       }
-      .container { max-width: 2600px; margin: 0 auto; padding: 10px; }
+      .container { max-width: 2800px; margin: 0 auto; padding: 10px; }
       header {
         display: flex;
         justify-content: space-between;
@@ -39,74 +39,85 @@
       
       .main-grid {
         display: grid;
-        grid-template-columns: 200px 250px 1.2fr 1fr 1fr 1fr 1fr 220px;
-        gap: 8px;
+        grid-template-columns: 180px 220px 1fr 1fr 1fr 1fr 1fr 1fr 200px;
+        gap: 6px;
       }
       
       .card {
         background: var(--card-bg);
         border-radius: 8px;
-        padding: 10px;
+        padding: 8px;
         border: 1px solid var(--border);
         display: flex;
         flex-direction: column;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
-      .card h2 { font-size: 9px; margin-bottom: 8px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+      .card h2 { font-size: 9px; margin-bottom: 6px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
       
-      .scroll-area { flex: 1; overflow-y: auto; max-height: 800px; padding-right: 3px; }
-      .item { padding: 5px; border-bottom: 1px solid var(--border); font-size: 10px; line-height: 1.3; }
+      .scroll-area { flex: 1; overflow-y: auto; max-height: 850px; padding-right: 2px; }
+      .item { padding: 4px; border-bottom: 1px solid var(--border); font-size: 9px; line-height: 1.2; }
       
-      /* Leaderboard UI */
-      .rank-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; background: rgba(59, 130, 246, 0.05); border-radius: 4px; margin-bottom: 4px; }
-      .rank-name { font-weight: bold; color: var(--gold); }
-      .rank-score { font-size: 14px; font-weight: bold; }
+      /* Workflow UI (NEW v9.0.0) */
+      .wf-item { border-left: 3px solid var(--workflow); background: rgba(129, 140, 248, 0.05); padding: 6px; margin-bottom: 6px; }
+      .wf-step { display: flex; align-items: center; gap: 4px; margin-top: 4px; }
+      .wf-dot { width: 6px; height: 6px; border-radius: 50%; background: #4b5563; }
+      .wf-dot.done { background: var(--success); }
+      .wf-dot.active { background: var(--warning); animation: pulse 1.5s infinite; }
+      @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
       .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--success); margin-right: 3px; }
+      .progress-container { height: 3px; background: #334155; border-radius: 2px; margin: 3px 0; }
+      .progress-bar { height: 100%; background: var(--primary); border-radius: 2px; transition: width 0.5s; }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>🚀 Taonix <span class="badge">v6.0.0</span></h1>
-        <div><span class="status-dot"></span>集體演進與學習中</div>
+        <h1>🚀 Taonix <span class="badge">v9.0.0</span></h1>
+        <div><span class="status-dot"></span>自動編排運行中</div>
       </header>
 
       <div class="main-grid">
         <!-- Col 1: Registry -->
-        <div class="card"><h2>👥 註冊中心</h2><div class="scroll-area" id="registryList"></div></div>
+        <div class="card"><h2>👥 Registry</h2><div class="scroll-area" id="registryList"></div></div>
 
-        <!-- Col 2: Leaderboard (NEW) -->
+        <!-- Col 2: Leaderboard -->
+        <div class="card"><h2>🏆 Leaderboard</h2><div class="scroll-area" id="rankList"></div></div>
+
+        <!-- Col 3: Workflows (NEW v9.0.0) -->
         <div class="card">
-          <h2>🏆 Agent 英雄榜</h2>
-          <div class="scroll-area" id="rankList">
-            <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:10px">累積數據中...</div>
+          <h2>⛓️ 長程工作流</h2>
+          <div class="scroll-area" id="workflowList">
+            <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:9px">無活動工作流</div>
           </div>
         </div>
 
-        <!-- Col 3: Squads -->
-        <div class="card"><h2>🛡️ 活躍小隊</h2><div class="scroll-area" id="squadList"></div></div>
+        <!-- Col 4: Squads -->
+        <div class="card"><h2>🛡️ Squads</h2><div class="scroll-area" id="squadList"></div></div>
 
-        <!-- Col 4: Consensus -->
-        <div class="card"><h2>🤝 任務共識</h2><div class="scroll-area" id="consensusList"></div></div>
+        <!-- Col 5: Consensus -->
+        <div class="card"><h2>🤝 Consensus</h2><div class="scroll-area" id="consensusList"></div></div>
 
-        <!-- Col 5: Security -->
-        <div class="card"><h2>🛡️ 安全審計</h2><div class="scroll-area" id="auditList"></div></div>
+        <!-- Col 6: Security -->
+        <div class="card"><h2>🛡️ Security</h2><div class="scroll-area" id="auditList"></div></div>
 
-        <!-- Col 6: Arbitrator -->
-        <div class="card"><h2>⚖️ 仲裁決策</h2><div class="scroll-area" id="decisionList"></div></div>
+        <!-- Col 7: Arbitrator -->
+        <div class="card"><h2>⚖️ Decision</h2><div class="scroll-area" id="decisionList"></div></div>
 
-        <!-- Col 7: Blackboard -->
-        <div class="card"><h2>🧠 推理鏈路</h2><div class="scroll-area" id="thoughtList"></div></div>
+        <!-- Col 8: Blackboard -->
+        <div class="card"><h2>🧠 Blackboard</h2><div class="scroll-area" id="thoughtList"></div></div>
 
-        <!-- Col 8: Events -->
-        <div class="card"><h2>📡 事件流</h2><div class="scroll-area" id="eventList"></div></div>
+        <!-- Col 9: Events -->
+        <div class="card"><h2>📡 Events</h2><div class="scroll-area" id="eventList"></div></div>
       </div>
     </div>
 
     <script>
       async function update() {
         try {
+          const taskRes = await fetch('/.data/task_states.json');
+          if (taskRes.ok) renderWorkflows(await taskRes.json());
+
           const expRes = await fetch('/.data/experience_base.json');
           if (expRes.ok) renderLeaderboard(await expRes.json());
 
@@ -130,42 +141,50 @@
         } catch (e) { console.error(e); }
       }
 
-      function renderLeaderboard(data) {
-        const stats = data.agentStats || {};
-        const sorted = Object.entries(stats).sort((a,b) => b[1].avgScore - a[1].avgScore);
-        document.getElementById('rankList').innerHTML = sorted.map(([name, s]) => `
-          <div class="rank-item">
-            <div>
-              <span class="rank-name">${name.toUpperCase()}</span><br/>
-              <small>成功率: ${((s.successCount/s.totalTasks)*100).toFixed(0)}%</small>
-            </div>
-            <div class="rank-score">${s.avgScore.toFixed(1)}</div>
+      function renderWorkflows(tasks) {
+        const container = document.getElementById('workflowList');
+        container.innerHTML = Object.values(tasks).reverse().slice(0, 10).map(t => `
+          <div class="wf-item">
+            <b>ID: ${t.id.split('_')[1] || t.id}</b> <small>(${t.status})</small>
+            ${t.steps.map((s, i) => `
+              <div class="wf-step">
+                <div class="wf-dot ${s.status === 'completed' ? 'done' : (i === t.currentStep ? 'active' : '')}"></div>
+                <small>${s.agent}: ${s.description.substring(0,15)}..</small>
+              </div>
+            `).join('')}
           </div>
+        `).join('');
+      }
+
+      function renderLeaderboard(data) {
+        const sorted = Object.entries(data.agentStats || {}).sort((a,b) => b[1].avgScore - a[1].avgScore);
+        document.getElementById('rankList').innerHTML = sorted.map(([name, s]) => `
+          <div class="item"><b>${name.toUpperCase()}</b>: ${s.avgScore.toFixed(1)} <small>(${((s.successCount/s.totalTasks)*100).toFixed(0)}%)</small></div>
         `).join('');
       }
 
       function renderRegistry(agents) {
         document.getElementById('registryList').innerHTML = Object.entries(agents).map(([name, meta]) => `
-          <div class="item"><b>${name}</b><br/><small>${meta.capabilities.slice(0,2).join(',')}..</small></div>
+          <div class="item"><b>${name}</b></div>
         `).join('');
       }
 
       function renderSquads(facts) {
         const squadFacts = Object.entries(facts).filter(([k]) => k.startsWith('active_squad_'));
         document.getElementById('squadList').innerHTML = squadFacts.map(([_, f]) => `
-          <div class="item" style="border-left:2px solid var(--squad)">小隊: ${f.value.squadId.substring(6)}<br/>${f.value.members.join(',')}</div>
+          <div class="item">S:${f.value.squadId.substring(6)}<br/>${f.value.members.slice(0,2)}..</div>
         `).join('');
       }
 
       function renderConsensus(facts) {
         const proposals = Object.entries(facts).filter(([k]) => k.startsWith('proposal_'));
         document.getElementById('consensusList').innerHTML = proposals.map(([_, f]) => `
-          <div class="item">提案: ${f.value.id.substring(5)}<br/>狀態: ${f.value.status}</div>
+          <div class="item">${f.value.id.substring(5)}: ${f.value.status}</div>
         `).join('');
       }
 
       function renderAudits(text) {
-        const lines = text.trim().split('\n').reverse().slice(0, 15);
+        const lines = text.trim().split('\n').reverse().slice(0, 10);
         document.getElementById('auditList').innerHTML = lines.map(line => {
           const entry = JSON.parse(line);
           return `<div class="item">${entry.skillName}: ${entry.status}</div>`;
@@ -174,12 +193,12 @@
 
       function renderDecisions(facts) {
         let html = '';
-        if (facts.pending_decision) html += `<div class="item" style="color:var(--danger)">⚠️ 待決策: ${facts.pending_decision.value.issue.substring(0,20)}..</div>`;
+        if (facts.pending_decision) html += `<div class="item" style="color:var(--danger)">⚠️ ${facts.pending_decision.value.issue.substring(0,15)}..</div>`;
         document.getElementById('decisionList').innerHTML = html;
       }
 
       function renderThoughts(thoughts) {
-        document.getElementById('thoughtList').innerHTML = thoughts.reverse().slice(0, 15).map(t=>`<div class="item"><b>${t.agent}</b>: ${t.content.substring(0,30)}..</div>`).join('');
+        document.getElementById('thoughtList').innerHTML = thoughts.reverse().slice(0, 15).map(t=>`<div class="item"><b>${t.agent}</b>: ${t.content.substring(0,25)}..</div>`).join('');
       }
 
       function renderEvents(logs) {
