@@ -61,6 +61,22 @@
         "sub_goal_1772286019476_3",
         "sub_goal_1772286019476_4"
       ]
+    },
+    "goal_1772288116094": {
+      "id": "goal_1772288116094",
+      "title": "開發 Taonix v4.2.0：1. 實作黑板模式 (Blackboard Pattern) 記憶中樞 2. 支援儲存與檢索推理鏈路 (Reasoning Chains) 3. 整合向量檢索原型 4. 更新 Web 控制台以顯示全域狀態機",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "in_progress",
+      "progress": 80,
+      "created": "2026-02-28T14:15:16.095Z",
+      "deadline": "2026-03-03T14:15:16.095Z",
+      "subGoals": [
+        "sub_goal_1772288116094_0",
+        "sub_goal_1772288116094_1",
+        "sub_goal_1772288116094_2",
+        "sub_goal_1772288116094_3",
+        "sub_goal_1772288116094_4"
+      ]
     }
   },
   "subGoals": {
@@ -207,6 +223,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-02-28T13:40:19.478Z"
+    },
+    "sub_goal_1772288116094_0": {
+      "id": "sub_goal_1772288116094_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T14:15:16.098Z"
+    },
+    "sub_goal_1772288116094_1": {
+      "id": "sub_goal_1772288116094_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T14:15:16.099Z"
+    },
+    "sub_goal_1772288116094_2": {
+      "id": "sub_goal_1772288116094_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T14:15:16.100Z"
+    },
+    "sub_goal_1772288116094_3": {
+      "id": "sub_goal_1772288116094_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T14:15:16.101Z"
+    },
+    "sub_goal_1772288116094_4": {
+      "id": "sub_goal_1772288116094_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T14:15:16.102Z"
     }
   }
 }

@@ -7,6 +7,7 @@ import {
 import { knowledgeBridge } from "../agents/assistant/lib/knowledge-bridge.js";
 import { AICaller } from "../ai-engine/lib/ai-caller.js";
 import { collaborationLogger } from "../agents/assistant/lib/collaboration-logger.js";
+import { blackboard } from "../memory/blackboard.js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -156,6 +157,7 @@ class TaonixServer {
 
             // 3. 知識注入 (Knowledge Injection)
             const relatedKnowledge = [];
+            // 注入舊版知識橋接器資料
             try {
               const allKnowledgeKeys = knowledgeBridge.list();
               for (const key of allKnowledgeKeys) {
@@ -167,6 +169,14 @@ class TaonixServer {
             } catch (e) {
               console.error("[KnowledgeInjection] 錯誤:", e.message);
             }
+
+            // 注入 v4.2.0 黑板推理鏈路
+            const blackboardSummary = blackboard.getSummaryForContext();
+            relatedKnowledge.push({
+              key: "shared_blackboard_context",
+              type: "reasoning_chain",
+              content: blackboardSummary
+            });
 
             result = {
               intent: args.intent,

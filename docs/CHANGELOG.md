@@ -2,6 +2,17 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v4.2.0] - 2026-02-28
+
+### Added
+- **黑板模式 (Blackboard Pattern)** - 全域心智狀態機
+  - 實作 `Blackboard` 記憶中樞，支援事實 (Facts) 與推理鏈路 (Thoughts) 儲存
+  - 實作簡易語義檢索原型，精準尋找相關思考紀錄
+- **推理注入 (Reasoning Injection)** - 強化 Agent 間的上下文感知
+  - MCP Server 支援在路由時自動注入黑板摘要
+  - Reactive Coder 支援在執行任務前後自動回報「思考痕跡」
+- **Web 控制台「黑板監視器」** - 視覺化呈現系統共識事實與推理流
+
 ## [v4.1.0] - 2026-02-28
 
 ### Added
