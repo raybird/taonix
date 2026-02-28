@@ -82,8 +82,8 @@
       "id": "goal_1772289950858",
       "title": "開發 Taonix v4.3.0：1. 實作 Git 感知器 (Git Observer) 2. 自動訂閱 Git Push 事件並觸發 Tester 3. 實作真實環境腳本執行器 4. 整合 Web 控制台顯示 Repo 狀態",
       "description": "由 AutonomousPlanner 自動建立",
-      "status": "in_progress",
-      "progress": 80,
+      "status": "completed",
+      "progress": 100,
       "created": "2026-02-28T14:45:50.858Z",
       "deadline": "2026-03-03T14:45:50.858Z",
       "subGoals": [
@@ -92,6 +92,22 @@
         "sub_goal_1772289950858_2",
         "sub_goal_1772289950858_3",
         "sub_goal_1772289950858_4"
+      ]
+    },
+    "goal_1772293523001": {
+      "id": "goal_1772293523001",
+      "title": "開發 Taonix v4.4.0：1. 實作自動仲裁器 (Arbitrator) 2. 支援 TASK_ERROR 自動根因分析 3. 實作使用者介入請求機制 (Human-in-the-loop) 4. 整合 Web 控制台顯示決策衝突",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "completed",
+      "progress": 100,
+      "created": "2026-02-28T15:45:23.001Z",
+      "deadline": "2026-03-03T15:45:23.001Z",
+      "subGoals": [
+        "sub_goal_1772293523001_0",
+        "sub_goal_1772293523001_1",
+        "sub_goal_1772293523001_2",
+        "sub_goal_1772293523001_3",
+        "sub_goal_1772293523001_4"
       ]
     }
   },
@@ -319,6 +335,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-02-28T14:45:50.861Z"
+    },
+    "sub_goal_1772293523001_0": {
+      "id": "sub_goal_1772293523001_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T15:45:23.002Z"
+    },
+    "sub_goal_1772293523001_1": {
+      "id": "sub_goal_1772293523001_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T15:45:23.002Z"
+    },
+    "sub_goal_1772293523001_2": {
+      "id": "sub_goal_1772293523001_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T15:45:23.002Z"
+    },
+    "sub_goal_1772293523001_3": {
+      "id": "sub_goal_1772293523001_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T15:45:23.003Z"
+    },
+    "sub_goal_1772293523001_4": {
+      "id": "sub_goal_1772293523001_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T15:45:23.004Z"
     }
   }
 }

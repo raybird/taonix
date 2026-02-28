@@ -6,9 +6,23 @@
       },
       "source": "tester",
       "updated": "2026-02-28T15:03:24.650Z"
+    },
+    "pending_decision": {
+      "value": {
+        "eventId": "evt_1772295332850_bp8h3",
+        "issue": "手動決策測試"
+      },
+      "source": "arbitrator",
+      "updated": "2026-02-28T16:15:32.851Z"
     }
   },
-  "thoughts": [],
+  "thoughts": [
+    {
+      "timestamp": "2026-02-28T16:15:32.849Z",
+      "agent": "arbitrator",
+      "content": "偵測到 coder 在執行任務 err_1 時失敗。錯誤原因: FS error。啟動根因分析..."
+    }
+  ],
   "hypotheses": [],
   "activeTask": null
 }

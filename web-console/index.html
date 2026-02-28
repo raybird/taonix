@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taonix 控制台 v4.3.0 - Environment Loop</title>
+    <title>Taonix 控制台 v4.4.0 - Arbitrator Edition</title>
     <style>
       :root {
         --primary: #3b82f6;
@@ -18,6 +18,7 @@
         --thought: #fbbf24;
         --fact: #8b5cf6;
         --git: #f43f5e;
+        --decision: #ec4899;
       }
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
@@ -27,67 +28,71 @@
         min-height: 100vh;
         overflow-x: hidden;
       }
-      .container { max-width: 1800px; margin: 0 auto; padding: 20px; }
+      .container { max-width: 1900px; margin: 0 auto; padding: 15px; }
       header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px 0;
+        padding: 15px 0;
         border-bottom: 1px solid var(--border);
-        margin-bottom: 20px;
+        margin-bottom: 15px;
       }
-      h1 { font-size: 24px; display: flex; align-items: center; gap: 10px; }
-      .badge { background: var(--primary); padding: 4px 12px; border-radius: 12px; font-size: 12px; }
+      h1 { font-size: 22px; display: flex; align-items: center; gap: 10px; }
+      .badge { background: var(--primary); padding: 4px 12px; border-radius: 12px; font-size: 11px; }
       
       .main-grid {
         display: grid;
-        grid-template-columns: 280px 1fr 1fr 1fr 320px;
-        gap: 15px;
+        grid-template-columns: 250px 1fr 1.2fr 1fr 1fr 280px;
+        gap: 12px;
       }
       
       .card {
         background: var(--card-bg);
-        border-radius: 12px;
-        padding: 15px;
+        border-radius: 10px;
+        padding: 12px;
         border: 1px solid var(--border);
         display: flex;
         flex-direction: column;
-        margin-bottom: 15px;
+        margin-bottom: 12px;
       }
-      .card h2 { font-size: 13px; margin-bottom: 15px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+      .card h2 { font-size: 12px; margin-bottom: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
       
-      .scroll-area { flex: 1; overflow-y: auto; max-height: 500px; padding-right: 5px; }
-      .item { padding: 10px; border-bottom: 1px solid var(--border); font-size: 13px; }
+      .scroll-area { flex: 1; overflow-y: auto; max-height: 600px; padding-right: 5px; }
+      .item { padding: 8px; border-bottom: 1px solid var(--border); font-size: 12px; line-height: 1.4; }
       
-      /* Environment UI */
-      .env-badge { font-size: 10px; background: var(--git); color: #fff; padding: 2px 6px; border-radius: 4px; margin-bottom: 5px; display: inline-block; }
-      .test-success { color: var(--success); font-weight: bold; }
-      .test-fail { color: var(--danger); font-weight: bold; }
+      /* Arbitrator UI */
+      .decision-item { border-left: 3px solid var(--decision); background: rgba(236, 72, 153, 0.05); padding: 10px; margin-bottom: 10px; }
+      .decision-title { font-weight: bold; color: var(--decision); margin-bottom: 4px; display: block; }
+      .btn-resolve { background: var(--primary); color: #fff; border: none; padding: 4px 8px; border-radius: 4px; font-size: 10px; cursor: pointer; margin-top: 5px; }
+
+      /* Environment & Facts */
+      .env-badge { font-size: 9px; background: var(--git); color: #fff; padding: 1px 5px; border-radius: 3px; margin-bottom: 4px; display: inline-block; }
+      .fact-key { color: var(--fact); font-weight: bold; }
       
       /* Thought UI */
-      .thought-item { border-left: 3px solid var(--thought); padding-left: 10px; margin-bottom: 10px; background: rgba(251, 191, 36, 0.05); }
-      .thought-agent { font-weight: bold; color: var(--thought); font-size: 11px; }
+      .thought-item { border-left: 2px solid var(--thought); padding-left: 8px; margin-bottom: 8px; background: rgba(251, 191, 36, 0.03); }
+      .thought-agent { font-weight: bold; color: var(--thought); font-size: 10px; }
       
-      .progress-container { height: 6px; background: #334155; border-radius: 3px; margin: 8px 0; }
-      .progress-bar { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.5s; }
+      .progress-container { height: 5px; background: #334155; border-radius: 2px; margin: 6px 0; }
+      .progress-bar { height: 100%; background: var(--primary); border-radius: 2px; transition: width 0.5s; }
 
-      .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--success); margin-right: 5px; }
+      .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--success); margin-right: 4px; }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>🚀 Taonix <span class="badge">v4.3.0</span></h1>
-        <div><span class="status-dot"></span>環境連動中</div>
+        <h1>🚀 Taonix <span class="badge">v4.4.0</span></h1>
+        <div><span class="status-dot"></span>仲裁系統監控中</div>
       </header>
 
       <div class="main-grid">
         <!-- Col 1: Team -->
         <div>
           <div class="card">
-            <h2>👥 專家 Agent</h2>
-            <div id="agentList" style="font-size: 12px;">
-              <div style="padding:4px">🧭 Explorer</div><div style="padding:4px">💻 Coder</div><div style="padding:4px">🔮 Oracle</div><div style="padding:4px">🧪 Tester</div><div style="padding:4px">🤖 Assistant</div>
+            <h2>👥 Agents</h2>
+            <div id="agentList" style="font-size: 11px;">
+              <div>🧭 Explorer</div><div>💻 Coder</div><div>🔮 Oracle</div><div>⚖️ Arbitrator</div>
             </div>
           </div>
           <div class="card">
@@ -96,29 +101,35 @@
           </div>
         </div>
 
-        <!-- Col 2: Environment (Git & Test) -->
+        <!-- Col 2: Decision & Arbitrator (NEW) -->
         <div class="card">
-          <h2>🌐 環境狀態 (Git & CI)</h2>
-          <div class="scroll-area" id="envStatus">
-            <div style="text-align:center; padding:20px; color:var(--text-muted)">監控 Repo 中...</div>
+          <h2>⚖️ 仲裁與衝突解決</h2>
+          <div class="scroll-area" id="decisionList">
+            <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:11px">無待處理決策</div>
           </div>
         </div>
 
-        <!-- Col 3: Blackboard (Facts) -->
+        <!-- Col 3: Environment -->
         <div class="card">
-          <h2>🧠 黑板 - 共識事實</h2>
+          <h2>🌐 環境 (Git & CI)</h2>
+          <div class="scroll-area" id="envStatus"></div>
+        </div>
+
+        <!-- Col 4: Blackboard -->
+        <div class="card">
+          <h2>🧠 黑板事實</h2>
           <div class="scroll-area" id="factList"></div>
         </div>
 
-        <!-- Col 4: Reasoning (Thoughts) -->
+        <!-- Col 5: Reasoning -->
         <div class="card">
           <h2>💭 推理鏈路</h2>
           <div class="scroll-area" id="thoughtList"></div>
         </div>
 
-        <!-- Col 5: Events -->
+        <!-- Col 6: Events -->
         <div class="card">
-          <h2>📡 即時事件</h2>
+          <h2>📡 事件</h2>
           <div class="scroll-area" id="eventList"></div>
         </div>
       </div>
@@ -130,6 +141,7 @@
           const bbRes = await fetch('/.data/blackboard_state.json');
           if (bbRes.ok) {
             const bb = await bbRes.json();
+            renderDecisions(bb.facts || {});
             renderEnv(bb.facts || {});
             renderFacts(bb.facts || {});
             renderThoughts(bb.thoughts || []);
@@ -141,36 +153,49 @@
         } catch (e) { console.error(e); }
       }
 
+      function renderDecisions(facts) {
+        const container = document.getElementById('decisionList');
+        let html = '';
+        if (facts.last_conflict_resolution) {
+          const res = facts.last_conflict_resolution.value;
+          html += `<div class="decision-item"><span class="decision-title">系統建議解決方案</span>任務 ${res.taskId} 失敗。<br/>狀態: ${res.status}</div>`;
+        }
+        if (facts.pending_decision) {
+          const dec = facts.pending_decision.value;
+          html += `<div class="decision-item" style="border-color:var(--warning); background:rgba(245,158,11,0.05)">
+            <span class="decision-title" style="color:var(--warning)">⚠️ 待處理決策 (Human-in-loop)</span>
+            ${dec.issue}
+            <button class="btn-resolve">立即處理</button>
+          </div>`;
+        }
+        if (html) container.innerHTML = html;
+      }
+
       function renderEnv(facts) {
         const container = document.getElementById('envStatus');
         let html = '';
         if (facts.latest_git_commit) {
           const git = facts.latest_git_commit.value;
-          html += `<div class="item"><span class="env-badge">GIT COMMIT</span><br/><b>${git.subject}</b><br/><small style="color:var(--text-muted)">${git.hash.substring(0,8)}</small></div>`;
+          html += `<div class="item"><span class="env-badge">GIT</span> <b>${git.subject}</b></div>`;
         }
         if (facts.last_test_result) {
           const test = facts.last_test_result.value;
-          html += `<div class="item"><span class="env-badge" style="background:var(--success)">CI TEST</span><br/>
-            狀態: <span class="${test.success ? 'test-success' : 'test-fail'}">${test.success ? '通過' : '失敗'}</span><br/>
-            案例: ${test.passed || 0} 通過 / ${test.failed || 0} 失敗<br/>
-            覆蓋率: ${test.coverage || '--'}</div>`;
+          html += `<div class="item"><span class="env-badge" style="background:var(--success)">TEST</span> ${test.success ? 'PASS' : 'FAIL'} (${test.passed}/${test.failed})</div>`;
         }
-        if (html) container.innerHTML = html;
+        container.innerHTML = html;
       }
 
       function renderFacts(facts) {
-        const container = document.getElementById('factList');
-        container.innerHTML = Object.entries(facts).map(([key, f]) => `
-          <div class="item"><span style="color:var(--fact); font-weight:bold">${key}</span>: ${JSON.stringify(f.value)}</div>
+        document.getElementById('factList').innerHTML = Object.entries(facts).map(([key, f]) => `
+          <div class="item"><span class="fact-key">${key}</span>: ${JSON.stringify(f.value)}</div>
         `).join('');
       }
 
       function renderThoughts(thoughts) {
-        const container = document.getElementById('thoughtList');
-        container.innerHTML = thoughts.reverse().slice(0, 15).map(t => `
+        document.getElementById('thoughtList').innerHTML = thoughts.reverse().slice(0, 15).map(t => `
           <div class="item thought-item">
             <div class="thought-agent">${t.agent.toUpperCase()}</div>
-            <div style="font-size: 12px; margin-top:2px">${t.content}</div>
+            ${t.content.substring(0, 80)}${t.content.length > 80 ? '...' : ''}
           </div>
         `).join('');
       }
@@ -178,7 +203,7 @@
       function renderGoals(goals) {
         document.getElementById('goalList').innerHTML = Object.values(goals).map(g => `
           <div class="item" style="border:none">
-            <div style="font-size:11px">${g.title.substring(0, 25)}...</div>
+            <div style="font-size:10px">${g.title.substring(0, 20)}...</div>
             <div class="progress-container"><div class="progress-bar" style="width:${g.progress}%"></div></div>
           </div>
         `).join('');
@@ -186,8 +211,8 @@
 
       function renderEvents(logs) {
         document.getElementById('eventList').innerHTML = logs.slice(0, 15).map(l => `
-          <div class="timeline-item" style="font-size:10px">
-            <b style="color:var(--primary)">${l.routed_to}</b>: ${l.intent.substring(0, 25)}...
+          <div class="item" style="font-size:10px">
+            <b style="color:var(--primary)">${l.routed_to}</b>: ${l.intent.substring(0, 20)}...
           </div>
         `).join('');
       }
