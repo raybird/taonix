@@ -2,6 +2,15 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v8.0.0] - 2026-03-01
+
+### Added
+- **元進化與動態能力生成 (Meta-Evolution & Dynamic Capability Generation)**
+  - 實作 `SkillArchitect` 技能建築師，支援根據自然語言需求自動生成、修復與安裝新技能
+  - 實作 `EvolutionManager` 進化管理器，建立自我演進的審計、版本管理與回滾機制
+  - 整合 `SkillEngine` 實作任務驅動的動態進化觸發，實現「即時學習」的能力閉環
+  - 強化代碼生成驗證鏈路，確保所有演進產物皆符合 Agentskills.io 安全規範
+
 ## [v7.0.0] - 2026-03-01
 
 ### Added

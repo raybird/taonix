@@ -2,6 +2,7 @@ import { loadSkills } from "./registry.js";
 import { matchSkill } from "./matcher.js";
 import { skillSandbox } from "./sandbox.js";
 import { policyManager } from "./policy-manager.js";
+import { skillArchitect } from "./skill-architect.js";
 
 export class SkillEngine {
   constructor() {
@@ -15,18 +16,31 @@ export class SkillEngine {
   }
 
   async findSkill(context) {
-    const matched = await matchSkill(context, this.skills);
+    let matched = await matchSkill(context, this.skills);
+    
+    // v8.0.0: 如果沒有匹配到技能，但需求描述清晰，則觸發自動生成
+    if (!matched && context.input && context.input.length > 5) {
+      console.log("[Skills] 未找到匹配技能，啟動元進化引擎...");
+      try {
+        const evolution = await skillArchitect.draftSkill(context.input);
+        if (evolution.success) {
+          // 重新載入新技能
+          this.skills = await loadSkills();
+          matched = this.skills.get(evolution.name);
+        }
+      } catch (e) {
+        console.warn("[Skills] 技能自動生成失敗:", e.message);
+      }
+    }
+    
     return matched;
   }
 
   async execute(skillName, context) {
     const skill = this.skills.get(skillName);
-    if (!skill) {
-      throw new Error(`技能不存在: ${skillName}`);
-    }
+    if (!skill) throw new Error(`技能不存在: ${skillName}`);
 
     let result;
-    // 如果技能包含原始腳本碼 (通常是外部載入的)，則使用沙盒執行
     if (skill.scriptCode) {
       const permissions = policyManager.getPermissions(skillName);
       result = await skillSandbox.run(skill.scriptCode, context, {
@@ -35,7 +49,6 @@ export class SkillEngine {
         allowNetwork: permissions.allowNetwork
       });
     } else {
-      // 否則使用原生 execute 邏輯 (內建技能)
       result = await skill.execute(context);
     }
 
@@ -49,10 +62,7 @@ export class SkillEngine {
     return result;
   }
 
-  getHistory() {
-    return this.history;
-  }
-
+  getHistory() { return this.history; }
   getSkills() {
     return Array.from(this.skills.entries()).map(([name, skill]) => ({
       name,
