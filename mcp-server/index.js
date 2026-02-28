@@ -5,6 +5,14 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { knowledgeBridge } from "../agents/assistant/lib/knowledge-bridge.js";
+import { AICaller } from "../ai-engine/lib/ai-caller.js";
+import { collaborationLogger } from "../agents/assistant/lib/collaboration-logger.js";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const LOG_PATH = path.resolve(__dirname, "..", ".data", "mcp_logs.json");
 
 const tools = [
   {
@@ -35,12 +43,30 @@ const tools = [
   },
 ];
 
+function logMCP(data) {
+  try {
+    let logs = [];
+    const dir = path.dirname(LOG_PATH);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    
+    if (fs.existsSync(LOG_PATH)) {
+      logs = JSON.parse(fs.readFileSync(LOG_PATH, "utf-8"));
+    }
+    logs.unshift({ timestamp: new Date().toISOString(), ...data });
+    fs.writeFileSync(LOG_PATH, JSON.stringify(logs.slice(0, 50), null, 2));
+  } catch (e) {
+    console.error("[MCPLog] 錯誤:", e.message);
+  }
+}
+
 class TaonixServer {
   constructor() {
     this.server = new Server(
-      { name: "taonix-mcp-server", version: "1.8.0" },
+      { name: "taonix-mcp-server", version: "1.9.0" },
       { capabilities: { tools: {} } },
     );
+    this.aiCaller = new AICaller();
+    this.semanticCache = new Map();
 
     this.server.setRequestHandler(ListToolsRequestSchema, async () => {
       return { tools };
@@ -56,68 +82,79 @@ class TaonixServer {
             const intent = args.intent.toLowerCase();
             const action = args.action || "auto";
             let targetTool = "";
+            let routingMethod = "keyword";
+
+            // 1. 優先執行關鍵字路由
             if (action !== "auto") {
               targetTool = action;
             } else {
               if (
-                intent.includes("搜尋") ||
-                intent.includes("趨勢") ||
-                intent.includes("github") ||
-                intent.includes("trending")
+                intent.includes("搜尋") || intent.includes("趨勢") ||
+                intent.includes("github") || intent.includes("trending")
               ) {
                 targetTool = "explorer";
               } else if (
-                intent.includes("讀取") ||
-                intent.includes("讀檔") ||
-                intent.includes("查看")
+                intent.includes("讀取") || intent.includes("讀檔") || intent.includes("查看")
               ) {
                 targetTool = "coder_read";
               } else if (
-                intent.includes("寫入") ||
-                intent.includes("寫檔") ||
-                intent.includes("建立檔案")
+                intent.includes("寫入") || intent.includes("寫檔") || intent.includes("建立檔案")
               ) {
                 targetTool = "coder_write";
               } else if (
-                intent.includes("執行") ||
-                intent.includes("指令") ||
-                intent.includes("command")
+                intent.includes("執行") || intent.includes("指令") || intent.includes("command")
               ) {
                 targetTool = "coder_exec";
               } else if (
-                intent.includes("審查") ||
-                intent.includes("review") ||
-                intent.includes("檢視")
+                intent.includes("審查") || intent.includes("review") || intent.includes("檢視")
               ) {
                 targetTool = "reviewer";
               } else if (
-                intent.includes("架構") ||
-                intent.includes("結構") ||
-                intent.includes("依賴") ||
-                intent.includes("分析")
+                intent.includes("架構") || intent.includes("結構") || intent.includes("依賴") || intent.includes("分析")
               ) {
                 targetTool = "oracle";
               } else if (
-                intent.includes("ui") ||
-                intent.includes("設計") ||
-                intent.includes("ux") ||
-                intent.includes("介面")
+                intent.includes("ui") || intent.includes("設計") || intent.includes("ux") || intent.includes("介面")
               ) {
                 targetTool = "designer";
               } else if (
-                intent.includes("產品") ||
-                intent.includes("需求") ||
-                intent.includes("prd") ||
-                intent.includes("故事")
+                intent.includes("產品") || intent.includes("需求") || intent.includes("prd") || intent.includes("故事")
               ) {
                 targetTool = "product";
               } else if (intent.includes("測試") || intent.includes("test")) {
                 targetTool = "tester";
-              } else {
-                targetTool = "explorer";
               }
             }
-            // 知識注入 (Knowledge Injection)
+
+            // 2. 關鍵字匹配失敗或不明確時，啟動語義路由 (Semantic Routing)
+            if (!targetTool) {
+              routingMethod = "semantic";
+              if (this.semanticCache.has(intent)) {
+                targetTool = this.semanticCache.get(intent);
+                routingMethod = "semantic_cache";
+              } else {
+                const prompt = `你是一個專業的任務調度器。請根據使用者的意圖，從以下 Agent 清單中選擇最合適的一個。僅返回 Agent 名稱（如: explorer, coder_read, reviewer 等）：\n\n意圖: ${intent}\n\nAgent 清單: explorer (搜尋), coder_read (讀檔), coder_write (寫檔), coder_exec (執行), reviewer (審查), oracle (分析), designer (設計), product (產品), tester (測試)`;
+                const aiResult = await this.aiCaller.call(prompt);
+                if (!aiResult.error) {
+                  const aiAgent = aiResult.content.trim().toLowerCase();
+                  if (aiAgent.includes("explorer")) targetTool = "explorer";
+                  else if (aiAgent.includes("read")) targetTool = "coder_read";
+                  else if (aiAgent.includes("write")) targetTool = "coder_write";
+                  else if (aiAgent.includes("exec")) targetTool = "coder_exec";
+                  else if (aiAgent.includes("review")) targetTool = "reviewer";
+                  else if (aiAgent.includes("oracle") || aiAgent.includes("分析")) targetTool = "oracle";
+                  else if (aiAgent.includes("designer") || aiAgent.includes("設計")) targetTool = "designer";
+                  else if (aiAgent.includes("product") || aiAgent.includes("產品")) targetTool = "product";
+                  else if (aiAgent.includes("tester") || aiAgent.includes("測試")) targetTool = "tester";
+                  
+                  if (targetTool) this.semanticCache.set(intent, targetTool);
+                }
+              }
+            }
+
+            if (!targetTool) targetTool = "explorer";
+
+            // 3. 知識注入 (Knowledge Injection)
             const relatedKnowledge = [];
             try {
               const allKnowledgeKeys = knowledgeBridge.list();
@@ -134,11 +171,20 @@ class TaonixServer {
             result = {
               intent: args.intent,
               routed_to: targetTool,
+              routing_method: routingMethod,
               action: action,
-              message: `已根據意圖 "${args.intent}" 路由到 ${targetTool} Agent`,
+              message: `已根據意圖 "${args.intent}" (${routingMethod}) 路由到 ${targetTool} Agent`,
               knowledge_injection: relatedKnowledge,
-              note: "Router 已將請求分發並注入相關知識。實際執行需要調用對應的內部 Agent CLI。",
+              note: "Router 已完成語義分析與知識注入。實際執行需要調用對應的內部 Agent CLI。",
             };
+            logMCP(result);
+            
+            // 記錄協作事件
+            collaborationLogger.logEvent(`task_${Date.now()}`, "router", "handover", {
+              intent: args.intent,
+              to: targetTool,
+              method: routingMethod
+            });
             break;
         }
 

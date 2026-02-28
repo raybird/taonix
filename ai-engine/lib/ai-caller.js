@@ -56,12 +56,16 @@ export class AICaller {
     const { temperature = 0.7, maxTokens = 2000 } = options;
 
     let cmd;
+    const escapedPrompt = prompt.replace(/'/g, "'\\''");
+    
     if (this.provider === "openai") {
-      cmd = `echo '${JSON.stringify([{ role: "user", content: prompt }])}' | npx -y openai@latest chat.completions.create --model ${this.model} --stream false`;
+      const messages = JSON.stringify([{ role: "user", content: prompt }]);
+      const escapedMessages = messages.replace(/'/g, "'\\''");
+      cmd = `echo '${escapedMessages}' | npx -y openai@latest chat.completions.create --model ${this.model} --stream false`;
     } else if (this.provider === "ollama") {
       cmd = `ollama run ${this.model} "${prompt.replace(/"/g, '\\"')}"`;
     } else {
-      cmd = `echo '${prompt}' | npx -y openai@latest chat.completions.create --model ${this.model}`;
+      cmd = `echo '${escapedPrompt}' | npx -y openai@latest chat.completions.create --model ${this.model}`;
     }
 
     try {
@@ -107,15 +111,16 @@ export class AICaller {
   }
 }
 
-const args = process.argv.slice(2);
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const args = process.argv.slice(2);
 
-if (args.length > 0 && args[0] === "providers") {
-  console.log(JSON.stringify(AICaller.detectAvailableProviders(), null, 2));
-  process.exit(0);
-}
+  if (args.length > 0 && args[0] === "providers") {
+    console.log(JSON.stringify(AICaller.detectAvailableProviders(), null, 2));
+    process.exit(0);
+  }
 
-if (args.length === 0) {
-  console.log(`
+  if (args.length === 0) {
+    console.log(`
 Taonix AI Caller
 ================
 用法:
@@ -128,31 +133,32 @@ Taonix AI Caller
 可用供應商:
   ${AICaller.detectAvailableProviders().join(", ")}
   `);
-  process.exit(0);
-}
-
-const options = {};
-let prompt = "";
-
-for (let i = 0; i < args.length; i++) {
-  if (args[i] === "--provider" && args[i + 1]) {
-    options.provider = args[i + 1];
-    i++;
-  } else if (args[i] === "--model" && args[i + 1]) {
-    options.model = args[i + 1];
-    i++;
-  } else if (args[i] === "--prompt" && args[i + 1]) {
-    prompt = args.slice(i + 1).join(" ");
-    break;
+    process.exit(0);
   }
+
+  const options = {};
+  let prompt = "";
+
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === "--provider" && args[i + 1]) {
+      options.provider = args[i + 1];
+      i++;
+    } else if (args[i] === "--model" && args[i + 1]) {
+      options.model = args[i + 1];
+      i++;
+    } else if (args[i] === "--prompt" && args[i + 1]) {
+      prompt = args.slice(i + 1).join(" ");
+      break;
+    }
+  }
+
+  if (!prompt) {
+    console.error("錯誤: 請提供 --prompt");
+    process.exit(1);
+  }
+
+  const caller = new AICaller(options);
+  const result = await caller.call(prompt);
+
+  console.log(JSON.stringify(result, null, 2));
 }
-
-if (!prompt) {
-  console.error("錯誤: 請提供 --prompt");
-  process.exit(1);
-}
-
-const caller = new AICaller(options);
-const result = await caller.call(prompt);
-
-console.log(JSON.stringify(result, null, 2));

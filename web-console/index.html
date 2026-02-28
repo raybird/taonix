@@ -3,223 +3,261 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taonix 控制台</title>
+    <title>Taonix 控制台 v3.9.0</title>
     <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+      :root {
+        --primary: #3b82f6;
+        --bg: #0f172a;
+        --card-bg: #1e293b;
+        --text: #e2e8f0;
+        --text-muted: #94a3b8;
+        --border: #334155;
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --handover: #a855f7;
       }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background: #0f172a;
-        color: #e2e8f0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--text);
         min-height: 100vh;
+        overflow-x: hidden;
       }
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-      }
+      .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
       header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 20px 0;
-        border-bottom: 1px solid #334155;
+        border-bottom: 1px solid var(--border);
         margin-bottom: 20px;
       }
-      h1 {
-        font-size: 24px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .badge {
-        background: #3b82f6;
-        padding: 4px 12px;
-        border-radius: 12px;
-        font-size: 12px;
-      }
-      .grid {
+      h1 { font-size: 24px; display: flex; align-items: center; gap: 10px; }
+      .badge { background: var(--primary); padding: 4px 12px; border-radius: 12px; font-size: 12px; }
+      
+      .main-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: 300px 1fr 350px;
         gap: 20px;
       }
+      
       .card {
-        background: #1e293b;
+        background: var(--card-bg);
         border-radius: 12px;
         padding: 20px;
-        border: 1px solid #334155;
-      }
-      .card h2 {
-        font-size: 16px;
-        margin-bottom: 15px;
-        color: #94a3b8;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .agent-list {
+        border: 1px solid var(--border);
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        margin-bottom: 20px;
       }
+      .card h2 { font-size: 16px; margin-bottom: 15px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+      
+      /* Agent List */
+      .agent-list { display: flex; flex-direction: column; gap: 10px; }
       .agent {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 12px;
-        background: #0f172a;
+        background: var(--bg);
         border-radius: 8px;
+        border: 1px solid transparent;
+        transition: all 0.3s;
       }
-      .agent-name {
-        font-weight: 500;
-      }
-      .agent-status {
-        font-size: 12px;
-        padding: 4px 8px;
-        border-radius: 4px;
-        background: #22c55e;
-        color: #fff;
-      }
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-      }
-      .stat {
-        background: #0f172a;
-        padding: 15px;
-        border-radius: 8px;
-        text-align: center;
-      }
-      .stat-value {
-        font-size: 24px;
-        font-weight: bold;
-        color: #3b82f6;
-      }
-      .stat-label {
-        font-size: 12px;
-        color: #94a3b8;
-        margin-top: 5px;
-      }
-      .log-list {
-        max-height: 300px;
-        overflow-y: auto;
-      }
-      .log {
-        padding: 8px 12px;
-        border-bottom: 1px solid #334155;
+      .agent:hover { border-color: var(--primary); }
+      .agent-name { font-weight: 500; font-size: 14px; }
+      .agent-status { font-size: 11px; padding: 2px 6px; border-radius: 4px; background: var(--success); color: #fff; }
+
+      /* Goal Progress */
+      .goal-item { margin-bottom: 15px; background: var(--bg); padding: 15px; border-radius: 8px; }
+      .goal-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+      .progress-container { height: 8px; background: #334155; border-radius: 4px; overflow: hidden; }
+      .progress-bar { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.5s ease-in-out; }
+      .goal-meta { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+
+      /* Activity Log */
+      .log-container { flex: 1; overflow-y: auto; max-height: 400px; }
+      .log-entry {
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
         font-size: 13px;
-        font-family: monospace;
+        animation: fadeIn 0.3s ease-out;
       }
-      .log-time {
-        color: #64748b;
-        margin-right: 10px;
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+      .log-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+      .log-time { color: var(--text-muted); font-family: monospace; }
+      .log-method { font-size: 10px; padding: 1px 4px; border-radius: 3px; background: #475569; }
+      .log-intent { font-weight: bold; color: #60a5fa; }
+
+      /* Timeline */
+      .timeline { padding: 10px; border-left: 2px solid var(--border); margin-left: 10px; }
+      .timeline-item { position: relative; padding-bottom: 20px; padding-left: 20px; }
+      .timeline-item::before {
+        content: ""; position: absolute; left: -21px; top: 5px;
+        width: 10px; height: 10px; border-radius: 50%; background: var(--primary);
       }
+      .timeline-agent { font-weight: bold; color: var(--primary); font-size: 12px; }
+      .timeline-action { font-size: 11px; color: var(--text-muted); }
+      .timeline-details { font-size: 12px; background: var(--bg); padding: 5px; border-radius: 4px; margin-top: 5px; }
+
+      .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--success); margin-right: 5px; }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>🚀 Taonix <span class="badge">v1.2.0</span></h1>
-        <div><span style="color: #22c55e">●</span> 運行中</div>
+        <h1>🚀 Taonix <span class="badge">v3.9.0</span></h1>
+        <div><span class="status-dot"></span>系統運行中</div>
       </header>
 
-      <div class="grid">
-        <div class="card">
-          <h2>👥 Agent 團隊 (7)</h2>
-          <div class="agent-list">
-            <div class="agent">
-              <span class="agent-name">🧭 Explorer (滄溟)</span
-              ><span class="agent-status">就緒</span>
+      <div class="main-grid">
+        <!-- Left: Agents -->
+        <div>
+          <div class="card">
+            <h2>👥 專家 Agent 團隊</h2>
+            <div class="agent-list" id="agentList">
+              <div class="agent"><span class="agent-name">🧭 Explorer (滄溟)</span><span class="agent-status">就緒</span></div>
+              <div class="agent"><span class="agent-name">💻 Coder (鑄焰)</span><span class="agent-status">就緒</span></div>
+              <div class="agent"><span class="agent-name">🔮 Oracle (明鏡)</span><span class="agent-status">就緒</span></div>
+              <div class="agent"><span class="agent-name">🛡️ Reviewer (守闕)</span><span class="agent-status">就緒</span></div>
+              <div class="agent"><span class="agent-name">🎨 Designer (天工)</span><span class="agent-status">就緒</span></div>
+              <div class="agent"><span class="agent-name">📦 Product (鴻圖)</span><span class="agent-status">就緒</span></div>
+              <div class="agent"><span class="agent-name">🧪 Tester (試煉)</span><span class="agent-status">就緒</span></div>
+              <div class="agent"><span class="agent-name">🤖 Assistant (助理)</span><span class="agent-status">就緒</span></div>
             </div>
-            <div class="agent">
-              <span class="agent-name">💻 Coder (鑄焰)</span
-              ><span class="agent-status">就緒</span>
-            </div>
-            <div class="agent">
-              <span class="agent-name">🔮 Oracle (明鏡)</span
-              ><span class="agent-status">就緒</span>
-            </div>
-            <div class="agent">
-              <span class="agent-name">🛡️ Reviewer (守闕)</span
-              ><span class="agent-status">就緒</span>
-            </div>
-            <div class="agent">
-              <span class="agent-name">🎨 Designer (天工)</span
-              ><span class="agent-status">就緒</span>
-            </div>
-            <div class="agent">
-              <span class="agent-name">📦 Product (鴻圖)</span
-              ><span class="agent-status">就緒</span>
-            </div>
-            <div class="agent">
-              <span class="agent-name">🧪 Tester (試煉)</span
-              ><span class="agent-status">就緒</span>
+          </div>
+          <div class="card">
+            <h2>🎯 長期規劃進度</h2>
+            <div id="goalList">
+              <div style="padding: 20px; text-align: center; color: var(--text-muted);">載入規劃中...</div>
             </div>
           </div>
         </div>
 
-        <div class="card">
-          <h2>📊 統計</h2>
-          <div class="stats">
-            <div class="stat">
-              <div class="stat-value">7</div>
-              <div class="stat-label">Agent 數量</div>
+        <!-- Middle: Activity & Timeline -->
+        <div>
+          <div class="card">
+            <h2>⛓️ 協作時間軸 (Collaboration Timeline)</h2>
+            <div class="log-container" id="collabTimeline" style="max-height: 500px;">
+              <div style="padding: 20px; text-align: center; color: var(--text-muted);">等待協作數據...</div>
             </div>
-            <div class="stat">
-              <div class="stat-value">13</div>
-              <div class="stat-label">MCP Tools</div>
-            </div>
-            <div class="stat">
-              <div class="stat-value">8</div>
-              <div class="stat-label">內建技能</div>
-            </div>
-            <div class="stat">
-              <div class="stat-value">4</div>
-              <div class="stat-label">Phase 完成</div>
+          </div>
+          <div class="card">
+            <h2>📝 MCP 路由動態</h2>
+            <div class="log-container" id="mcpLogs">
+              <div style="padding: 20px; text-align: center; color: var(--text-muted);">等待活動數據...</div>
             </div>
           </div>
         </div>
 
+        <!-- Right: Status -->
         <div class="card">
-          <h2>📝 最近活動</h2>
-          <div class="log-list">
-            <div class="log">
-              <span class="log-time">10:05</span>Party Mode - 任務分片完成
-            </div>
-            <div class="log">
-              <span class="log-time">10:04</span>Party Mode - 多 Agent 並行完成
-            </div>
-            <div class="log">
-              <span class="log-time">10:03</span>跨 session 偏好延續完成
-            </div>
-            <div class="log">
-              <span class="log-time">10:02</span>多對話上下文記憶完成
-            </div>
-            <div class="log">
-              <span class="log-time">10:01</span>任務歷史追蹤完成
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h2>📦 技能市場</h2>
-          <div class="stats">
-            <div class="stat">
-              <div class="stat-value">8</div>
-              <div class="stat-label">內建技能</div>
-            </div>
-            <div class="stat">
-              <div class="stat-value">0</div>
-              <div class="stat-label">外部技能</div>
-            </div>
+          <h2>📊 系統統計</h2>
+          <div id="sysStats" style="font-size: 13px;">
+            <div style="margin-bottom: 10px;">最後更新: <span id="lastUpdate">--:--:--</span></div>
+            <div style="margin-bottom: 10px;">活躍目標: <span id="activeGoals">0</span></div>
+            <div style="margin-bottom: 10px;">協作事件: <span id="collabEvents">0</span></div>
           </div>
         </div>
       </div>
     </div>
+
+    <script>
+      async function fetchData() {
+        try {
+          // Fetch Goals
+          const goalsRes = await fetch('/.data/goals.json');
+          if (goalsRes.ok) {
+            const data = await goalsRes.json();
+            const goals = Object.values(data.goals || {}).sort((a, b) => new Date(b.created) - new Date(a.created));
+            renderGoals(goals);
+            document.getElementById('activeGoals').innerText = goals.filter(g => g.status === 'in_progress').length;
+          }
+
+          // Fetch MCP Logs
+          const logsRes = await fetch('/.data/mcp_logs.json');
+          if (logsRes.ok) {
+            const logs = await logsRes.json();
+            renderLogs(logs);
+          }
+
+          // Fetch Collaboration Logs
+          const collabRes = await fetch('/.data/collaboration_logs.json');
+          if (collabRes.ok) {
+            const collabLogs = await collabRes.json();
+            renderTimeline(collabLogs);
+            document.getElementById('collabEvents').innerText = collabLogs.length;
+          }
+          
+          document.getElementById('lastUpdate').innerText = new Date().toLocaleTimeString();
+        } catch (e) {
+          console.error('Fetch error:', e);
+        }
+      }
+
+      function renderGoals(goals) {
+        const container = document.getElementById('goalList');
+        if (goals.length === 0) {
+          container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted)">無進行中目標</div>';
+          return;
+        }
+        
+        container.innerHTML = goals.map(g => `
+          <div class="goal-item">
+            <div class="goal-header">
+              <span>${g.title.substring(0, 30)}${g.title.length > 30 ? '...' : ''}</span>
+              <span style="color: var(--primary)">${g.progress}%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" style="width: ${g.progress}%"></div>
+            </div>
+            <div class="goal-meta">
+              狀態: ${g.status} | 截止: ${new Date(g.deadline).toLocaleDateString()}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function renderLogs(logs) {
+        const container = document.getElementById('mcpLogs');
+        if (logs.length === 0) {
+          container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted)">暫無活動</div>';
+          return;
+        }
+        container.innerHTML = logs.map(l => `
+          <div class="log-entry">
+            <div class="log-header">
+              <span class="log-time">${new Date(l.timestamp).toLocaleTimeString()}</span>
+              <span class="log-method">${l.routing_method || 'keyword'}</span>
+            </div>
+            <div class="log-intent">${l.intent}</div>
+            <div style="font-size: 11px; color: var(--warning)">➔ ${l.routed_to}</div>
+          </div>
+        `).join('');
+      }
+
+      function renderTimeline(logs) {
+        const container = document.getElementById('collabTimeline');
+        if (logs.length === 0) {
+          container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted)">暫無協作軌跡</div>';
+          return;
+        }
+        container.innerHTML = '<div class="timeline">' + logs.map(l => `
+          <div class="timeline-item">
+            <div class="timeline-agent">${l.agent.toUpperCase()}</div>
+            <div class="timeline-action">${l.action} - ${new Date(l.timestamp).toLocaleTimeString()}</div>
+            <div class="timeline-details">
+              ${l.details.intent || ''} ${l.details.to ? '➔ ' + l.details.to : ''}
+            </div>
+          </div>
+        `).join('') + '</div>';
+      }
+
+      // Initial fetch and poll
+      fetchData();
+      setInterval(fetchData, 3000);
+    </script>
   </body>
 </html>

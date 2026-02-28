@@ -2,6 +2,15 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v3.9.0] - 2026-02-28
+
+### Added
+- **Web 控制台視覺化升級** - 全新 UI 佈局，支援即時監控
+- **協作時間軸 (Collaboration Timeline)** - 視覺化呈現 Agent 間的任務接棒與協作軌跡
+- **語義路由緩存 (Semantic Cache)** - 優化 AI 路由性能，減少重複調用成本
+- **MCP 路由日誌** - 自動記錄意圖、目標 Agent 與路由方法
+- **穩定性修復** - 統一內部數據存儲路徑
+
 ## [v3.8.0] - 2026-02-28
 
 ### Added

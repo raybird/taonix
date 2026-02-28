@@ -2,8 +2,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CACHE_PATH = path.resolve(__dirname, "..", "..", ".data", "knowledge_bridge.json");
+const CACHE_PATH = "/app/workspace/projects/taonix/.data/knowledge_bridge.json";
 
 export class KnowledgeBridge {
   constructor() {

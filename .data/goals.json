@@ -4,14 +4,30 @@
       "id": "goal_1772275356577",
       "title": "持續進化 Taonix，讓 TeleNexus 擁有強大的 AI 助理能力（包含自發式工作流、Context Guard、跨 Agent 知識共享）",
       "description": "由 AutonomousPlanner 自動建立",
-      "status": "in_progress",
-      "progress": 90,
+      "status": "completed",
+      "progress": 100,
       "created": "2026-02-28T10:42:36.577Z",
       "deadline": "2026-03-03T10:42:36.577Z",
       "subGoals": [
         "sub_goal_1772275356577_0",
         "sub_goal_1772275356577_1",
         "sub_goal_1772275356577_2"
+      ]
+    },
+    "goal_1772279118129": {
+      "id": "goal_1772279118129",
+      "title": "開發 Taonix v3.9.0：1. Web 控制台視覺化（顯示知識注入與路由方法） 2. 語義路由緩存優化 3. 跨 Agent 協作日誌系統",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "in_progress",
+      "progress": 90,
+      "created": "2026-02-28T11:45:18.130Z",
+      "deadline": "2026-03-03T11:45:18.129Z",
+      "subGoals": [
+        "sub_goal_1772279118129_0",
+        "sub_goal_1772279118129_1",
+        "sub_goal_1772279118129_2",
+        "sub_goal_1772279118129_3",
+        "sub_goal_1772279118129_4"
       ]
     }
   },
@@ -39,6 +55,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-02-28T10:42:36.578Z"
+    },
+    "sub_goal_1772279118129_0": {
+      "id": "sub_goal_1772279118129_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T11:45:18.130Z"
+    },
+    "sub_goal_1772279118129_1": {
+      "id": "sub_goal_1772279118129_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T11:45:18.130Z"
+    },
+    "sub_goal_1772279118129_2": {
+      "id": "sub_goal_1772279118129_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T11:45:18.131Z"
+    },
+    "sub_goal_1772279118129_3": {
+      "id": "sub_goal_1772279118129_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T11:45:18.131Z"
+    },
+    "sub_goal_1772279118129_4": {
+      "id": "sub_goal_1772279118129_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T11:45:18.131Z"
     }
   }
 }
