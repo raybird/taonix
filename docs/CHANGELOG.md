@@ -2,6 +2,17 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v3.1.0] - 2026-02-28
+
+### Added
+
+- **Agent 協作系統** - 建立多 Agent 協作流程
+  - `agents/assistant/lib/collaboration-helper.js` - 協作管理器
+  - 支援角色分配、工作流建立、順序執行
+  - 整合 orchestrator/executor/reviewer/designer/planner 角色
+
+---
+
 ## [v3.0.0] - 2026-02-28
 
 ### Added
