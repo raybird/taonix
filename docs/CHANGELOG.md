@@ -2,6 +2,17 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v2.3.0] - 2026-02-28
+
+### Added
+
+- **Assistant Agent 翻譯系統** - 強化 AI 助理多語言能力
+  - `agents/assistant/lib/translation-helper.js` - 翻譯助手
+  - 支援多語言翻譯、語言偵測、批次翻譯
+  - 支援中、英、日、韓、西、法、德等語言
+
+---
+
 ## [v2.2.0] - 2026-02-28
 
 ### Added
