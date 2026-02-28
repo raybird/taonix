@@ -2,6 +2,29 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v3.4.0] - 2026-02-28
+
+### Added
+
+- **自我進化引擎** - 讓 Taonix 具備自我學習與適應能力
+  - `memory/evolution-engine.js` - 進化引擎
+    - 反饋記錄與分析
+    - 行為適應追蹤
+    - 智慧建議生成
+    - 效能分析儀表板
+  - `memory/conversation-summarizer.js` - 對話摘要器
+    - 自動話題提取
+    - 情緒分析
+    - 行動項目識別
+    - 重點 reference 擷取
+  - `agents/assistant/index.js` 更新
+    - 新增 feedback 指令：記錄使用者反饋
+    - 新增 evolution 指令：查看進化狀態
+    - 新增 summarize 指令：對話摘要統計
+  - SOUL.md 版本更新至 v3.4.0
+
+---
+
 ## [v3.3.0] - 2026-02-28
 
 ### Added
