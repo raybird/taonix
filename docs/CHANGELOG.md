@@ -2,6 +2,18 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v4.0.0] - 2026-02-28
+
+### Added
+- **Agentskills.io 協定整合** - 全面標準化技能架構
+  - 實作 `Skill Registry` 多級加載機制，優先支援標準化技能
+  - 建立 `agentskills-generator.js`，自動轉換 12 個核心技能
+  - 實作 `README-generator.js`，自動生成技能說明文件
+- **遠端技能安裝** - 支援從 URL 動態擴充 Agent 能力
+  - 新增 `RemoteSkillLoader` 模組
+  - 技能市場 CLI 支援 `add <url>` 指令
+- **架構演進藍圖** - 確立未來事件驅動與黑板模式的發展方向
+
 ## [v3.9.0] - 2026-02-28
 
 ### Added

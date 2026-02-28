@@ -34,8 +34,8 @@
       "id": "goal_1772282772447",
       "title": "開發 Taonix v4.0.0：1. 實作 Agentskills.io 協定支援 2. 將現有 12 個技能轉換為標準 SKILL.md 格式 3. 建立自動化技能說明生成器 4. 支援從外部 URL 動態載入技能",
       "description": "由 AutonomousPlanner 自動建立",
-      "status": "pending",
-      "progress": 0,
+      "status": "completed",
+      "progress": 100,
       "created": "2026-02-28T12:46:12.447Z",
       "deadline": "2026-03-03T12:46:12.447Z",
       "subGoals": [

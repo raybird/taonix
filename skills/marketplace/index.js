@@ -57,6 +57,12 @@ export default ${JSON.stringify(module, null, 2)};
   }
 
   listSkills() {
+    const agentskillsDir = path.join(__dirname, "..", "agentskills");
+    let standardSkills = [];
+    if (fs.existsSync(agentskillsDir)) {
+      standardSkills = fs.readdirSync(agentskillsDir);
+    }
+
     return {
       builtIn: [
         "brainstorming",
@@ -67,7 +73,12 @@ export default ${JSON.stringify(module, null, 2)};
         "writing-plans",
         "executing-plans",
         "verification-before-completion",
+        "agent-coordinator",
+        "security-audit",
+        "doc-generator",
+        "performance-optimization",
       ],
+      standardized: standardSkills,
       external: Array.from(this.externalSkills.keys()),
     };
   }
