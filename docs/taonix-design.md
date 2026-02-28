@@ -124,6 +124,18 @@
 - **對話編排**：支援多 Agent 協作對話流程、群組聊天
 - **混合協作**：多 Agent 可自主協作或與人類協作
 
+### Agent-Skills-for-Context-Engineering (12.4k ⭐)
+
+- **Context Engineering**：上下文工程，管理語言模型的上下文視窗
+- **Context Degradation**：識別上下文失效模式（lost-in-middle, poisoning, distraction）
+- **Context Compression**：長對話會話的壓縮策略
+- **Multi-Agent Patterns**：orchestrator、peer-to-peer、hierarchical 架構
+- **Memory Systems**：短期、長期、圖基記憶架構
+- **Tool Design**：設計 Agent 可有效使用的工具
+- **Context Optimization**：compaction、masking、caching 策略
+- **Evaluation**：建立 Agent 系統的評估框架
+- **BDI Mental States**：使用正式 BDI ontology 模擬 Agent 心理狀態
+
 ---
 
 ## 下一步進化方向
