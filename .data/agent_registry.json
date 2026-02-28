@@ -1,0 +1,52 @@
+{
+  "explorer": {
+    "capabilities": [
+      "searching",
+      "browsing",
+      "github_trending"
+    ],
+    "description": "滄溟 - 負責資訊檢索與趨勢追蹤",
+    "lastSeen": "2026-02-28T18:15:31.314Z",
+    "status": "online"
+  },
+  "coder": {
+    "capabilities": [
+      "coding",
+      "refactoring",
+      "filesystem"
+    ],
+    "description": "鑄焰 - 負責程式實作與檔案操作",
+    "lastSeen": "2026-02-28T18:15:31.315Z",
+    "status": "online"
+  },
+  "tester": {
+    "capabilities": [
+      "testing",
+      "validation",
+      "ci"
+    ],
+    "description": "試煉 - 負責自動化測試與環境驗證",
+    "lastSeen": "2026-02-28T18:15:31.316Z",
+    "status": "online"
+  },
+  "oracle": {
+    "capabilities": [
+      "analysis",
+      "architecture",
+      "reasoning"
+    ],
+    "description": "明鏡 - 負責深度分析與架構設計",
+    "lastSeen": "2026-02-28T18:15:31.316Z",
+    "status": "online"
+  },
+  "assistant": {
+    "capabilities": [
+      "planning",
+      "coordination",
+      "summarization"
+    ],
+    "description": "助理 - 核心協調與任務規劃",
+    "lastSeen": "2026-02-28T18:15:31.317Z",
+    "status": "online"
+  }
+}

@@ -12,3 +12,8 @@
 {"id":"evt_1772295332851_tz1th","timestamp":"2026-02-28T16:15:32.851Z","name":"BLACKBOARD_UPDATED","source":"blackboard","payload":{"summary":"State snapshot saved"}}
 {"id":"evt_1772295332851_fkc7g","timestamp":"2026-02-28T16:15:32.851Z","name":"FACT_DISCOVERED","source":"arbitrator","payload":{"key":"pending_decision","value":{"eventId":"evt_1772295332850_bp8h3","issue":"手動決策測試"}}}
 {"id":"evt_1772297182369_wx2s6","timestamp":"2026-02-28T16:46:22.369Z","name":"BLACKBOARD_UPDATED","source":"blackboard","payload":{"summary":"State snapshot saved"}}
+{"id":"evt_1772302531315_lt035","timestamp":"2026-02-28T18:15:31.315Z","name":"AGENT_REGISTERED","source":"registry","payload":{"name":"explorer","capabilities":["searching","browsing","github_trending"]}}
+{"id":"evt_1772302531315_xh8y7","timestamp":"2026-02-28T18:15:31.315Z","name":"AGENT_REGISTERED","source":"registry","payload":{"name":"coder","capabilities":["coding","refactoring","filesystem"]}}
+{"id":"evt_1772302531316_sgik4","timestamp":"2026-02-28T18:15:31.316Z","name":"AGENT_REGISTERED","source":"registry","payload":{"name":"tester","capabilities":["testing","validation","ci"]}}
+{"id":"evt_1772302531316_8en80","timestamp":"2026-02-28T18:15:31.316Z","name":"AGENT_REGISTERED","source":"registry","payload":{"name":"oracle","capabilities":["analysis","architecture","reasoning"]}}
+{"id":"evt_1772302531317_j0nw3","timestamp":"2026-02-28T18:15:31.317Z","name":"AGENT_REGISTERED","source":"registry","payload":{"name":"assistant","capabilities":["planning","coordination","summarization"]}}
