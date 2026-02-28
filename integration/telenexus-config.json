@@ -72,20 +72,20 @@
     }
   },
   "agentMapping": {
-    "小探": ["explorer.github_trending", "explorer.web_search"],
-    "小碼": [
+    "滄溟": ["explorer.github_trending", "explorer.web_search"],
+    "鑄焰": [
       "coder.read_file",
       "coder.write_file",
       "coder.list_files",
       "coder.run_command",
       "coder.code_review"
     ],
-    "小析": [
+    "明鏡": [
       "oracle.analyze_structure",
       "oracle.analyze_dependencies",
       "oracle.suggest_architecture"
     ],
-    "把關": [
+    "守闕": [
       "reviewer.check_quality",
       "reviewer.check_format",
       "reviewer.check_logic"

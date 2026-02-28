@@ -87,12 +87,12 @@ function estimateSteps(task) {
 
 function assignAgents(taskAnalysis, availableAgents) {
   const agentMapping = {
-    coding: ["小碼", "把關"],
-    design: ["小設"],
-    analysis: ["小析", "小探"],
-    testing: ["小測"],
-    product: ["小策"],
-    general: ["小探", "小碼"],
+    coding: ["鑄焰", "守闕"],
+    design: ["天工"],
+    analysis: ["明鏡", "滄溟"],
+    testing: ["試煉"],
+    product: ["鴻圖"],
+    general: ["滄溟", "鑄焰"],
   };
 
   const assigned = [];
@@ -107,7 +107,7 @@ function assignAgents(taskAnalysis, availableAgents) {
   }
 
   if (taskAnalysis.requiresCollaboration && assigned.length < 2) {
-    assigned.push("小析");
+    assigned.push("明鏡");
   }
 
   return assigned;

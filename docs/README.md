@@ -39,10 +39,10 @@ taonix/
 
 | Agent    | 名字 | 風格     | 功能                      |
 | -------- | ---- | -------- | ------------------------- |
-| Explorer | 小探 | 活潑好奇 | 搜尋、爬蟲、網頁擷取      |
-| Coder    | 小碼 | 嚴謹務實 | 讀寫檔案、執行指令、Debug |
-| Oracle   | 小析 | 冷靜理性 | 架構分析、依賴分析        |
-| Reviewer | 把關 | 毒舌中肯 | 品質檢查、格式檢查        |
+| Explorer | 滄溟 | 活潑好奇 | 搜尋、爬蟲、網頁擷取      |
+| Coder    | 鑄焰 | 嚴謹務實 | 讀寫檔案、執行指令、Debug |
+| Oracle   | 明鏡 | 冷靜理性 | 架構分析、依賴分析        |
+| Reviewer | 守闕 | 毒舌中肯 | 品質檢查、格式檢查        |
 
 ## 快速開始
 
@@ -177,7 +177,7 @@ const result = await ai.process('你的指令');
 {
   intent: 'github_trending',
   userInput: '你的指令',
-  agent: { agent: 'explorer', name: '小探', ... },
+  agent: { agent: 'explorer', name: '滄溟', ... },
   content: '...',
   skill: 'brainstorming',      // 如果觸發技能
   skillGuidance: { ... },       // 技能指導

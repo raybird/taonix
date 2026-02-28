@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 import { goalTracker } from "./goal-tracker.js";
+import { autonomousPlanner } from "./autonomous-planner.js";
+import { progressAnalyzer } from "./progress-analyzer.js";
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -56,6 +58,53 @@ async function main() {
       console.log(goalTracker.getStatus());
       break;
 
+    case "plan":
+      const planInput = args.slice(1).join(" ");
+      if (!planInput) {
+        console.log("用法: taonix-planning plan <目標或任務描述>");
+        process.exit(1);
+      }
+      const planResult = await autonomousPlanner.analyzeAndPlan(planInput);
+      console.log(JSON.stringify(planResult, null, 2));
+      break;
+
+    case "analyze":
+      const analysis = await progressAnalyzer.analyze();
+      console.log("\n📊 進度分析報告\n");
+      console.log(`達成率: ${analysis.summary.completionRate}%`);
+      console.log(
+        `進行中: ${analysis.summary.active} | 已完成: ${analysis.summary.completed}\n`,
+      );
+
+      if (analysis.insights.length > 0) {
+        console.log("💡 洞察:");
+        analysis.insights.forEach((i) => {
+          const icon =
+            i.type === "success"
+              ? "✅"
+              : i.type === "warning"
+                ? "⚠️"
+                : i.type === "danger"
+                  ? "❌"
+                  : "ℹ️";
+          console.log(`  ${icon} ${i.message}`);
+        });
+        console.log("");
+      }
+
+      if (analysis.recommendations.length > 0) {
+        console.log("🎯 建議行動:");
+        analysis.recommendations.slice(0, 3).forEach((r) => {
+          console.log(`  [${r.priority.toUpperCase()}] ${r.action}`);
+        });
+      }
+      break;
+
+    case "report":
+      const report = autonomousPlanner.getProgressReport();
+      console.log(JSON.stringify(report, null, 2));
+      break;
+
     case "help":
     default:
       console.log(`
@@ -66,7 +115,10 @@ async function main() {
   taonix-planning list                              列出所有目標
   taonix-planning progress <ID> <百分比>            更新進度
   taonix-planning status                            查看狀態
-  taonix-planning help                              顯示說明
+  taonix-planning plan <描述>                        智能規劃（自動分解目標）
+  taonix-planning analyze                            進度分析與建議
+  taonix-planning report                             完整進度報告
+  taonix-planning help                               顯示說明
 `);
   }
 }

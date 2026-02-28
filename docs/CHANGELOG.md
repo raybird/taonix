@@ -2,6 +2,25 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v3.3.0] - 2026-02-28
+
+### Added
+
+- **自主規劃系統** - 賦予 Taonix 更強的 AI 助理能力
+  - `planning/autonomous-planner.js` - 自主規劃器
+    - 目標分析與自動分解
+    - 智慧任務生成（開法、學習、網站等場景）
+    - 截止日期自動推算
+  - `planning/progress-analyzer.js` - 進度分析器
+    - 目標達成率分析
+    - 洞察生成（success/warning/danger/info）
+    - 智慧建議推薦
+    - 趨勢追蹤
+  - `planning/cli.js` 更新 - 新增 plan/analyze/report 指令
+  - 整合現有 goal-tracker + planning-engine + proactive-engine
+
+---
+
 ## [v3.2.0] - 2026-02-28
 
 ### Added
@@ -51,7 +70,7 @@ All notable changes to Taonix will be documented in this file.
 ### Changed
 
 - **Agent 命名優化** - 改善命名語意
-  - Product (小產 → 小策) - 避免諧音問題
+  - Product (小產 → 鴻圖) - 星辰系命名
   - 更新 README.md、CHANGELOG.md、Web Console
 
 ---
@@ -248,15 +267,15 @@ All notable changes to Taonix will be documented in this file.
 ### Added
 
 - **更多領域 Agent** - 新增 3 個專業 Agent
-  - **Designer** (小設) - UI/UX 設計專家
+  - **Designer** (天工) - UI/UX 設計專家
     - UI 版面配置建議
     - 元件設計生成
     - UX 流程分析
-  - **Product** (小策) - 產品規劃專家
+  - **Product** (鴻圖) - 產品規劃專家
     - PRD 產品需求文檔生成
     - 功能需求分析
     - 使用者故事建立
-  - **Tester** (小測) - 測試專家
+  - **Tester** (試煉) - 測試專家
     - 測試案例自動生成
     - 測試執行
     - 測試計劃建立
@@ -327,7 +346,7 @@ All notable changes to Taonix will be documented in this file.
 ### Added
 
 - **4 個 Agent CLI 框架**
-  - Explorer (小探) - 搜尋、爬蟲
-  - Coder (小碼) - 程式開發
-  - Oracle (小析) - 架構分析
-  - Reviewer (把關) - 程式碼審查
+  - Explorer (滄溟) - 搜尋、爬蟲
+  - Coder (鑄焰) - 程式開發
+  - Oracle (明鏡) - 架構分析
+  - Reviewer (守闕) - 程式碼審查

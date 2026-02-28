@@ -1,11 +1,11 @@
 export class AgentCollaboration {
   constructor() {
     this.roles = {
-      orchestrator: ["小析", "小探"],
-      executor: ["小碼", "小測"],
-      reviewer: ["把關"],
-      designer: ["小設"],
-      planner: ["小策"],
+      orchestrator: ["明鏡", "滄溟"],
+      executor: ["鑄焰", "試煉"],
+      reviewer: ["守闕"],
+      designer: ["天工"],
+      planner: ["鴻圖"],
     };
     this.workflows = new Map();
   }

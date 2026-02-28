@@ -5,12 +5,12 @@ import {
 
 const agentCapabilities = {
   explorer: {
-    name: "小探",
+    name: "滄溟",
     tools: ["github_trending", "web_search"],
     description: "搜尋、爬蟲專家",
   },
   coder: {
-    name: "小碼",
+    name: "鑄焰",
     tools: [
       "read_file",
       "write_file",
@@ -21,12 +21,12 @@ const agentCapabilities = {
     description: "程式開發專家",
   },
   oracle: {
-    name: "小析",
+    name: "明鏡",
     tools: ["analyze_structure", "analyze_deps", "suggest_architecture"],
     description: "架構分析專家",
   },
   reviewer: {
-    name: "把關",
+    name: "守闕",
     tools: ["check_quality", "check_format", "check_logic"],
     description: "品質把關專家",
   },

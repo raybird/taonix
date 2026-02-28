@@ -29,23 +29,23 @@ export class TaonixAgent {
 }
 
 export const agents = {
-  explorer: new TaonixAgent("小探", [
+  explorer: new TaonixAgent("滄溟", [
     "explorer_github_trending",
     "explorer_web_search",
   ]),
-  coder: new TaonixAgent("小碼", [
+  coder: new TaonixAgent("鑄焰", [
     "coder_read_file",
     "coder_write_file",
     "coder_list_files",
     "coder_run_command",
     "coder_code_review",
   ]),
-  oracle: new TaonixAgent("小析", [
+  oracle: new TaonixAgent("明鏡", [
     "oracle_analyze_structure",
     "oracle_analyze_dependencies",
     "oracle_suggest_architecture",
   ]),
-  reviewer: new TaonixAgent("把關", [
+  reviewer: new TaonixAgent("守闕", [
     "reviewer_check_quality",
     "reviewer_check_format",
     "reviewer_check_logic",

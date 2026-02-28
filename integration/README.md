@@ -46,19 +46,19 @@ node index.js
 
 | Agent | 工具                                                          |
 | ----- | ------------------------------------------------------------- |
-| 小探  | github_trending, web_search                                   |
-| 小碼  | read_file, write_file, list_files, run_command, code_review   |
-| 小析  | analyze_structure, analyze_dependencies, suggest_architecture |
-| 把關  | check_quality, check_format, check_logic                      |
+| 滄溟  | github_trending, web_search                                   |
+| 鑄焰  | read_file, write_file, list_files, run_command, code_review   |
+| 明鏡  | analyze_structure, analyze_dependencies, suggest_architecture |
+| 守闕  | check_quality, check_format, check_logic                      |
 
 ## 工具對應
 
-### Explorer (小探)
+### Explorer (滄溟)
 
 - `explorer_github_trending` - 取得 GitHub Trending
 - `explorer_web_search` - 網頁搜尋
 
-### Coder (小碼)
+### Coder (鑄焰)
 
 - `coder_read_file` - 讀取檔案
 - `coder_write_file` - 寫入檔案
@@ -66,7 +66,7 @@ node index.js
 - `coder_run_command` - 執行指令
 - `coder_code_review` - Code Review
 
-### Oracle (小析)
+### Oracle (明鏡)
 
 - `oracle_analyze_structure` - 分析結構
 - `oracle_analyze_dependencies` - 分析依賴
