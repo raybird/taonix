@@ -2,6 +2,17 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v2.9.0] - 2026-02-28
+
+### Added
+
+- **Context Engineering 系統** - 整合 Agent-Skills-for-Context-Engineering 概念
+  - `agents/assistant/lib/context-helper.js` - 上下文管理器
+  - 支援上下文壓縮、狀態監控、快取管理
+  - 識別 Context Degradation 失效模式
+
+---
+
 ## [v2.8.0] - 2026-02-28
 
 ### Changed
