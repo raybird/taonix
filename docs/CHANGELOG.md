@@ -2,6 +2,16 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v2.8.0] - 2026-02-28
+
+### Changed
+
+- **Agent 命名優化** - 改善命名語意
+  - Product (小產 → 小策) - 避免諧音問題
+  - 更新 README.md、CHANGELOG.md、Web Console
+
+---
+
 ## [v2.7.0] - 2026-02-28
 
 ### Added
@@ -198,7 +208,7 @@ All notable changes to Taonix will be documented in this file.
     - UI 版面配置建議
     - 元件設計生成
     - UX 流程分析
-  - **Product** (小產) - 產品規劃專家
+  - **Product** (小策) - 產品規劃專家
     - PRD 產品需求文檔生成
     - 功能需求分析
     - 使用者故事建立
