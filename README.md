@@ -1,48 +1,57 @@
-# Taonix
+# Taonix (v16.2.0)
 
-> **理想 AI 助理的完全體**：基於事件驅動、黑板模式與元進化能力的超智能協作系統。
+> **AI 工程作業系統**：基於 MCP、心智黑板與事件總線的工業級多智能體框架。
 
-## 概述
+## 🤖 AI Agent 即插即用指南 (AI-First)
 
-Taonix (道之樞紐) 是一個賦予 TeleNexus 「長程執行力」與「自我演化能力」的多智能體系統。它不再只是工具的集合，而是一個具備共同心智 (Blackboard) 與反射神經 (Event Bus) 的自組織智能生態。
+如果你是一個正在連接 Taonix 的 AI Agent，請閱讀此處：
 
-## 核心架構 (v9.0.0+)
+### 1. 喚醒專家 (MCP 整合)
+Taonix 提供標準的 **Model Context Protocol (MCP)** 服務。連接後你將獲得以下實體工具：
+- `coder_action`: 執行實體代碼讀寫與 Shell 指令。
+- `oracle_action`: 執行自動化架構掃描與依賴分析。
+- `explorer_action`: 取得 GitHub Trending 與網頁事實。
+- `router_route`: 模糊意圖自動分發。
 
-- **🧠 心智黑板 (Blackboard)**: 共享的全域事實牆與推理鏈路，讓 Agent 之間能共享「思考過程」。
-- **📡 事件總線 (Event Bus)**: 全非同步的反應式協作架構，支援「廣播與監聽」。
-- **⛓️ 長程編排 (Orchestration)**: 持久化任務狀態機，支援跨日執行與斷點續傳。
-- **🛠️ 元進化 (Meta-Evolution)**: 內建技能建築師，能根據任務需求自動編寫並安裝新技能。
-- **🛡️ 安全沙盒 (Sandbox)**: 基於 Node.js VM 的零信任執行環境與動態權限控管。
-- **📊 視覺化全景 (Web Console)**: 八欄式即時監控，包含小隊拓樸、英雄榜與環境監控。
+**啟動指令：**
+```bash
+node projects/taonix/mcp-server/index.js
+```
 
-## 快速開始
+### 2. 心智同步 (Blackboard)
+所有重要事實必須沉澱至 `Blackboard`。
+- **讀取事實**：`cat .data/blackboard_state.json`
+- **通訊協議**：發布事件至 `EventBus` 前，請務必參閱 `ai-engine/lib/event-schema.js` 的強型別定義。
 
-### 啟動控制台 (推薦)
+---
+
+## 🚀 快速開始
+
+### 1. 穩定性安裝 (宿主機)
+建議在宿主機直接運行 Web 控制台以確保連線不中斷：
 ```bash
 cd projects/taonix/web-console
 node server.js
-# 訪問 http://localhost:3000 查看八欄式即時監控
+# 訪問 http://localhost:3000 (或 3031 對映埠)
 ```
 
-### 啟動長程工作流
+### 2. 驅動助理
 ```bash
-# 透過助理啟動一個複雜的工程任務
-node agents/assistant/index.js workflow "請分析目前的排程問題並設計一個自癒方案"
+# 指派特定專家執行任務
+node agents/assistant/index.js broadcast oracle "執行專案結構健檢"
 ```
 
-### 監控事件流
+### 3. 自我描述與能力地圖
+查看全系統能力定義：
 ```bash
-node agents/assistant/index.js monitor
+cat projects/taonix/MANIFEST.json
 ```
 
-## Agent 團隊與技能
-詳細資訊請參閱 [docs/AGENTS.md](./docs/AGENTS.md) 與 [docs/ROADMAP.md](./docs/ROADMAP.md)。
-
-## 技術棧
-- **Runtime**: Node.js (ESM), tsx
-- **Comm**: Model Context Protocol (MCP), EventEmitter
-- **Intelligence**: AICaller (OpenAI/Ollama/Gemini)
-- **Data**: JSONL (Audit), Blackboard (Shared State)
+## 🛠️ 核心功能 (紮實版)
+- **事件 Schema 校驗**：拒絕任何不符規範的非法通訊，確保系統穩定。
+- **執行調度器 (Dispatcher)**：內建 3 次自動重試與 30 秒超時阻斷機制。
+- **動態資源 GC**：自動清理過大日誌與過期事實，保持系統輕量。
+- **全路徑解耦**：支援任何工作目錄，徹底消除硬編碼。
 
 ---
-*Taonix: 進化永不停止。*
+*Taonix: 不僅能對話，更能實體執行。*
