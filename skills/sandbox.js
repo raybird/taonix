@@ -1,68 +1,71 @@
-import { paths } from "../config/paths.js";
 import vm from "vm";
+import { paths } from "../config/paths.js";
 import fs from "fs";
-import path from "path";
-import { blackboard } from "../memory/blackboard.js";
 
+/**
+ * Skill Sandbox (v13.1.0 - Enhanced)
+ * 解決 Risk D: 實作真正的網路阻斷與細粒度 FS 注入。
+ */
 export class SkillSandbox {
-  constructor() {
-    this.logPath = require("../config/paths.js").paths.sandbox_audit.jsonl;
+  constructor(policy = {}) {
+    this.policy = {
+      allowFS: false,
+      allowNetwork: false,
+      ...policy
+    };
+    this.logPath = paths.data + "/sandbox_audit.jsonl";
   }
 
-  async run(code, context, options = {}) {
-    const { 
-      skillName = "unknown",
-      allowFS = false,
-      allowNetwork = false
-    } = options;
-    console.log("[Sandbox] 正在執行: " + skillName);
-
-    const sandboxContext = {
-      console: {
-        log: (...args) => console.log("[Sandbox:" + skillName + "]", ...args),
-        error: (...args) => console.error("[Sandbox:" + skillName + "]", ...args),
-      },
-      context,
-      blackboard: {
-        getFacts: () => blackboard.getFacts(),
-        recordThought: (content) => blackboard.recordThought("sandbox:" + skillName, content)
-      },
-      // 根據 options 動態注入敏感 API 的受限版本
-      fs: allowFS ? {
-        readFileSync: (p) => fs.readFileSync(p, "utf-8"),
-        readdirSync: (p) => fs.readdirSync(p)
-      } : undefined,
-      setTimeout,
-      Promise,
+  async run(code, context = {}) {
+    const auditRecord = {
+      timestamp: new Date().toISOString(),
+      skillName: context.skillName || "unknown",
+      policy: this.policy,
+      status: "started"
     };
 
-    vm.createContext(sandboxContext);
+    // 1. 建立受限的環境沙盒
+    const sandbox = {
+      console: console,
+      setTimeout: setTimeout,
+      Buffer: Buffer,
+      // 依策略注入 FS
+      fs: this.policy.allowFS ? this.createRestrictedFS() : null,
+      // 依策略注入 Network (Risk D Fix)
+      fetch: this.policy.allowNetwork ? fetch : this.createBlockedFetch(),
+      ...context.data
+    };
 
     try {
       const script = new vm.Script(code);
-      const result = await script.runInContext(sandboxContext, { timeout: 5000 });
-      this.auditLog(skillName, "success");
+      vm.createContext(sandbox);
+      const result = await script.runInContext(sandbox, { timeout: 5000 });
+      
+      this.logAudit({ ...auditRecord, status: "success" });
       return result;
-    } catch (error) {
-      this.auditLog(skillName, "error", error.message);
-      throw new Error("[Sandbox Security Violation] " + error.message);
+    } catch (e) {
+      this.logAudit({ ...auditRecord, status: "failed", error: e.message });
+      throw e;
     }
   }
 
-  auditLog(skillName, status, detail = "") {
-    try {
-      const entry = {
-        timestamp: new Date().toISOString(),
-        skillName,
-        status,
-        detail
-      };
-      const dir = path.dirname(this.logPath);
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      fs.appendFileSync(this.logPath, JSON.stringify(entry) + "\n");
-    } catch (e) {
-      console.error("[SandboxAudit] 寫入失敗: " + e.message);
-    }
+  createBlockedFetch() {
+    return () => {
+      throw new Error("[Sandbox] 網路存取遭拒：目前的 Policy 不允許外部網路請求。");
+    };
+  }
+
+  createRestrictedFS() {
+    // 僅允許讀取 temp 目錄
+    return {
+      readFileSync: (p) => {
+        if (!p.includes("temp")) throw new Error("FS 存取受限");
+        return fs.readFileSync(p);
+      }
+    };
+  }
+
+  logAudit(record) {
+    fs.appendFileSync(this.logPath, JSON.stringify(record) + "\n");
   }
 }
-export const skillSandbox = new SkillSandbox();

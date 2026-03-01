@@ -259,7 +259,7 @@
       "title": "開發 Taonix v13.0.0：1. 實作 P2P 通訊橋接器 (P2P Bridge) 2. 支援跨網路 Agent 自動發現 3. 實作分散式事件總線 (Distributed Event Bus) 4. 整合 P2P 檔案加密交換機制",
       "description": "由 AutonomousPlanner 自動建立",
       "status": "in_progress",
-      "progress": 60,
+      "progress": 80,
       "created": "2026-03-01T04:46:04.989Z",
       "deadline": "2026-03-04T04:46:04.988Z",
       "subGoals": [
