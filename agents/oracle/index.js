@@ -4,54 +4,47 @@ import { Command } from "commander";
 import { analyzeStructure } from "./lib/structure-analyzer.js";
 import { analyzeDependencies } from "./lib/dependency-analyzer.js";
 import { suggestArchitecture } from "./lib/architecture-suggestion.js";
+import { BaseAgent } from "../lib/base-agent.js";
 
 const program = new Command();
+const oracle = new BaseAgent("oracle");
 
 program
   .name("taonix-oracle")
-  .description("Taonix Oracle Agent - 架構分析專家")
-  .version("1.0.0");
+  .description("Taonix Oracle Agent (Hardened) - 架構分析專家")
+  .version("14.1.0");
 
 program
   .command("structure")
-  .description("分析專案結構")
+  .description("分析專案結構並同步至黑板")
   .argument("<directory>", "專案目錄")
   .action(async (directory) => {
-    try {
+    await oracle.runTask(`架構分析: ${directory}`, async (context) => {
       const result = await analyzeStructure(directory);
-      console.log(JSON.stringify({ success: true, data: result }, null, 2));
-    } catch (error) {
-      console.error(JSON.stringify({ success: false, error: error.message }));
-      process.exit(1);
-    }
+      return { type: "project_structure", directory, nodes: result.nodes || [] };
+    });
   });
 
 program
   .command("deps")
-  .description("分析專案依賴")
+  .description("分析依賴並同步至黑板")
   .argument("<directory>", "專案目錄")
   .action(async (directory) => {
-    try {
+    await oracle.runTask(`依賴檢查: ${directory}`, async (context) => {
       const result = await analyzeDependencies(directory);
-      console.log(JSON.stringify({ success: true, data: result }, null, 2));
-    } catch (error) {
-      console.error(JSON.stringify({ success: false, error: error.message }));
-      process.exit(1);
-    }
+      return { type: "dependency_map", directory, dependencies: result.deps || [] };
+    });
   });
 
 program
   .command("suggest")
-  .description("提供架構建議")
+  .description("提供架構建議並同步至黑板")
   .argument("<directory>", "專案目錄")
   .action(async (directory) => {
-    try {
+    await oracle.runTask(`優化建議: ${directory}`, async (context) => {
       const result = await suggestArchitecture(directory);
-      console.log(JSON.stringify({ success: true, data: result }, null, 2));
-    } catch (error) {
-      console.error(JSON.stringify({ success: false, error: error.message }));
-      process.exit(1);
-    }
+      return { type: "architecture_proposal", directory, suggestions: result.proposals || [] };
+    });
   });
 
 program.parse();
