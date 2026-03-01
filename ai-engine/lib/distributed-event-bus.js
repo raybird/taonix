@@ -35,15 +35,23 @@ export class DistributedEventBus {
    * 透過 Gossip 協議傳播至 Mesh 網路
    */
   propagateToMesh(event) {
-    if (this.seenEvents.has(event.id)) return;
+    // v16.0.1 Fix: 嚴格阻斷重複事件與遞迴廣播
+    if (this.seenEvents.has(event.id)) {
+      return; 
+    }
     
-    console.log(`[DistBus] 全球廣播事件: ${event.name} (${event.id})`);
+    // 阻斷由 P2PBridge 或 DistBus 產生的遞迴事實
+    if (event.source.includes("p2p") || event.source === "orchestrator") {
+      return;
+    }
+
     this.seenEvents.add(event.id);
+    console.log(`[DistBus] 全球廣播事件: ${event.name} (${event.id})`);
     
     // 透過 P2P 橋接器發送
     p2pBridge.broadcastToPeers(event);
     
-    // 10 分鐘後清理已見事件 ID 以釋放記憶體
+    // 10 分鐘後清理
     setTimeout(() => this.seenEvents.delete(event.id), 600000);
   }
 

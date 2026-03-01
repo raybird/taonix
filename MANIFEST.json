@@ -1,0 +1,33 @@
+{
+  "system": "Taonix Autonomous Intelligent Ecosystem",
+  "version": "16.0.1",
+  "entry_points": {
+    "mcp": "node mcp-server/index.js",
+    "assistant": "node agents/assistant/index.js"
+  },
+  "capabilities": [
+    {
+      "agent": "oracle",
+      "specialty": "架構分析與依賴檢查",
+      "tools": ["structure", "deps", "suggest"],
+      "fact_keys": ["project_structure", "dependency_map"]
+    },
+    {
+      "agent": "coder",
+      "specialty": "實體代碼讀寫與執行",
+      "tools": ["read", "write", "run"],
+      "fact_keys": ["file_content", "command_execution"]
+    },
+    {
+      "agent": "explorer",
+      "specialty": "外部搜尋與趨勢追蹤",
+      "tools": ["github-trending", "web-search"],
+      "fact_keys": ["trending_report", "web_fact"]
+    }
+  ],
+  "protocols": {
+    "messaging": "EventBus (ESM)",
+    "schema": "ai-engine/lib/event-schema.js",
+    "state": "Blackboard (Persistent JSON)"
+  }
+}

@@ -18,6 +18,14 @@ export const Schemas = {
   PERFORMANCE_ALERT: {
     required: ["agent", "duration", "level", "suggestion", "timestamp"],
     types: { agent: "string", duration: "number", level: "string", suggestion: "string", timestamp: "number" }
+  },
+  SYSTEM_THROTTLING_STARTED: {
+    required: ["reason", "target"],
+    types: { reason: "string", target: "string" }
+  },
+  TASK_SUSPEND: {
+    required: ["taskId", "reason"],
+    types: { taskId: "string", reason: "string" }
   }
 };
 

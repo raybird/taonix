@@ -306,8 +306,8 @@
       "id": "goal_1772360173481",
       "title": "開發 Taonix v15.0.0：1. 實作 Agent 執行效能監控 (Execution Profiler) 2. 支援自動化任務瓶頸診斷 3. 優化跨節點心智事實同步延遲 4. 建立系統級自省與效能報告面板",
       "description": "由 AutonomousPlanner 自動建立",
-      "status": "in_progress",
-      "progress": 60,
+      "status": "completed",
+      "progress": 100,
       "created": "2026-03-01T10:16:13.481Z",
       "deadline": "2026-03-04T10:16:13.481Z",
       "subGoals": [
@@ -316,6 +316,36 @@
         "sub_goal_1772360173481_2",
         "sub_goal_1772360173481_3",
         "sub_goal_1772360173481_4"
+      ]
+    },
+    "goal_1772365573215": {
+      "id": "goal_1772365573215",
+      "title": "開發 Taonix v16.0.0：1. 實作任務動態掛起與恢復機制 (Task Suspend/Resume) 2. 支援基於負載的 Agent 自動擴縮容預告 3. 實作全系統資源佔用熱地圖 4. 整合自律資源回收機制 (GC for Agent Artifacts)",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "in_progress",
+      "progress": 80,
+      "created": "2026-03-01T11:46:13.215Z",
+      "deadline": "2026-03-04T11:46:13.215Z",
+      "subGoals": [
+        "sub_goal_1772365573215_0",
+        "sub_goal_1772365573215_1",
+        "sub_goal_1772365573215_2",
+        "sub_goal_1772365573215_3",
+        "sub_goal_1772365573215_4"
+      ]
+    },
+    "goal_1772369168925": {
+      "id": "goal_1772369168925",
+      "title": "Node-PG-Trigger 商用化演進：1. 實作自動斷線重連邏輯 (Auto-Reconnect) 2. 補齊全模組 TypeScript 型別定義 3. 實作單元測試覆蓋率 100% 4. 優化通知 Payload 解析效能",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T12:46:08.925Z",
+      "deadline": "2026-03-04T12:46:08.925Z",
+      "subGoals": [
+        "sub_goal_1772369168925_0",
+        "sub_goal_1772369168925_1",
+        "sub_goal_1772369168925_2"
       ]
     }
   },
@@ -1103,6 +1133,70 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-03-01T10:16:13.484Z"
+    },
+    "sub_goal_1772365573215_0": {
+      "id": "sub_goal_1772365573215_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T11:46:13.215Z"
+    },
+    "sub_goal_1772365573215_1": {
+      "id": "sub_goal_1772365573215_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T11:46:13.216Z"
+    },
+    "sub_goal_1772365573215_2": {
+      "id": "sub_goal_1772365573215_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T11:46:13.216Z"
+    },
+    "sub_goal_1772365573215_3": {
+      "id": "sub_goal_1772365573215_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T11:46:13.216Z"
+    },
+    "sub_goal_1772365573215_4": {
+      "id": "sub_goal_1772365573215_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T11:46:13.217Z"
+    },
+    "sub_goal_1772369168925_0": {
+      "id": "sub_goal_1772369168925_0",
+      "title": "第一步",
+      "description": "開始行動",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T12:46:08.927Z"
+    },
+    "sub_goal_1772369168925_1": {
+      "id": "sub_goal_1772369168925_1",
+      "title": "第二步",
+      "description": "持續推進",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T12:46:08.927Z"
+    },
+    "sub_goal_1772369168925_2": {
+      "id": "sub_goal_1772369168925_2",
+      "title": "第三步",
+      "description": "完成目標",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T12:46:08.928Z"
     }
   }
 }
