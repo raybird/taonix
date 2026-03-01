@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taonix 控制台 v10.0.0 - Nexus Healing</title>
+    <title>Taonix 控制台 v10.0.0 - Nexus Finality</title>
     <style>
       :root {
         --primary: #3b82f6;
@@ -15,7 +15,7 @@
         --success: #22c55e;
         --warning: #f59e0b;
         --danger: #ef4444;
-        --healing: #06b6d4;
+        --value: #f472b6;
       }
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
@@ -35,11 +35,11 @@
         margin-bottom: 10px;
       }
       h1 { font-size: 18px; display: flex; align-items: center; gap: 8px; }
-      .badge { background: var(--healing); padding: 2px 10px; border-radius: 10px; font-size: 10px; }
+      .badge { background: var(--value); padding: 2px 10px; border-radius: 10px; font-size: 10px; }
       
       .main-grid {
         display: grid;
-        grid-template-columns: 200px 220px 1.2fr 1fr 1fr 1fr 1fr 1fr 200px;
+        grid-template-columns: 180px 220px 220px 1fr 1fr 1fr 1fr 1fr 200px;
         gap: 6px;
       }
       
@@ -57,11 +57,10 @@
       .scroll-area { flex: 1; overflow-y: auto; max-height: 850px; padding-right: 2px; }
       .item { padding: 4px; border-bottom: 1px solid var(--border); font-size: 9px; line-height: 1.2; }
       
-      /* Healing UI (v10.0.0) */
-      .health-meter { height: 10px; background: #334155; border-radius: 5px; overflow: hidden; margin: 5px 0; }
-      .health-bar { height: 100%; background: var(--success); transition: width 1s; }
-      .status-ok { color: var(--success); font-weight: bold; }
-      .status-warn { color: var(--warning); font-weight: bold; }
+      /* Value UI (v10.0.0) */
+      .value-box { text-align: center; padding: 10px; background: rgba(244, 114, 182, 0.05); border-radius: 6px; }
+      .value-num { font-size: 20px; font-weight: bold; color: var(--value); }
+      .value-label { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
 
       .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--success); margin-right: 3px; }
       .progress-container { height: 3px; background: #334155; border-radius: 2px; margin: 3px 0; }
@@ -72,38 +71,46 @@
     <div class="container">
       <header>
         <h1>🚀 Taonix <span class="badge">v10.0.0</span></h1>
-        <div><span class="status-dot"></span>Nexus 實體連動中</div>
+        <div><span class="status-dot"></span>Nexus 全實體協作模式</div>
       </header>
 
       <div class="main-grid">
         <!-- Col 1: Registry -->
         <div class="card"><h2>👥 Registry</h2><div class="scroll-area" id="registryList"></div></div>
 
-        <!-- Col 2: Health (NEW v10.0.0) -->
+        <!-- Col 2: Health -->
         <div class="card">
-          <h2>🩺 系統自癒健康度</h2>
-          <div class="item">
-            系統得分: <span id="healthScore" class="status-ok">100</span>
-            <div class="health-meter"><div id="healthBar" class="health-bar" style="width: 100%"></div></div>
+          <h2>🩺 Health Score</h2>
+          <div class="item" style="text-align:center">
+            <span id="healthScore" style="font-size:24px; font-weight:bold" class="status-ok">100</span>
           </div>
-          <div class="item" id="providerStatus">Provider: Gemini</div>
-          <div class="item" id="processStatus">Zombies: 0</div>
+          <div class="item" id="providerStatus" style="font-size:8px">Gemini: Synced</div>
         </div>
 
-        <!-- Col 3: Workflows -->
-        <div class="card"><h2>⛓️ 工作流</h2><div class="scroll-area" id="workflowList"></div></div>
+        <!-- Col 3: Productivity (NEW v10.0.0) -->
+        <div class="card">
+          <h2>📈 Value Generated</h2>
+          <div class="value-box">
+            <div id="hoursSaved" class="value-num">0.0</div>
+            <div class="value-label">節省人工小時</div>
+          </div>
+          <div class="item" style="border:none">
+            完成任務: <span id="tasksDone">0</span><br/>
+            自動演進: <span id="autoEvol">0</span>
+          </div>
+        </div>
 
-        <!-- Col 4: Squads -->
+        <!-- Col 4: Workflows -->
+        <div class="card"><h2>⛓️ Workflows</h2><div class="scroll-area" id="workflowList"></div></div>
+
+        <!-- Col 5: Squads -->
         <div class="card"><h2>🛡️ Squads</h2><div class="scroll-area" id="squadList"></div></div>
 
-        <!-- Col 5: Consensus -->
+        <!-- Col 6: Consensus -->
         <div class="card"><h2>🤝 Consensus</h2><div class="scroll-area" id="consensusList"></div></div>
 
-        <!-- Col 6: Security -->
+        <!-- Col 7: Security -->
         <div class="card"><h2>🛡️ Security</h2><div class="scroll-area" id="auditList"></div></div>
-
-        <!-- Col 7: Decision -->
-        <div class="card"><h2>⚖️ Decision</h2><div class="scroll-area" id="decisionList"></div></div>
 
         <!-- Col 8: Blackboard -->
         <div class="card"><h2>🧠 Blackboard</h2><div class="scroll-area" id="thoughtList"></div></div>
@@ -116,6 +123,9 @@
     <script>
       async function update() {
         try {
+          const prodRes = await fetch('/.data/productivity_stats.json');
+          if (prodRes.ok) renderProductivity(await prodRes.ok ? await prodRes.json() : {});
+
           const bbRes = await fetch('/.data/blackboard_state.json');
           if (bbRes.ok) {
             const bb = await bbRes.json();
@@ -123,7 +133,6 @@
             renderThoughts(bb.thoughts || []);
             renderSquads(bb.facts || {});
             renderConsensus(bb.facts || {});
-            renderDecisions(bb.facts || {});
           }
 
           const taskRes = await fetch('/.data/task_states.json');
@@ -140,36 +149,25 @@
         } catch (e) { console.error(e); }
       }
 
+      function renderProductivity(stats) {
+        document.getElementById('hoursSaved').innerText = (stats.estimatedHoursSaved || 0).toFixed(1);
+        document.getElementById('tasksDone').innerText = stats.totalTasksCompleted || 0;
+        document.getElementById('autoEvol').innerText = stats.totalAutoEvolutions || 0;
+      }
+
       function renderHealth(facts) {
         const scoreEl = document.getElementById('healthScore');
-        const barEl = document.getElementById('healthBar');
-        const provEl = document.getElementById('providerStatus');
-        
-        let score = 100;
-        if (facts.config_mismatch) score -= 40;
-        
+        let score = facts.config_mismatch ? 60 : 100;
         scoreEl.innerText = score;
-        scoreEl.className = score > 70 ? 'status-ok' : 'status-warn';
-        barEl.style.width = score + '%';
-        barEl.style.backgroundColor = score > 70 ? '#22c55e' : '#f59e0b';
-
-        if (facts.config_mismatch) {
-          provEl.innerText = 'Provider: Mismatch!';
-          provEl.style.color = 'var(--danger)';
-        } else {
-          provEl.innerText = 'Provider: Gemini (Synced)';
-          provEl.style.color = 'var(--success)';
-        }
+        scoreEl.style.color = score > 70 ? '#22c55e' : '#ef4444';
       }
 
       function renderWorkflows(tasks) {
-        document.getElementById('workflowList').innerHTML = Object.values(tasks).reverse().slice(0, 5).map(t => `
-          <div class="item"><b>${t.id.substring(0,10)}..</b><br/>Step: ${t.currentStep}/${t.steps.length}</div>
-        `).join('');
+        document.getElementById('workflowList').innerHTML = Object.values(tasks).reverse().slice(0, 5).map(t => `<div class="item">WF:${t.id.substring(0,8)}</div>`).join('');
       }
 
       function renderRegistry(agents) {
-        document.getElementById('registryList').innerHTML = Object.entries(agents).map(([name]) => `<div class="item"><b>${name}</b></div>`).join('');
+        document.getElementById('registryList').innerHTML = Object.entries(agents).map(([name]) => `<div class="item">${name}</div>`).join('');
       }
 
       function renderSquads(facts) {
@@ -179,24 +177,20 @@
 
       function renderConsensus(facts) {
         const proposals = Object.entries(facts).filter(([k]) => k.startsWith('proposal_'));
-        document.getElementById('consensusList').innerHTML = proposals.map(([_, f]) => `<div class="item">${f.value.status}</div>`).join('');
+        document.getElementById('consensusList').innerHTML = proposals.map(([_, f]) => `<div class="item">${f.value.id.substring(5)}</div>`).join('');
       }
 
       function renderAudits(text) {
         const lines = text.trim().split('\n').reverse().slice(0, 5);
-        document.getElementById('auditList').innerHTML = lines.map(line => `<div class="item">${JSON.parse(line).status}</div>`).join('');
-      }
-
-      function renderDecisions(facts) {
-        document.getElementById('decisionList').innerHTML = facts.pending_decision ? `<div class="item" style="color:var(--danger)">⚠️ 待決策</div>` : '';
+        document.getElementById('auditList').innerHTML = lines.map(line => `<div class="item">${JSON.parse(line).skillName}</div>`).join('');
       }
 
       function renderThoughts(thoughts) {
-        document.getElementById('thoughtList').innerHTML = thoughts.reverse().slice(0, 10).map(t=>`<div class="item"><b>${t.agent}</b>: ${t.content.substring(0,20)}..</div>`).join('');
+        document.getElementById('thoughtList').innerHTML = thoughts.reverse().slice(0, 10).map(t=>`<div class="item"><b>${t.agent}</b>: ${t.content.substring(0,15)}</div>`).join('');
       }
 
       function renderEvents(logs) {
-        document.getElementById('eventList').innerHTML = logs.slice(0, 10).map(l=>`<div class="item"><b>${l.routed_to}</b></div>`).join('');
+        document.getElementById('eventList').innerHTML = logs.slice(0, 10).map(l=>`<div class="item">${l.routed_to}</div>`).join('');
       }
 
       setInterval(update, 2000);
