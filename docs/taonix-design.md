@@ -1,206 +1,59 @@
-# Taonix 設計文件
+# Taonix 設計文件 (Design Specification)
 
-## 專案概述
+> **版本：v9.0.0+**
+> **核心概念：道之樞紐 (The Nexus of Tao)**
 
-**Taonix** = Tao + Nexus，道之樞紐
-
-基於 Opencode Tao of Coding 框架的多智能體協作系統，旨在賦予 TeleNexus 擁有多個 Sub-Agent 來協助完成任務。
-
----
-
-## 核心設計
-
-### 分層架構 (AutoGen 啟發)
-
-| 層級   | 說明                                |
-| ------ | ----------------------------------- |
-| Core   | 工具層 (讀寫檔案、搜尋、執行指令)   |
-| Agent  | 智能層 (Explorer/Coder/Memory 等)   |
-| Skills | 專業層 (brainstorming/debugging 等) |
-
-### 協作方式：混合型
-
-- **簡單任務**：我直接處理
-- **複雜任務**：呼叫合適的 Agent 協助
-- **指定呼叫**：使用者可隨時 @ 指定 Agent
-
-### 團隊組成：5 人 + 技能核心
-
-> **AgentTool 機制**：每個 Agent 可被包裝成 Tool 供其他 Agent 調用，形成協作網路
-
-| Agent    | 角色       | 名字 | 風格                           |
-| -------- | ---------- | ---- | ------------------------------ |
-| Explorer | 搜尋專家   | 滄溟 | 活潑好奇，說話快，愛發現新東西 |
-| Coder    | 工程師     | 鑄焰 | 嚴謹務實，就事論事             |
-| Memory   | 記憶管理員 | 小記 | 溫和細心，擅長提醒往事         |
-| Analyzer | 分析師     | 明鏡 | 冷靜理性，愛拆解問題           |
-| Reviewer | 把關者     | 守闕 | 毒舌但中肯，追求完美           |
-
-### 技能框架 (Skills Core)
-
-- **技能匹配引擎**：根據輸入關鍵字自動選擇正確技能
-- **自我學習模組**：記住使用者偏好與統計數據
-- **8 個專業技能**：brainstorming、systematic-debugging、test-driven-development、receiving-code-review、requesting-code-review、writing-plans、executing-plans、verification-before-completion
+## 一、 專案概述
+Taonix 是一個具備自我演進能力的多智能體協作系統 (Multi-Agent System)。它不僅是 TeleNexus 的能力擴展，更是一個具備獨立思考鏈路 (Blackboard) 與反射神經 (Event Bus) 的自組織智能生態。
 
 ---
 
-## 能力範圍
+## 二、 核心架構 (V9.0+)
 
-### 滄溟 (Explorer)
+### 1. 反應式協作網路 (Event-Driven Architecture)
+Taonix 採用「同儕協作 (Choreography)」模式，取代傳統的「命令-控制」模式。
+- **Event Bus**: 核心神經網路，負責非同步事件廣播。
+- **Agent Listener**: 各 Agent 具備主動監聽能力，能根據環境事件 (如 `GIT_COMMIT_DETECTED`) 自發啟動。
 
-- 網路搜尋、爬蟲、擷取網頁內容
-- 檔案搜尋、程式碼搜尋
-- 事實查證、資訊驗證
+### 2. 心智黑板 (Blackboard Pattern)
+解決多智能體間的「記憶碎片化」與「因果丟失」問題。
+- **事實牆 (Facts Wall)**: 共享的全域共識數據。
+- **推理鏈路 (Reasoning Chains)**: 紀錄 Agent 的「思考過程」而非僅結果，實現心智共享。
 
-### 鑄焰 (Coder)
-
-- 讀寫檔案、執行指令
-- Debug、除錯、重構
-- Code Review、語法檢查
-
-### 小記 (Memory)
-
-- 長期記憶的讀寫、搜尋
-- 上下文檢索、關聯建立
-- 記憶整理與分類
-
-### 明鏡 (Analyzer)
-
-- 複雜問題拆解
-- 架構建議、方案評估
-- 數據分析、趨勢判斷
-
-### 守闕 (Reviewer)
-
-- 輸出品質檢查
-- 邏輯一致性驗證
-- 錯誤檢測、格式把關
+### 3. 元進化引擎 (Meta-Evolution)
+系統具備「自我編程」能力。
+- **Skill Architect**: 自動分析任務缺口，編寫並安裝新技能。
+- **Sandbox**: 隔離執行環境，確保動態生成的代碼不會破壞系統安全。
 
 ---
 
-## 觸發邏輯
+## 三、 團隊角色 (AGENTS.md 簡述)
 
-1. **明確指定**：使用者 @ 某個 Agent → 觸發該 Agent
-2. **自動判斷**：我根據任務複雜程度，自動呼叫合適的 Agent
-3. **我方把關**：最終由我整合結果並輸出
-
----
-
-## 設計原則
-
-1. **分工明確**：每個 Agent 有清晰職責
-2. **彈性調度**：混合型協作，保留彈性
-3. **品質把關**：Reviewer 確保輸出品質
-4. **記憶整合**：Memory Agent 管理上下文連續性
+| 角色 | 核心能力 | 演進特質 |
+| :--- | :--- | :--- |
+| **Explorer** | 搜尋、趨勢、爬蟲 | 全網資訊觸手 |
+| **Coder** | 實作、重構、感知執行 | 具備黑板感知的工程師 |
+| **Oracle** | 架構分析、推理、深度決策 | 系統的邏輯核心 |
+| **Arbitrator** | 衝突解決、根因分析 | 人類介入的決策支持者 |
+| **Assistant** | 任務編排、長期規劃 | 長程任務狀態機的驅動者 |
+| **Architect** | 技能生成、元進化 | 自我演化的造物主 |
 
 ---
 
-## 自主進化參考
-
-### Superpowers 精神 (64k ⭐)
-
-- **TDD 優先**：Write tests first, always
-- **系統化除錯**：4 階段根因分析
-- **驗證優先**：Verify before declaring success
-- **複雜度簡化**：Simplicity as primary goal
-
-### BMAD-METHOD 精神 (38k ⭐)
-
-- **規模自適應**：根據任務複雜度自動調整規劃深度
-- **多元專業 Agent**：12+ 領域專家協作
-- **Party Mode**：多個 Agent 共同討論
-- **完整生命週期**：從發想到部署
-
-### oh-my-opencode-slim 精神 (1.7k ⭐)
-
-- **精簡token**：高效能運算
-- **多模型支援**：Mix any models
-- **自動委派**：Auto delegate tasks
-
-### Microsoft AutoGen 精神 (28k ⭐)
-
-- **分層設計**：Core (工具層) → Agent (智能層) → Skills (專業層)
-- **AgentTool**：Agent 可被包裝成 Tool 供其他 Agent 調用
-- **對話編排**：支援多 Agent 協作對話流程、群組聊天
-- **混合協作**：多 Agent 可自主協作或與人類協作
-
-### Agent-Skills-for-Context-Engineering (12.4k ⭐)
-
-- **Context Engineering**：上下文工程，管理語言模型的上下文視窗
-- **Context Degradation**：識別上下文失效模式（lost-in-middle, poisoning, distraction）
-- **Context Compression**：長對話會話的壓縮策略
-- **Multi-Agent Patterns**：orchestrator、peer-to-peer、hierarchical 架構
-- **Memory Systems**：短期、長期、圖基記憶架構
-- **Tool Design**：設計 Agent 可有效使用的工具
-- **Context Optimization**：compaction、masking、caching 策略
-- **Evaluation**：建立 Agent 系統的評估框架
-- **BDI Mental States**：使用正式 BDI ontology 模擬 Agent 心理狀態
+## 四、 執行鏈路：長程編排 (v9.0)
+Taonix 具備處理跨日、複雜工程任務的能力：
+1. **目標分解**: Assistant 將目標拆解為 Task State Machine 可識別的節點。
+2. **小隊組建**: 根據能力標籤自動組建虛擬小隊 (Squad)。
+3. **共識達成**: 成員對方案進行投票與協商。
+4. **持久執行**: 支援斷點續傳、環境快照與資源自動回收。
 
 ---
 
-## 下一步進化方向
-
-1. **規模自適應** ✅ - 根據任務複雜度自動調整 Agent 組合
-2. **Party Mode** - 複雜任務觸發多 Agent 討論
-3. **增強記憶** - 跨對話記憶、偏好學習、上下文延續
-4. **Dev Loop 自動化** - 從發想到部署的完整流程
-5. **AgentTool 化** - 實作 Agent 互相調用機制 (參考 AutoGen)
-6. **對話編排** - 支援群組聊天、多 Agent 協作流程
+## 五、 設計原則 (The Tao)
+1. **去中心化**: 盡可能讓 Agent 自發響應，而非由 Router 強制分配。
+2. **透明化**: 推理過程必須寫入黑板，確保 AI 的行為可解釋。
+3. **安全擴充**: 所有的動態技能載入必須經過沙盒審計。
+4. **持續學習**: 透過集體經驗庫 (Experience Base) 優化選員策略。
 
 ---
-
-## 記憶系統規劃
-
-### 現有功能
-
-- 技能使用統計
-- Agent 調度紀錄
-- 偏好儲存 (JSON)
-
-### 增強規劃
-
-| 功能                                  | 說明                         | 優先度 |
-| ------------------------------------- | ---------------------------- | ------ |
-| **對話摘要**                          | 自動摘要每次對話重點         | P1     |
-| **偏好學習**                          | 學習使用者溝通風格、回覆長度 | P1     |
-| **上下文延續**                        | 跨對話記住之前討論的內容     | P2     |
-| **重要事件**                          | 記住重大決定、偏好變更       | P2     |
-| **向量搜尋** - 語義相似度檢索過往經驗 | P3                           |
-
-### 記憶來源
-
-1. **技能使用** - 什麼情況觸發什麼技能
-2. **Agent 組合** - 哪些任務用哪些 Agent 效果最好
-3. **回饋學習** - 使用者喜歡/不喜歡的回覆風格
-4. **時間模式** - 了解使用者常用的工作時段
-
-### 調研資源
-
-| 專案           | 特色                                                                                                                 |
-| -------------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Memoria**    | 跨會話持久記憶，HTTP API + SDK，SQLite + Markdown 持久化，Hybrid recall (keyword/tree/語意)，OpenCode Adapter 已支援 |
-| **MemMachine** | 通用記憶層，擴展性強                                                                                                 |
-| **HMLR-Agent** | 分層記憶 lookup & routing，跨主題推理                                                                                |
-| **Memori**     | 開源記憶引擎 for LLMs                                                                                                |
-| **A-MEM**      | NeurIPS 2025論文，Agentic Memory                                                                                     |
-| **SimpleMem**  | 高效終身記憶                                                                                                         |
-| **CogmemAi**   | 雲端 MCP，語意搜尋                                                                                                   |
-
-**關鍵洞察：**
-
-1. Flat File 不夠 - 無法搜尋、沒有去重、沒有衰減、沒有跨專案學習
-2. 向量搜尋很重要 - 語意相似度檢索
-3. 分層記憶 - 短期/長期/工作記憶分開
-4. 重要性評分 - 不是所有記憶都同等重要
-5. 自動擷取 - 對話中自動捕捉決定和教訓
-
-### MCP Memory 整合
-
-```javascript
-// 存入長期記憶
-{
-  entityType: "TaonixMemory",
-  name: "偏好_回覆風格",
-  observations: ["喜歡簡短回覆", "需要時才詳細說明"]
-}
-```
+*Last Updated: 2026-03-01*
