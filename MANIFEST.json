@@ -1,33 +1,23 @@
 {
-  "system": "Taonix Autonomous Intelligent Ecosystem",
-  "version": "16.0.1",
+  "system": "Taonix Unified Intelligence Hub",
+  "version": "16.3.1",
+  "philosophy": "多智能體樞紐：對外提供單一智慧入口，內部自組織專家協作。",
   "entry_points": {
     "mcp": "node mcp-server/index.js",
     "assistant": "node agents/assistant/index.js"
   },
   "capabilities": [
     {
-      "agent": "oracle",
-      "specialty": "架構分析與依賴檢查",
-      "tools": ["structure", "deps", "suggest"],
-      "fact_keys": ["project_structure", "dependency_map"]
-    },
-    {
-      "agent": "coder",
-      "specialty": "實體代碼讀寫與執行",
-      "tools": ["read", "write", "run"],
-      "fact_keys": ["file_content", "command_execution"]
-    },
-    {
-      "agent": "explorer",
-      "specialty": "外部搜尋與趨勢追蹤",
-      "tools": ["github-trending", "web-search"],
-      "fact_keys": ["trending_report", "web_fact"]
+      "name": "taonix_hub",
+      "type": "unified_entry",
+      "description": "接收自然語言意圖，自動調度 Coder, Oracle, Explorer, Reviewer 完成實體執行。",
+      "mcp_tool": "taonix_hub"
     }
   ],
+  "internal_agents": ["coder", "oracle", "explorer", "reviewer", "designer", "self-healer"],
   "protocols": {
-    "messaging": "EventBus (ESM)",
-    "schema": "ai-engine/lib/event-schema.js",
-    "state": "Blackboard (Persistent JSON)"
+    "messaging": "EventBus (Typed Schemas)",
+    "orchestration": "Priority-driven Resource Throttling",
+    "lifecycle": "Hourly Garbage Collection (GC)"
   }
 }
