@@ -7,73 +7,33 @@ import {
 import { blackboard } from "../memory/blackboard.js";
 import { agentDispatcher } from "../ai-engine/lib/agent-dispatcher.js";
 import { AICaller } from "../ai-engine/lib/ai-caller.js";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
- * Taonix MCP Server (v16.1.0 - Hardened & Exposed)
- * 正式暴露實體 Agent 工具，實現「即插即用」的協作。
+ * Taonix MCP Server (v16.3.0 - Hub Recovery)
+ * 回歸「多智能體樞紐」精神：對外僅暴露統一指揮入口。
  */
 const tools = [
   {
-    name: "router_route",
-    description: "全能路由工具：根據自然語言意圖自動分配 Agent。",
+    name: "taonix_hub",
+    description: "Taonix 智慧樞紐：處理所有工程、搜尋、設計與分析任務。你只需提供意圖，樞紐會自動調度內部 Agent 完成並回報。",
     inputSchema: {
       type: "object",
-      properties: { intent: { type: "string" } },
+      properties: {
+        intent: { type: "string", description: "你的任務意圖（如：分析此專案結構、修復 index.js 的錯誤、取得 GitHub 今日熱門）" },
+        context_hint: { type: "string", description: "額外的上下文線索" }
+      },
       required: ["intent"]
-    }
-  },
-  {
-    name: "coder_action",
-    description: "執行代碼操作：包含讀檔、寫檔、運行指令。",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: { type: "string", enum: ["read", "write", "run"] },
-        path: { type: "string" },
-        content: { type: "string" },
-        command: { type: "string" }
-      },
-      required: ["action"]
-    }
-  },
-  {
-    name: "oracle_action",
-    description: "執行架構分析：包含結構掃描、依賴檢查、優化建議。",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: { type: "string", enum: ["structure", "deps", "suggest"] },
-        directory: { type: "string", default: "." }
-      },
-      required: ["action"]
-    }
-  },
-  {
-    name: "explorer_action",
-    description: "執行搜尋任務：取得 GitHub 趨勢或搜尋網頁事實。",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: { type: "string", enum: ["github-trending", "web-search"] },
-        query: { type: "string" },
-        language: { type: "string" }
-      },
-      required: ["action"]
     }
   }
 ];
 
-class TaonixServer {
+class TaonixHubServer {
   constructor() {
     this.server = new Server(
-      { name: "taonix-mcp-server", version: "16.1.0" },
+      { name: "taonix-hub", version: "16.3.0" },
       { capabilities: { tools: {} } }
     );
+    this.aiCaller = new AICaller();
     this.setupHandlers();
   }
 
@@ -82,34 +42,36 @@ class TaonixServer {
 
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const { name, arguments: args } = request.params;
-      let agent, task, params = args;
 
-      if (name === "router_route") {
-        // 沿用先前的語義路由邏輯 (簡化示意)
-        return { content: [{ type: "text", text: "請直接使用具體的 agent_action 工具以獲得更扎實的執行。" }] };
+      if (name === "taonix_hub") {
+        console.log(`[Hub] 接收到外部意圖: ${args.intent}`);
+        
+        // 1. 內部智慧路由 (Internal Routing - 不對外暴露)
+        const routingPrompt = `你是一個專業的任務調度器。請根據意圖選擇最合適的 Agent：explorer, coder, oracle, reviewer, designer。\n意圖: ${args.intent}\n僅返回 Agent 名稱。`;
+        const routeRes = await this.aiCaller.call(routingPrompt);
+        const targetAgent = routeRes.content.trim().toLowerCase();
+
+        // 2. 內部執行 (Dispatcher)
+        const execRes = await agentDispatcher.dispatch({
+          agent: targetAgent,
+          task: args.intent,
+          params: {}
+        });
+
+        // 3. 彙整結果 (Encapsulation)
+        return {
+          content: [{
+            type: "text",
+            text: JSON.stringify({
+              status: execRes.success ? "completed" : "failed",
+              insight: execRes.output?.substring(0, 2000),
+              message: "任務已由 Taonix 樞紐處理完畢。"
+            }, null, 2)
+          }]
+        };
       }
 
-      // 提取 Agent 名稱
-      agent = name.split("_")[0];
-      task = args.action;
-
-      // 實體分發執行 (P0 閉環)
-      const res = await agentDispatcher.dispatch({ agent, task, params });
-
-      // 注入黑板事實摘要
-      const context = blackboard.getSummaryForContext();
-
-      return {
-        content: [{
-          type: "text",
-          text: JSON.stringify({
-            success: res.success,
-            taskId: res.taskId,
-            output: res.output?.substring(0, 1000),
-            system_context: context
-          }, null, 2)
-        }]
-      };
+      throw new Error("未知工具");
     });
   }
 
@@ -119,4 +81,4 @@ class TaonixServer {
   }
 }
 
-new TaonixServer().run();
+new TaonixHubServer().run();
