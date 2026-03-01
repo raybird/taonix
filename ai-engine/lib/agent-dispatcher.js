@@ -4,59 +4,76 @@ import { eventBus } from "./event-bus.js";
 import { blackboard } from "../../memory/blackboard.js";
 
 /**
- * Agent Dispatcher (v13.1.0)
- * 解決 Risk C: 實作從 Intent 到實體執行的最後一哩路。
+ * Agent Dispatcher (v14.0.0 - Hardened Edition)
+ * 解決 Risk C 並落實「穩定扎實」：加入重試、超時與生命週期管理。
  */
 export class AgentDispatcher {
   constructor() {
     this.agentsDir = path.join(process.cwd(), "agents");
+    this.maxRetries = 3;
+    this.timeoutMs = 30000; // 30秒強制超時
   }
 
-  /**
-   * 分發並執行任務
-   * @param {Object} intent - 來自 MCP Router 的意圖物件
-   */
-  async dispatch(intent) {
+  async dispatch(intent, retryCount = 0) {
     const { agent, task, params } = intent;
-    const taskId = `exec_${Date.now()}`;
+    const taskId = `exec_${Date.now()}_r${retryCount}`;
 
-    console.log(`[Dispatcher] 正在分發任務 ${taskId} 給 ${agent}...`);
-    
-    // 1. 發布任務開始事件 (P1: Event Schema)
-    eventBus.publish("TASK_STARTED", { taskId, agent, task }, "dispatcher");
+    console.log(`[Dispatcher] 分發任務 ${taskId} (嘗試 ${retryCount + 1}/${this.maxRetries})...`);
+    eventBus.publish("TASK_STARTED", { taskId, agent, task, timestamp: Date.now() }, "dispatcher");
 
     try {
-      // 2. 啟動實體 Agent CLI
-      // 假設每個 agent 目錄下都有 index.js
-      const agentScript = path.join(this.agentsDir, agent, "index.js");
-      const args = [agentScript, task, JSON.stringify(params || {})];
-
-      const child = spawn("node", args, { stdio: "pipe" });
-      let output = "";
-
-      child.stdout.on("data", (data) => output += data.toString());
-      child.stderr.on("data", (data) => output += data.toString());
-
-      return new Promise((resolve) => {
-        child.on("close", (code) => {
-          const success = code === 0;
-          
-          // 3. 更新黑板事實 (Knowledge Loop)
-          blackboard.updateFact(`last_result_${agent}`, { taskId, success, summary: output.substring(0, 500) }, "dispatcher");
-          blackboard.recordThought("dispatcher", `任務 ${taskId} (${agent}) 執行完畢，退出碼: ${code}`);
-
-          // 4. 發布完成/失敗事件
-          eventBus.publish(success ? "TASK_FINISHED" : "TASK_FAILED", { taskId, agent, output }, "dispatcher");
-          
-          resolve({ success, taskId, output });
-        });
-      });
-
+      const result = await this.executeWithTimeout(agent, task, params);
+      
+      if (result.success) {
+        this.reportCompletion(taskId, agent, result.output);
+        return result;
+      } else {
+        throw new Error(result.error || "未知執行錯誤");
+      }
     } catch (e) {
-      console.error(`[Dispatcher] 執行崩潰: ${e.message}`);
-      eventBus.publish("TASK_FAILED", { taskId, agent, error: e.message }, "dispatcher");
+      console.warn(`[Dispatcher] 任務失敗: ${e.message}`);
+      
+      if (retryCount < this.maxRetries - 1) {
+        console.log(`[Dispatcher] 1秒後進行重試...`);
+        await new Promise(r => setTimeout(r, 1000));
+        return this.dispatch(intent, retryCount + 1);
+      }
+
+      this.reportFailure(taskId, agent, e.message);
       return { success: false, error: e.message };
     }
+  }
+
+  async executeWithTimeout(agent, task, params) {
+    const agentScript = path.join(this.agentsDir, agent, "index.js");
+    
+    return new Promise((resolve) => {
+      const child = spawn("node", [agentScript, task, JSON.stringify(params || {})], { stdio: "pipe" });
+      
+      let output = "";
+      const timer = setTimeout(() => {
+        child.kill();
+        resolve({ success: false, error: "Task execution timeout (30s)" });
+      }, this.timeoutMs);
+
+      child.stdout.on("data", (d) => output += d.toString());
+      child.stderr.on("data", (d) => output += d.toString());
+
+      child.on("close", (code) => {
+        clearTimeout(timer);
+        resolve({ success: code === 0, output, code });
+      });
+    });
+  }
+
+  reportCompletion(taskId, agent, output) {
+    blackboard.updateFact(`last_success_${agent}`, { taskId, timestamp: Date.now() }, "dispatcher");
+    eventBus.publish("TASK_FINISHED", { taskId, agent, status: "success", summary: output.substring(0, 200) }, "dispatcher");
+  }
+
+  reportFailure(taskId, agent, error) {
+    eventBus.publish("TASK_FAILED", { taskId, agent, status: "failed", error }, "dispatcher");
+    blackboard.recordThought("dispatcher", `警告：任務 ${taskId} 在重試次數耗盡後依然失敗。原因: ${error}`);
   }
 }
 

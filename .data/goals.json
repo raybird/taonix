@@ -258,8 +258,8 @@
       "id": "goal_1772340364988",
       "title": "開發 Taonix v13.0.0：1. 實作 P2P 通訊橋接器 (P2P Bridge) 2. 支援跨網路 Agent 自動發現 3. 實作分散式事件總線 (Distributed Event Bus) 4. 整合 P2P 檔案加密交換機制",
       "description": "由 AutonomousPlanner 自動建立",
-      "status": "in_progress",
-      "progress": 80,
+      "status": "completed",
+      "progress": 100,
       "created": "2026-03-01T04:46:04.989Z",
       "deadline": "2026-03-04T04:46:04.988Z",
       "subGoals": [
@@ -268,6 +268,22 @@
         "sub_goal_1772340364988_2",
         "sub_goal_1772340364988_3",
         "sub_goal_1772340364988_4"
+      ]
+    },
+    "goal_1772346609804": {
+      "id": "goal_1772346609804",
+      "title": "開發 Taonix v14.0.0 (穩定性加固版)：1. 實作 Dispatcher 重試與超時機制 2. 定義標準事件 Schema 3. 完備全模組路徑加固 4. 最佳化 Web 控制台宿主機執行相容性",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "in_progress",
+      "progress": 85,
+      "created": "2026-03-01T06:30:09.804Z",
+      "deadline": "2026-03-04T06:30:09.804Z",
+      "subGoals": [
+        "sub_goal_1772346609804_0",
+        "sub_goal_1772346609804_1",
+        "sub_goal_1772346609804_2",
+        "sub_goal_1772346609804_3",
+        "sub_goal_1772346609804_4"
       ]
     }
   },
@@ -935,6 +951,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-03-01T04:46:04.991Z"
+    },
+    "sub_goal_1772346609804_0": {
+      "id": "sub_goal_1772346609804_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T06:30:09.805Z"
+    },
+    "sub_goal_1772346609804_1": {
+      "id": "sub_goal_1772346609804_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T06:30:09.806Z"
+    },
+    "sub_goal_1772346609804_2": {
+      "id": "sub_goal_1772346609804_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T06:30:09.806Z"
+    },
+    "sub_goal_1772346609804_3": {
+      "id": "sub_goal_1772346609804_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T06:30:09.807Z"
+    },
+    "sub_goal_1772346609804_4": {
+      "id": "sub_goal_1772346609804_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T06:30:09.807Z"
     }
   }
 }

@@ -3,49 +3,52 @@
 import { Command } from "commander";
 import { getGithubTrending } from "./lib/github-trending.js";
 import { searchWeb } from "./lib/web-search.js";
+import { BaseAgent } from "../lib/base-agent.js";
 
 const program = new Command();
+const explorer = new BaseAgent("explorer");
 
 program
   .name("taonix-explorer")
-  .description("Taonix Explorer Agent - 搜尋、爬蟲專家")
-  .version("1.0.0");
+  .description("Taonix Explorer Agent (Hardened) - 具備黑板意識的搜尋專家")
+  .version("14.1.0");
 
 program
   .command("github-trending")
-  .description("取得 GitHub Trending 專案")
+  .description("取得 GitHub Trending 專案並同步至黑板")
   .option("-l, --language <lang>", "篩選語言", "")
-  .option("-o, --output <format>", "輸出格式 (json|markdown)", "json")
   .action(async (options) => {
-    try {
+    await explorer.runTask(`取得 ${options.language || "Global"} GitHub 趨勢`, async (context) => {
+      // 實體邏輯：執行爬蟲
       const repos = await getGithubTrending(options.language);
-      if (options.output === "json") {
-        console.log(JSON.stringify({ success: true, data: repos }, null, 2));
-      } else {
-        console.log(`### GitHub Trending (${options.language || "Global"})`);
-        repos.forEach((repo, i) => {
-          console.log(`${i + 1}. ${repo.name} - ⭐ ${repo.stars}`);
-        });
-      }
-    } catch (error) {
-      console.error(JSON.stringify({ success: false, error: error.message }));
-      process.exit(1);
-    }
+      
+      // 紮實化：返回結構化數據供 BaseAgent 更新事實牆
+      return {
+        type: "trending_report",
+        language: options.language || "all",
+        top_repos: repos.slice(0, 5).map(r => ({ name: r.name, stars: r.stars })),
+        timestamp: new Date().toISOString()
+      };
+    });
   });
 
 program
   .command("web-search")
-  .description("搜尋網頁內容")
+  .description("搜尋網頁內容並同步至黑板")
   .argument("<query>", "搜尋關鍵字")
   .option("-n, --num <number>", "結果數量", "5")
   .action(async (query, options) => {
-    try {
+    await explorer.runTask(`搜尋網頁: ${query}`, async (context) => {
+      // 實體邏輯：執行網頁搜尋
       const results = await searchWeb(query, parseInt(options.num));
-      console.log(JSON.stringify({ success: true, data: results }, null, 2));
-    } catch (error) {
-      console.error(JSON.stringify({ success: false, error: error.message }));
-      process.exit(1);
-    }
+      
+      return {
+        type: "web_fact",
+        query,
+        summary: results.map(r => r.title).join(" | "),
+        source_count: results.length
+      };
+    });
   });
 
 program.parse();

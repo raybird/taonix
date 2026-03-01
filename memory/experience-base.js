@@ -3,12 +3,12 @@ import fs from "fs";
 import path from "path";
 
 /**
- * Taonix Collective Experience Base (v6.0.0)
+ * Taonix Collective Experience Base (v14.0.0 - Hardened)
  * 負責記錄與分析小隊協作的歷史經驗，實現集體學習。
  */
 export class ExperienceBase {
   constructor() {
-    this.storageFile = require("../config/paths.js").paths.experience_base.json;
+    this.storageFile = paths.experience;
     this.experience = {
       sessions: [],      // 歷史協作會話
       agentStats: {}     // Agent 表現統計
