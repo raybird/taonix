@@ -10,6 +10,7 @@ import { proactiveWorkflow } from "./lib/proactive-workflow.js";
 import { eventBus } from "../../ai-engine/lib/event-bus.js";
 import { memoriaBridge } from "../../memory/memoria-bridge.js";
 import { productivityTracker } from "../../memory/productivity-tracker.js";
+import { notificationCenter } from "../../ai-engine/lib/notification-center.js";
 
 const args = process.argv.slice(2);
 

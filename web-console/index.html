@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taonix 控制台 v10.0.0 - Nexus Finality</title>
+    <title>Taonix 控制台 v11.0.0 - Global Entity</title>
     <style>
       :root {
         --primary: #3b82f6;
@@ -15,7 +15,7 @@
         --success: #22c55e;
         --warning: #f59e0b;
         --danger: #ef4444;
-        --value: #f472b6;
+        --cluster: #10b981;
       }
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
@@ -35,11 +35,11 @@
         margin-bottom: 10px;
       }
       h1 { font-size: 18px; display: flex; align-items: center; gap: 8px; }
-      .badge { background: var(--value); padding: 2px 10px; border-radius: 10px; font-size: 10px; }
+      .badge { background: var(--cluster); padding: 2px 10px; border-radius: 10px; font-size: 10px; }
       
       .main-grid {
         display: grid;
-        grid-template-columns: 180px 220px 220px 1fr 1fr 1fr 1fr 1fr 200px;
+        grid-template-columns: 180px 200px 220px 250px 1fr 1fr 1fr 1fr 200px;
         gap: 6px;
       }
       
@@ -57,21 +57,18 @@
       .scroll-area { flex: 1; overflow-y: auto; max-height: 850px; padding-right: 2px; }
       .item { padding: 4px; border-bottom: 1px solid var(--border); font-size: 9px; line-height: 1.2; }
       
-      /* Value UI (v10.0.0) */
-      .value-box { text-align: center; padding: 10px; background: rgba(244, 114, 182, 0.05); border-radius: 6px; }
-      .value-num { font-size: 20px; font-weight: bold; color: var(--value); }
-      .value-label { font-size: 9px; color: var(--text-muted); margin-top: 2px; }
+      /* Cluster UI (v11.0.0) */
+      .node-item { background: rgba(16, 185, 129, 0.05); border-left: 3px solid var(--cluster); margin-bottom: 4px; padding: 4px; }
+      .status-label { font-size: 8px; color: var(--text-muted); }
 
       .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--success); margin-right: 3px; }
-      .progress-container { height: 3px; background: #334155; border-radius: 2px; margin: 3px 0; }
-      .progress-bar { height: 100%; background: var(--primary); border-radius: 2px; transition: width 0.5s; }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>🚀 Taonix <span class="badge">v10.0.0</span></h1>
-        <div><span class="status-dot"></span>Nexus 全實體協作模式</div>
+        <h1>🚀 Taonix <span class="badge">v11.0.0</span></h1>
+        <div><span class="status-dot"></span>跨域叢集監控中</div>
       </header>
 
       <div class="main-grid">
@@ -80,34 +77,26 @@
 
         <!-- Col 2: Health -->
         <div class="card">
-          <h2>🩺 Health Score</h2>
-          <div class="item" style="text-align:center">
-            <span id="healthScore" style="font-size:24px; font-weight:bold" class="status-ok">100</span>
-          </div>
-          <div class="item" id="providerStatus" style="font-size:8px">Gemini: Synced</div>
+          <h2>🩺 Host Stats</h2>
+          <div id="hostStats" class="item" style="font-size:8px; color:var(--cluster)">掃描中...</div>
         </div>
 
-        <!-- Col 3: Productivity (NEW v10.0.0) -->
+        <!-- Col 3: Cluster (NEW v11.0.0) -->
         <div class="card">
-          <h2>📈 Value Generated</h2>
-          <div class="value-box">
-            <div id="hoursSaved" class="value-num">0.0</div>
-            <div class="value-label">節省人工小時</div>
-          </div>
-          <div class="item" style="border:none">
-            完成任務: <span id="tasksDone">0</span><br/>
-            自動演進: <span id="autoEvol">0</span>
+          <h2>🐳 External Containers</h2>
+          <div class="scroll-area" id="clusterList">
+            <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:9px">無感測數據</div>
           </div>
         </div>
 
-        <!-- Col 4: Workflows -->
+        <!-- Col 4: Value -->
+        <div class="card"><h2>📈 Productivity</h2><div id="valStats" class="item"></div></div>
+
+        <!-- Col 5: Workflows -->
         <div class="card"><h2>⛓️ Workflows</h2><div class="scroll-area" id="workflowList"></div></div>
 
-        <!-- Col 5: Squads -->
+        <!-- Col 6: Squads -->
         <div class="card"><h2>🛡️ Squads</h2><div class="scroll-area" id="squadList"></div></div>
-
-        <!-- Col 6: Consensus -->
-        <div class="card"><h2>🤝 Consensus</h2><div class="scroll-area" id="consensusList"></div></div>
 
         <!-- Col 7: Security -->
         <div class="card"><h2>🛡️ Security</h2><div class="scroll-area" id="auditList"></div></div>
@@ -123,17 +112,16 @@
     <script>
       async function update() {
         try {
-          const prodRes = await fetch('/.data/productivity_stats.json');
-          if (prodRes.ok) renderProductivity(await prodRes.ok ? await prodRes.json() : {});
-
           const bbRes = await fetch('/.data/blackboard_state.json');
           if (bbRes.ok) {
             const bb = await bbRes.json();
-            renderHealth(bb.facts || {});
+            renderCluster(bb.facts || {});
             renderThoughts(bb.thoughts || []);
             renderSquads(bb.facts || {});
-            renderConsensus(bb.facts || {});
           }
+
+          const prodRes = await fetch('/.data/productivity_stats.json');
+          if (prodRes.ok) renderValue(await prodRes.json());
 
           const taskRes = await fetch('/.data/task_states.json');
           if (taskRes.ok) renderWorkflows(await taskRes.json());
@@ -149,17 +137,22 @@
         } catch (e) { console.error(e); }
       }
 
-      function renderProductivity(stats) {
-        document.getElementById('hoursSaved').innerText = (stats.estimatedHoursSaved || 0).toFixed(1);
-        document.getElementById('tasksDone').innerText = stats.totalTasksCompleted || 0;
-        document.getElementById('autoEvol').innerText = stats.totalAutoEvolutions || 0;
+      function renderCluster(facts) {
+        if (facts.host_physical_stats) {
+          const s = facts.host_physical_stats.value;
+          document.getElementById('hostStats').innerHTML = `Disk: ${s.disk.substring(0,15)}..<br/>Uptime: ${s.uptime.split(',')[0]}`;
+        }
+        if (facts.discovered_containers) {
+          document.getElementById('clusterList').innerHTML = facts.discovered_containers.value.map(c => `
+            <div class="node-item">
+              <b>${c.name}</b><br/><span class="status-label">${c.status}</span>
+            </div>
+          `).join('');
+        }
       }
 
-      function renderHealth(facts) {
-        const scoreEl = document.getElementById('healthScore');
-        let score = facts.config_mismatch ? 60 : 100;
-        scoreEl.innerText = score;
-        scoreEl.style.color = score > 70 ? '#22c55e' : '#ef4444';
+      function renderValue(s) {
+        document.getElementById('valStats').innerHTML = `Saved: <b>${s.estimatedHoursSaved.toFixed(1)}h</b><br/>Tasks: ${s.totalTasksCompleted}`;
       }
 
       function renderWorkflows(tasks) {
@@ -173,11 +166,6 @@
       function renderSquads(facts) {
         const squadFacts = Object.entries(facts).filter(([k]) => k.startsWith('active_squad_'));
         document.getElementById('squadList').innerHTML = squadFacts.map(([_, f]) => `<div class="item">S:${f.value.squadId.substring(6)}</div>`).join('');
-      }
-
-      function renderConsensus(facts) {
-        const proposals = Object.entries(facts).filter(([k]) => k.startsWith('proposal_'));
-        document.getElementById('consensusList').innerHTML = proposals.map(([_, f]) => `<div class="item">${f.value.id.substring(5)}</div>`).join('');
       }
 
       function renderAudits(text) {

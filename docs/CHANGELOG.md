@@ -2,6 +2,16 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v11.0.0] - 2026-03-01
+
+### Added
+- **跨域協作與叢集感知 (Cross-Domain Orchestration)** - 突破容器邊界
+  - 實作 `ContainerOrchestrator`，支援感測宿主機上運行的其他 Docker 容器服務
+  - 實作 `HostProbe` 物理探針，提供宿主機磁碟、負載與運行時間的實時監控
+  - 實作 `NotificationCenter`，支援將重大系統事件與任務進度推送至 Discord/Slack Webhook
+  - Web 控制台升級為「全球實體監控版 (Global Entity Monitor)」，整合外部容器與宿主機指標
+  - 實現從單體 AI 助理到「叢集級數位管家」的轉型
+
 ## [v10.0.0] - 2026-03-01
 
 ### Added
