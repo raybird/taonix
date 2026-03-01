@@ -194,8 +194,8 @@
       "id": "goal_1772316982091",
       "title": "開發 Taonix v9.0.0：1. 實作長程任務狀態機 (Long-Horizon State Machine) 2. 支援任務斷點續傳與上下文恢復 3. 實作協作資源自動回收與清理 4. 整合 Web 控制台顯示長程工作流進度",
       "description": "由 AutonomousPlanner 自動建立",
-      "status": "in_progress",
-      "progress": 80,
+      "status": "completed",
+      "progress": 100,
       "created": "2026-02-28T22:16:22.091Z",
       "deadline": "2026-03-03T22:16:22.091Z",
       "subGoals": [
@@ -204,6 +204,22 @@
         "sub_goal_1772316982091_2",
         "sub_goal_1772316982091_3",
         "sub_goal_1772316982091_4"
+      ]
+    },
+    "goal_1772322346331": {
+      "id": "goal_1772322346331",
+      "title": "開發 Taonix v10.0.0：1. 實作系統自癒 Agent (Self-Healing Agent) 2. 建立自動化環境診斷與修復鏈路 3. 整合真實世界生產力指標 4. 實作與 TeleNexus 核心組件的深度通訊",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "in_progress",
+      "progress": 20,
+      "created": "2026-02-28T23:45:46.332Z",
+      "deadline": "2026-03-03T23:45:46.332Z",
+      "subGoals": [
+        "sub_goal_1772322346331_0",
+        "sub_goal_1772322346331_1",
+        "sub_goal_1772322346331_2",
+        "sub_goal_1772322346331_3",
+        "sub_goal_1772322346331_4"
       ]
     }
   },
@@ -711,6 +727,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-02-28T22:16:22.094Z"
+    },
+    "sub_goal_1772322346331_0": {
+      "id": "sub_goal_1772322346331_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T23:45:46.333Z"
+    },
+    "sub_goal_1772322346331_1": {
+      "id": "sub_goal_1772322346331_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T23:45:46.334Z"
+    },
+    "sub_goal_1772322346331_2": {
+      "id": "sub_goal_1772322346331_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T23:45:46.334Z"
+    },
+    "sub_goal_1772322346331_3": {
+      "id": "sub_goal_1772322346331_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T23:45:46.334Z"
+    },
+    "sub_goal_1772322346331_4": {
+      "id": "sub_goal_1772322346331_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-02-28T23:45:46.335Z"
     }
   }
 }
