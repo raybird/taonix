@@ -2,71 +2,37 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v10.0.0] - 2026-03-01
+
+### Added
+- **Nexus 實體整合與系統自癒 (Nexus Integration & Self-Healing)** - 助理能力的終極閉環
+  - 實作 `SelfHealingAgent`，具備自動環境診斷與配置一致性檢查能力
+  - 實作 `MemoriaBridge`，將重大決策與維護經驗同步至底層長期記憶系統 (Memoria)
+  - 實作 `ProductivityTracker`，量化 AI 助理產出的價值與節省的人工小時
+  - Web 控制台升級為九欄式全監控佈局，整合健康得分與價值回報面板
+  - 完成從本地開發到系統級自律維護的完整演進
+
+## [v9.0.0] - 2026-03-01
+
+### Added
+- **長程工程編排 (Long-Horizon Orchestration)** - 實現大規模任務執行
+  - 實作 `TaskStateMachine` 長程任務狀態機，支援斷點續傳與跨日持久化
+  - 實作 `LongTaskOrchestrator` 編排器，自動將複雜目標轉化為多步驟 Agent 工作流
+  - 整合 `EventBus` 實現自動化步進，Agent 完工後自動觸發下一階段任務
+  - Web 控制台新增「長程工作流」監控看板
+
 ## [v8.0.0] - 2026-03-01
 
 ### Added
-- **元進化與動態能力生成 (Meta-Evolution & Dynamic Capability Generation)**
-  - 實作 `SkillArchitect` 技能建築師，支援根據自然語言需求自動生成、修復與安裝新技能
-  - 實作 `EvolutionManager` 進化管理器，建立自我演進的審計、版本管理與回滾機制
-  - 整合 `SkillEngine` 實作任務驅動的動態進化觸發，實現「即時學習」的能力閉環
-  - 強化代碼生成驗證鏈路，確保所有演進產物皆符合 Agentskills.io 安全規範
+- **元進化與動態能力生成 (Meta-Evolution)**
+  - 實作 `SkillArchitect` 技能建築師，支援自動生成、修復與安裝新技能
+  - 實作 `EvolutionManager` 進化管理器，建立演進審計與回滾機制
 
 ## [v7.0.0] - 2026-03-01
 
 ### Added
-- **外部邊界擴張 (External Boundary Expansion)** - 讓 Agent 感知並影響全網
-  - 實作 `APIConnector` 通用銜接器，統一管理外部請求與鑑權
-  - 實作 `WebhookReceiver` 接收器，支援外部信號（如 GitHub Hook）觸發內部工作流
-  - 實作 `NotificationCenter` 通知中心，支援向 Telegram/Slack 推送即時協作進度
-  - 實作 `ExternalAwareness` 主動感知器，定期同步外部環境狀態至全域黑板
+- **外部邊界擴張 (External Boundary Expansion)**
+  - 實作 `APIConnector` 與 `WebhookReceiver`，讓 Agent 感知並影響全網
+  - 實作 `NotificationCenter`，支援向 Telegram/Slack 推送即時進度
 
-## [v6.0.0] - 2026-03-01
-
-### Added
-- **集體智慧與自適應演進 (Collective Intelligence & Adaptive Evolution)**
-  - 實作 `ExperienceBase` 集體經驗庫，持久化紀錄所有小隊協作的歷史數據與效能指標
-  - 實作 `AutoScorer` 自動評分系統，基於任務成敗自動進行績效考核
-  - 實作 `SquadDebriefing` 後驗總結器，自動從推理鏈路中提取成功關鍵與改進建議
-  - 優化 `SquadAssembler` 組建策略，支援基於歷史得分的「最優專家」動態選員
-  - Web 控制台新增「Agent 英雄榜」，視覺化呈現各成員的成功率與平均評分
-
-## [v4.5.0] - 2026-03-01
-
-### Added
-- **沙盒化動態執行 (Sandboxed Execution)** - 提升擴充安全性
-  - 實作 `SkillSandbox` 隔離執行環境，保護主系統免受不可信腳本侵害
-  - 建立 `PolicyManager` 權限策略中心，支援動態授予技能 FS/Network 權限
-  - 整合至 `SkillEngine` 執行鏈路，強制所有動態載入技能經由沙盒執行
-  - Web 控制台新增「安全審計」面板，即時監控執行狀態與攔截紀錄
-
-## [v4.4.0] - 2026-03-01
-
-### Added
-- **自動仲裁與決策支援 (Arbitration & Conflict Resolution)** - 提升系統魯棒性
-  - 實作 `Arbitrator` 模組，自動監聽 `TASK_ERROR` 並進行 AI 根因分析
-  - 建立 `Human-in-the-loop` 介入機制，支援主動向使用者發起決策請求
-  - Web 控制台新增「仲裁與衝突解決」面板，視覺化呈現待處理決策
-  - 通過端到端仲裁鏈路驗證，實現從錯誤發現到解決建議的完整自動化
-
-## [v4.3.0] - 2026-03-01
-
-### Added
-- **環境閉環強化 (Environment Loop)** - 建立 Agent 與真實環境的連動
-  - 實作 `GitObserver` 監控工具，自動偵測倉庫變動並廣播事件
-  - 實作 `Reactive Tester`，自動對代碼變動執行真實驗證並回報黑板
-  - 實作 `Environment Runner`，提供安全的真實指令執行與輸出擷取
-  - Web 控制台新增「環境與 CI 監控」區塊，即時呈現 Repo 健康狀態
-
-## [v4.2.0] - 2026-02-28
-
-### Added
-- **黑板模式 (Blackboard Pattern)** - 全域心智狀態機
-  - 實作 `Blackboard` 記憶中樞，支援事實 (Facts) 與推理鏈路 (Thoughts) 儲存
-  - 實作簡易語義檢索原型，精準尋找相關思考紀錄
-- **推理注入 (Reasoning Injection)** - 強化 Agent 間的上下文感知
-  - MCP Server 支援在路由時自動注入黑板摘要
-  - Reactive Coder 支援在執行任務前後自動回報「思考痕跡」
-- **Web 控制台「黑板監視器」** - 視覺化呈現系統共識事實與推理流
-
-## [v4.1.0] - 2026-02-28
 ... (下略舊版紀錄)

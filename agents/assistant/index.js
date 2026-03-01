@@ -8,6 +8,8 @@ import { conversationSummarizer } from "../../memory/conversation-summarizer.js"
 import { contextGuard } from "./lib/context-guard.js";
 import { proactiveWorkflow } from "./lib/proactive-workflow.js";
 import { eventBus } from "../../ai-engine/lib/event-bus.js";
+import { memoriaBridge } from "../../memory/memoria-bridge.js";
+import { productivityTracker } from "../../memory/productivity-tracker.js";
 
 const args = process.argv.slice(2);
 
