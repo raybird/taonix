@@ -1,6 +1,7 @@
 import { AgentListener } from "../ai-engine/lib/agent-listener.js";
 import { blackboard } from "../memory/blackboard.js";
 import { envRunner } from "../tools/environment-runner.js";
+import { clusterController } from "../tools/container-control.js";
 import fs from "fs";
 
 export class SelfHealingAgent {
@@ -19,22 +20,35 @@ export class SelfHealingAgent {
   }
 
   async diagnoseAndHeal() {
-    console.log("[SelfHealer] 啟動診斷流程...");
-    blackboard.recordThought("self-healer", "分析系統狀態與配置一致性...");
+    console.log("[SelfHealer] 啟動偵測流程...");
+    blackboard.recordThought("self-healer", "執行叢集健康度與配置對比...");
 
     try {
       await this.checkConfigConsistency();
+      await this.healExternalCluster();
 
       if (fs.existsSync(this.errorLog)) {
         const report = fs.readFileSync(this.errorLog, "utf-8");
         if (report.includes("僵屍進程")) {
-          await envRunner.run("ps -ef | grep defunct", "self-healer", "僵屍進程檢查");
+          await envRunner.run("ps -ef | grep defunct", "self-healer", "進程檢查");
         }
       }
       return { status: "success" };
     } catch (e) {
-      console.error("[SelfHealer] 錯誤:", e.message);
+      console.error("[SelfHealer] 偵測錯誤:", e.message);
       throw e;
+    }
+  }
+
+  async healExternalCluster() {
+    const discovered = blackboard.getFacts().discovered_containers;
+    if (discovered && Array.isArray(discovered.value)) {
+      for (const container of discovered.value) {
+        if (container.status && container.status.includes("Exited")) {
+          blackboard.recordThought("self-healer", `[ClusterHeal] 偵測到容器 ${container.name} 處於停止狀態，發送重啟信號。`);
+          await clusterController.restartContainer(container.name);
+        }
+      }
     }
   }
 
@@ -51,7 +65,7 @@ export class SelfHealingAgent {
 
       if (cfgProv && rtProv && cfgProv !== rtProv) {
         blackboard.updateFact("config_mismatch", { config: cfgProv, runtime: rtProv }, "self-healer");
-        blackboard.recordThought("self-healer", "偵測到配置不一致：Config(" + cfgProv + ") vs Runtime(" + rtProv + ")。建議重啟。");
+        blackboard.recordThought("self-healer", "配置不一致警告：主程序尚未更新配置。建議重啟。");
       }
     }
   }

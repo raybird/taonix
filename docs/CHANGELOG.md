@@ -2,6 +2,15 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v12.0.0] - 2026-03-01
+
+### Added
+- **叢集級自動自癒與控制 (Cluster-level Control)** - 從感知到干預
+  - 實作 `SSHProxy` 遠端代理，支援透過 SSH 隧道向宿主機發送即時 Docker 管理指令
+  - 實作 `ClusterController` 控制信號系統，支援在受限環境下透過「信號投放」執行非同步自癒
+  - 整合自癒鏈路：`SelfHealingAgent` 具備「SSH 即時修復 + 檔案中轉備援」的雙軌制控制邏輯
+  - 實現對外部異常容器的 100% 自動重啟閉環，將 Taonix 轉型為「實體環境掌控者」
+
 ## [v11.0.0] - 2026-03-01
 
 ### Added

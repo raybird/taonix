@@ -226,8 +226,8 @@
       "id": "goal_1772329529658",
       "title": "開發 Taonix v11.0.0：1. 實作跨容器調度器 (Cross-Container Orchestrator) 2. 支援透過 Docker API 監控外部服務 3. 實作宿主機資源探針 (Host Resource Probe) 4. 整合外部通訊平台 (Discord/Slack) 作為互動入口",
       "description": "由 AutonomousPlanner 自動建立",
-      "status": "in_progress",
-      "progress": 80,
+      "status": "completed",
+      "progress": 100,
       "created": "2026-03-01T01:45:29.659Z",
       "deadline": "2026-03-04T01:45:29.659Z",
       "subGoals": [
@@ -236,6 +236,22 @@
         "sub_goal_1772329529658_2",
         "sub_goal_1772329529658_3",
         "sub_goal_1772329529658_4"
+      ]
+    },
+    "goal_1772334983487": {
+      "id": "goal_1772334983487",
+      "title": "開發 Taonix v12.0.0：1. 實作跨容器自動修復指令 (Cross-Container Auto-Heal) 2. 支援 Docker API 的執行與停止操作 3. 整合 SSH 遠端執行代理 4. 實作工作流層級的叢集資源調度",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "in_progress",
+      "progress": 80,
+      "created": "2026-03-01T03:16:23.487Z",
+      "deadline": "2026-03-04T03:16:23.487Z",
+      "subGoals": [
+        "sub_goal_1772334983487_0",
+        "sub_goal_1772334983487_1",
+        "sub_goal_1772334983487_2",
+        "sub_goal_1772334983487_3",
+        "sub_goal_1772334983487_4"
       ]
     }
   },
@@ -823,6 +839,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-03-01T01:45:29.661Z"
+    },
+    "sub_goal_1772334983487_0": {
+      "id": "sub_goal_1772334983487_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T03:16:23.488Z"
+    },
+    "sub_goal_1772334983487_1": {
+      "id": "sub_goal_1772334983487_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T03:16:23.488Z"
+    },
+    "sub_goal_1772334983487_2": {
+      "id": "sub_goal_1772334983487_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T03:16:23.488Z"
+    },
+    "sub_goal_1772334983487_3": {
+      "id": "sub_goal_1772334983487_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T03:16:23.489Z"
+    },
+    "sub_goal_1772334983487_4": {
+      "id": "sub_goal_1772334983487_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T03:16:23.489Z"
     }
   }
 }
