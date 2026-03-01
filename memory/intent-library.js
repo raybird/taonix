@@ -24,6 +24,16 @@ export class IntentLibrary {
   getTemplate(key) {
     return this.templates[key];
   }
+
+  /**
+   * 熱加載新模板 (v18.0.0)
+   */
+  hotLoad(newTemplates) {
+    console.log(`[IntentLib] 正在熱加載 ${Object.keys(newTemplates).length} 個新模板...`);
+    this.templates = { ...this.templates, ...newTemplates };
+    blackboard.updateFact("intent_templates", this.templates, "intent-library");
+    blackboard.recordThought("intent-library", `成功熱加載新意圖模板：${Object.keys(newTemplates).join(", ")}。`);
+  }
 }
 
 export const intentLibrary = new IntentLibrary();

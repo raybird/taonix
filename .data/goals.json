@@ -352,8 +352,8 @@
       "id": "goal_1772381777727",
       "title": "開發 Taonix v17.0.0：1. 實作黑板意圖模板庫 (Intent Templates) 2. 支援語義對齊檢查 (Semantic Validation) 3. 實作 Agent 執行成果自評價系統 4. 整合外部開發工具的意圖熱加載機制",
       "description": "由 AutonomousPlanner 自動建立",
-      "status": "in_progress",
-      "progress": 40,
+      "status": "completed",
+      "progress": 100,
       "created": "2026-03-01T16:16:17.727Z",
       "deadline": "2026-03-04T16:16:17.727Z",
       "subGoals": [
@@ -362,6 +362,22 @@
         "sub_goal_1772381777727_2",
         "sub_goal_1772381777727_3",
         "sub_goal_1772381777727_4"
+      ]
+    },
+    "goal_1772392584035": {
+      "id": "goal_1772392584035",
+      "title": "開發 Taonix v18.0.0：1. 實作專案感知的意圖模板自動生成 (Dynamic Intent Generation) 2. 支援意圖熱加載機制 (Hot-loading) 3. 建立 Agent 團隊人格與協作文化模組 4. 實作跨容器事實一致性校驗 (Gossip Consensus)",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "in_progress",
+      "progress": 60,
+      "created": "2026-03-01T19:16:24.035Z",
+      "deadline": "2026-03-04T19:16:24.035Z",
+      "subGoals": [
+        "sub_goal_1772392584035_0",
+        "sub_goal_1772392584035_1",
+        "sub_goal_1772392584035_2",
+        "sub_goal_1772392584035_3",
+        "sub_goal_1772392584035_4"
       ]
     }
   },
@@ -1253,6 +1269,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-03-01T16:16:17.731Z"
+    },
+    "sub_goal_1772392584035_0": {
+      "id": "sub_goal_1772392584035_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T19:16:24.036Z"
+    },
+    "sub_goal_1772392584035_1": {
+      "id": "sub_goal_1772392584035_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T19:16:24.036Z"
+    },
+    "sub_goal_1772392584035_2": {
+      "id": "sub_goal_1772392584035_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T19:16:24.037Z"
+    },
+    "sub_goal_1772392584035_3": {
+      "id": "sub_goal_1772392584035_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T19:16:24.039Z"
+    },
+    "sub_goal_1772392584035_4": {
+      "id": "sub_goal_1772392584035_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-01T19:16:24.039Z"
     }
   }
 }

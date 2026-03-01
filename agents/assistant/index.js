@@ -14,8 +14,12 @@ import { notificationCenter } from "../../ai-engine/lib/notification-center.js";
 import { distributedEventBus } from "../../ai-engine/lib/distributed-event-bus.js";
 import { executionProfiler } from "../../ai-engine/lib/execution-profiler.js";
 import { bottleneckAnalyzer } from "../../ai-engine/lib/bottleneck-analyzer.js";
+import { collaborationCulture } from "../../ai-engine/lib/collaboration-culture.js";
 
 const args = process.argv.slice(2);
+// ...
+// 啟動文化引擎 (v18.0.0)
+collaborationCulture.init();
 
 if (args.length === 0) {
   console.log(`
