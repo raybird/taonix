@@ -12,6 +12,8 @@ import { memoriaBridge } from "../../memory/memoria-bridge.js";
 import { productivityTracker } from "../../memory/productivity-tracker.js";
 import { notificationCenter } from "../../ai-engine/lib/notification-center.js";
 import { distributedEventBus } from "../../ai-engine/lib/distributed-event-bus.js";
+import { executionProfiler } from "../../ai-engine/lib/execution-profiler.js";
+import { bottleneckAnalyzer } from "../../ai-engine/lib/bottleneck-analyzer.js";
 
 const args = process.argv.slice(2);
 

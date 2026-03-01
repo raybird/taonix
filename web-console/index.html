@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taonix 控制台 v11.0.0 - Global Entity</title>
+    <title>Taonix 控制台 v15.0.0 - Intelligent Profiling</title>
     <style>
       :root {
         --primary: #3b82f6;
@@ -15,7 +15,7 @@
         --success: #22c55e;
         --warning: #f59e0b;
         --danger: #ef4444;
-        --cluster: #10b981;
+        --perf: #8b5cf6;
       }
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
@@ -35,7 +35,7 @@
         margin-bottom: 10px;
       }
       h1 { font-size: 18px; display: flex; align-items: center; gap: 8px; }
-      .badge { background: var(--cluster); padding: 2px 10px; border-radius: 10px; font-size: 10px; }
+      .badge { background: var(--perf); padding: 2px 10px; border-radius: 10px; font-size: 10px; }
       
       .main-grid {
         display: grid;
@@ -57,9 +57,10 @@
       .scroll-area { flex: 1; overflow-y: auto; max-height: 850px; padding-right: 2px; }
       .item { padding: 4px; border-bottom: 1px solid var(--border); font-size: 9px; line-height: 1.2; }
       
-      /* Cluster UI (v11.0.0) */
-      .node-item { background: rgba(16, 185, 129, 0.05); border-left: 3px solid var(--cluster); margin-bottom: 4px; padding: 4px; }
-      .status-label { font-size: 8px; color: var(--text-muted); }
+      /* Perf UI (v15.0.0) */
+      .perf-bar { height: 4px; background: #334155; border-radius: 2px; margin-top: 4px; overflow: hidden; }
+      .perf-fill { height: 100%; background: var(--perf); transition: width 0.5s; }
+      .perf-label { font-size: 8px; color: var(--text-muted); display: flex; justify-content: space-between; margin-top: 2px; }
 
       .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--success); margin-right: 3px; }
     </style>
@@ -67,26 +68,26 @@
   <body>
     <div class="container">
       <header>
-        <h1>🚀 Taonix <span class="badge">v11.0.0</span></h1>
-        <div><span class="status-dot"></span>跨域叢集監控中</div>
+        <h1>🚀 Taonix <span class="badge">v15.0.0</span></h1>
+        <div><span class="status-dot"></span>效能自省模式已開啟</div>
       </header>
 
       <div class="main-grid">
         <!-- Col 1: Registry -->
         <div class="card"><h2>👥 Registry</h2><div class="scroll-area" id="registryList"></div></div>
 
-        <!-- Col 2: Health -->
+        <!-- Col 2: Performance (NEW v15.0.0) -->
         <div class="card">
-          <h2>🩺 Host Stats</h2>
-          <div id="hostStats" class="item" style="font-size:8px; color:var(--cluster)">掃描中...</div>
+          <h2>⚡ Execution Perf</h2>
+          <div class="scroll-area" id="perfList">
+            <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:9px">等待數據注入...</div>
+          </div>
         </div>
 
-        <!-- Col 3: Cluster (NEW v11.0.0) -->
+        <!-- Col 3: Cluster -->
         <div class="card">
-          <h2>🐳 External Containers</h2>
-          <div class="scroll-area" id="clusterList">
-            <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:9px">無感測數據</div>
-          </div>
+          <h2>🐳 Cluster</h2>
+          <div class="scroll-area" id="clusterList"></div>
         </div>
 
         <!-- Col 4: Value -->
@@ -115,6 +116,7 @@
           const bbRes = await fetch('/.data/blackboard_state.json');
           if (bbRes.ok) {
             const bb = await bbRes.json();
+            renderPerf(bb.facts || {});
             renderCluster(bb.facts || {});
             renderThoughts(bb.thoughts || []);
             renderSquads(bb.facts || {});
@@ -137,16 +139,28 @@
         } catch (e) { console.error(e); }
       }
 
-      function renderCluster(facts) {
-        if (facts.host_physical_stats) {
-          const s = facts.host_physical_stats.value;
-          document.getElementById('hostStats').innerHTML = `Disk: ${s.disk.substring(0,15)}..<br/>Uptime: ${s.uptime.split(',')[0]}`;
+      function renderPerf(facts) {
+        const perfFacts = Object.entries(facts).filter(([k]) => k.startsWith('performance_'));
+        if (perfFacts.length > 0) {
+          document.getElementById('perfList').innerHTML = perfFacts.map(([k, f]) => {
+            const agent = k.replace('performance_', '');
+            const ms = f.value.lastDuration;
+            const pct = Math.min((ms / 5000) * 100, 100);
+            return `
+              <div class="item" style="border:none">
+                <b>${agent}</b>
+                <div class="perf-bar"><div class="perf-fill" style="width:${pct}%"></div></div>
+                <div class="perf-label"><span>最後執行</span><span>${ms}ms</span></div>
+              </div>
+            `;
+          }).join('');
         }
+      }
+
+      function renderCluster(facts) {
         if (facts.discovered_containers) {
           document.getElementById('clusterList').innerHTML = facts.discovered_containers.value.map(c => `
-            <div class="node-item">
-              <b>${c.name}</b><br/><span class="status-label">${c.status}</span>
-            </div>
+            <div class="item" style="font-size:8px">🐳 ${c.name}<br/><span style="color:var(--text-muted)">${c.status}</span></div>
           `).join('');
         }
       }

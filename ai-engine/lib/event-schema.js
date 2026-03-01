@@ -14,6 +14,10 @@ export const Schemas = {
   BLACKBOARD_UPDATED: {
     required: ["source", "timestamp"],
     types: { source: "string", timestamp: "number" }
+  },
+  PERFORMANCE_ALERT: {
+    required: ["agent", "duration", "level", "suggestion", "timestamp"],
+    types: { agent: "string", duration: "number", level: "string", suggestion: "string", timestamp: "number" }
   }
 };
 

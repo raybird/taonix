@@ -4,12 +4,12 @@ import path from "path";
 import { eventBus } from "../ai-engine/lib/event-bus.js";
 
 /**
- * Taonix Productivity Tracker (v10.0.0)
+ * Taonix Productivity Tracker (v14.1.0 - Hardened)
  * 負責量化 AI 助理為使用者節省的時間與產出的價值。
  */
 export class ProductivityTracker {
   constructor() {
-    this.statsFile = require("../config/paths.js").paths.productivity_stats.json;
+    this.statsFile = paths.productivity;
     this.stats = {
       totalTasksCompleted: 0,
       estimatedHoursSaved: 0,
@@ -59,9 +59,8 @@ export class ProductivityTracker {
     this.stats.totalTasksCompleted += 1;
     
     // 根據任務類型估算節省時間 (小時)
-    // 簡單模型：基礎 0.2h + 複雜度加成
     let saved = 0.2;
-    if (payload.parentTaskId) saved += 0.3; // 長程任務節省更多上下文切換
+    if (payload.parentTaskId) saved += 0.3; 
     
     this.stats.estimatedHoursSaved += saved;
     this.stats.lastTaskTimestamp = new Date().toISOString();

@@ -7,7 +7,7 @@ import { eventBus } from "../ai-engine/lib/event-bus.js";
  * 全域狀態與推理鏈路中樞。
  * 不同於普通的 Cache，黑板模式允許 Agent 留下「思考痕跡」。
  */
-export import { paths } from "../config/paths.js";
+import { paths } from "../config/paths.js";
 
 class Blackboard {
   constructor() {
@@ -37,8 +37,12 @@ class Blackboard {
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(this.stateFile, JSON.stringify(this.memory, null, 2));
       
-      // 同步發布狀態更新事件
-      eventBus.publish("BLACKBOARD_UPDATED", { summary: "State snapshot saved" }, "blackboard");
+      // 同步發布狀態更新事件 (v14.1.1 Fix: 補齊 Schema 必要欄位)
+      eventBus.publish("BLACKBOARD_UPDATED", { 
+        summary: "State snapshot saved",
+        source: "blackboard",
+        timestamp: Date.now()
+      }, "blackboard");
     } catch (e) {
       console.warn("[Blackboard] 無法儲存狀態:", e.message);
     }
