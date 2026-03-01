@@ -1,3 +1,4 @@
+import { paths } from "../config/paths.js";
 import fs from "fs";
 import path from "path";
 
@@ -7,7 +8,7 @@ import path from "path";
  */
 export class ExperienceBase {
   constructor() {
-    this.storageFile = "/app/workspace/projects/taonix/.data/experience_base.json";
+    this.storageFile = require("../config/paths.js").paths.experience_base.json;
     this.experience = {
       sessions: [],      // 歷史協作會話
       agentStats: {}     // Agent 表現統計

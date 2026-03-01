@@ -1,71 +1,38 @@
 #!/usr/bin/env node
 
+/**
+ * AICaller (v13.1.0)
+ * 修復 Risk B: 支援 systemPrompt，確保語義路由與技能生成的精準度。
+ */
 export class AICaller {
   constructor(options = {}) {
     this.provider = options.provider || "openai";
     this.model = options.model || "gpt-4";
     this.baseUrl = options.baseUrl || null;
-    this.cliPath = this.getCLIPath();
-  }
-
-  getCLIPath() {
-    switch (this.provider) {
-      case "openai":
-        return "npx";
-      case "anthropic":
-        return "npx";
-      case "ollama":
-        return "ollama";
-      default:
-        return "npx";
-    }
-  }
-
-  buildCommand(prompt) {
-    switch (this.provider) {
-      case "openai":
-        return [
-          "npx",
-          "-y",
-          "openai@latest",
-          "chat.completions.create",
-          "--model",
-          this.model,
-          "--messages",
-          JSON.stringify([{ role: "user", content: prompt }]),
-        ];
-      case "anthropic":
-        return [
-          "npx",
-          "-y",
-          "@anthropic-ai/claude-cli",
-          "complete",
-          "--model",
-          this.model,
-          "--prompt",
-          prompt,
-        ];
-      case "ollama":
-        return ["ollama", "chat", this.model, "--msg", prompt];
-      default:
-        return null;
-    }
   }
 
   async call(prompt, options = {}) {
-    const { temperature = 0.7, maxTokens = 2000 } = options;
+    const { systemPrompt = "You are a helpful assistant.", temperature = 0.7 } = options;
 
     let cmd;
-    const escapedPrompt = prompt.replace(/'/g, "'\\''");
-    
+    // 將 systemPrompt 整合進 messages 數組
+    const messages = [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: prompt }
+    ];
+
     if (this.provider === "openai") {
-      const messages = JSON.stringify([{ role: "user", content: prompt }]);
-      const escapedMessages = messages.replace(/'/g, "'\\''");
+      const escapedMessages = JSON.stringify(messages).replace(/'/g, "'\\''");
       cmd = `echo '${escapedMessages}' | npx -y openai@latest chat.completions.create --model ${this.model} --stream false`;
     } else if (this.provider === "ollama") {
-      cmd = `ollama run ${this.model} "${prompt.replace(/"/g, '\\"')}"`;
+      // Ollama 支援 --system 參數
+      const escapedPrompt = prompt.replace(/"/g, '\\"');
+      const escapedSystem = systemPrompt.replace(/"/g, '\\"');
+      cmd = `ollama run ${this.model} "${escapedPrompt}" --system "${escapedSystem}"`;
     } else {
-      cmd = `echo '${escapedPrompt}' | npx -y openai@latest chat.completions.create --model ${this.model}`;
+      // Fallback
+      const escapedMessages = JSON.stringify(messages).replace(/'/g, "'\\''");
+      cmd = `echo '${escapedMessages}' | npx -y openai@latest chat.completions.create --model ${this.model}`;
     }
 
     try {
@@ -96,69 +63,4 @@ export class AICaller {
       return { content: response, model: this.model, provider: this.provider };
     }
   }
-
-  static detectAvailableProviders() {
-    const providers = [];
-
-    try {
-      const { execSync } = require("child_process");
-      execSync("ollama --version", { stdio: "ignore" });
-      providers.push("ollama");
-    } catch {}
-
-    providers.push("openai");
-    return providers;
-  }
-}
-
-if (import.meta.url === `file://${process.argv[1]}`) {
-  const args = process.argv.slice(2);
-
-  if (args.length > 0 && args[0] === "providers") {
-    console.log(JSON.stringify(AICaller.detectAvailableProviders(), null, 2));
-    process.exit(0);
-  }
-
-  if (args.length === 0) {
-    console.log(`
-Taonix AI Caller
-================
-用法:
-  ai-caller --provider <openai|ollama|anthropic> --model <model> --prompt "<prompt>"
-  
-範例:
-  ai-caller --provider openai --model gpt-4 --prompt "Hello"
-  ai-caller --provider ollama --model llama2 --prompt "你好"
-  
-可用供應商:
-  ${AICaller.detectAvailableProviders().join(", ")}
-  `);
-    process.exit(0);
-  }
-
-  const options = {};
-  let prompt = "";
-
-  for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--provider" && args[i + 1]) {
-      options.provider = args[i + 1];
-      i++;
-    } else if (args[i] === "--model" && args[i + 1]) {
-      options.model = args[i + 1];
-      i++;
-    } else if (args[i] === "--prompt" && args[i + 1]) {
-      prompt = args.slice(i + 1).join(" ");
-      break;
-    }
-  }
-
-  if (!prompt) {
-    console.error("錯誤: 請提供 --prompt");
-    process.exit(1);
-  }
-
-  const caller = new AICaller(options);
-  const result = await caller.call(prompt);
-
-  console.log(JSON.stringify(result, null, 2));
 }

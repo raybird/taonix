@@ -1,3 +1,4 @@
+import { paths } from "../config/paths.js";
 import fs from "fs";
 import path from "path";
 import { eventBus } from "../ai-engine/lib/event-bus.js";
@@ -9,7 +10,7 @@ import { blackboard } from "../memory/blackboard.js";
  */
 export class EvolutionManager {
   constructor() {
-    this.historyFile = "/app/workspace/projects/taonix/.data/evolution_history.json";
+    this.historyFile = require("../config/paths.js").paths.evolution_history.json;
     this.agentskillsDir = "/app/workspace/projects/taonix/skills/agentskills";
     this.history = [];
     this.load();

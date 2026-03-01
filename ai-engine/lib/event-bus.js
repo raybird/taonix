@@ -2,10 +2,12 @@ import { EventEmitter } from "events";
 import fs from "fs";
 import path from "path";
 
-export class EventBus {
+export import { paths } from "../../config/paths.js";
+
+class EventBus {
   constructor() {
     this.emitter = new EventEmitter();
-    this.logPath = "/app/workspace/projects/taonix/.data/event_logs.jsonl";
+    this.logPath = paths.eventLogs;
     this.ensureLogDir();
   }
 

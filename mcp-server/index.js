@@ -170,22 +170,28 @@ class TaonixServer {
               console.error("[KnowledgeInjection] 錯誤:", e.message);
             }
 
-            // 注入 v4.2.0 黑板推理鏈路
-            const blackboardSummary = blackboard.getSummaryForContext();
-            relatedKnowledge.push({
-              key: "shared_blackboard_context",
-              type: "reasoning_chain",
-              content: blackboardSummary
+import { blackboard } from "../memory/blackboard.js";
+import { agentDispatcher } from "../ai-engine/lib/agent-dispatcher.js";
+import fs from "fs";
+...
+            // 4. 實體分發執行 (v13.1.0 新增 P0 閉環)
+            const dispatchResult = await agentDispatcher.dispatch({
+              agent: targetTool.split("_")[0], // 提取基礎 agent 名
+              task: intent,
+              params: args.params || {}
             });
 
             result = {
               intent: args.intent,
               routed_to: targetTool,
               routing_method: routingMethod,
-              action: action,
-              message: `已根據意圖 "${args.intent}" (${routingMethod}) 路由到 ${targetTool} Agent`,
+              execution: {
+                taskId: dispatchResult.taskId,
+                success: dispatchResult.success,
+                output_summary: dispatchResult.output?.substring(0, 300)
+              },
               knowledge_injection: relatedKnowledge,
-              note: "Router 已完成語義分析與知識注入。實際執行需要調用對應的內部 Agent CLI。",
+              message: `已執行任務。路由: ${targetTool}, 狀態: ${dispatchResult.success ? "成功" : "失敗"}`,
             };
             logMCP(result);
             

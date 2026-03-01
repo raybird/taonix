@@ -1,3 +1,4 @@
+import { paths } from "../config/paths.js";
 import vm from "vm";
 import fs from "fs";
 import path from "path";
@@ -5,7 +6,7 @@ import { blackboard } from "../memory/blackboard.js";
 
 export class SkillSandbox {
   constructor() {
-    this.logPath = "/app/workspace/projects/taonix/.data/sandbox_audit.jsonl";
+    this.logPath = require("../config/paths.js").paths.sandbox_audit.jsonl;
   }
 
   async run(code, context, options = {}) {

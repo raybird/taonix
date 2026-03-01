@@ -1,3 +1,4 @@
+import { paths } from "../config/paths.js";
 import fs from "fs";
 import path from "path";
 import { eventBus } from "../ai-engine/lib/event-bus.js";
@@ -8,7 +9,7 @@ import { eventBus } from "../ai-engine/lib/event-bus.js";
  */
 export class AgentRegistry {
   constructor() {
-    this.registryFile = "/app/workspace/projects/taonix/.data/agent_registry.json";
+    this.registryFile = require("../config/paths.js").paths.agent_registry.json;
     this.agents = new Map();
     this.load();
   }

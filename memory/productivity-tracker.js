@@ -1,3 +1,4 @@
+import { paths } from "../config/paths.js";
 import fs from "fs";
 import path from "path";
 import { eventBus } from "../ai-engine/lib/event-bus.js";
@@ -8,7 +9,7 @@ import { eventBus } from "../ai-engine/lib/event-bus.js";
  */
 export class ProductivityTracker {
   constructor() {
-    this.statsFile = "/app/workspace/projects/taonix/.data/productivity_stats.json";
+    this.statsFile = require("../config/paths.js").paths.productivity_stats.json;
     this.stats = {
       totalTasksCompleted: 0,
       estimatedHoursSaved: 0,

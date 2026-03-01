@@ -1,3 +1,4 @@
+import { paths } from "../config/paths.js";
 import fs from "fs";
 import path from "path";
 import { eventBus } from "./event-bus.js";
@@ -9,7 +10,7 @@ import { blackboard } from "../../memory/blackboard.js";
  */
 export class TaskStateMachine {
   constructor() {
-    this.storageFile = "/app/workspace/projects/taonix/.data/task_states.json";
+    this.storageFile = require("../config/paths.js").paths.task_states.json;
     this.tasks = new Map();
     this.load();
   }

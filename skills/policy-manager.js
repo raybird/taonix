@@ -1,3 +1,4 @@
+import { paths } from "../config/paths.js";
 import fs from "fs";
 import path from "path";
 
@@ -7,7 +8,7 @@ import path from "path";
  */
 export class PolicyManager {
   constructor() {
-    this.policyFile = "/app/workspace/projects/taonix/.data/skill_policies.json";
+    this.policyFile = require("../config/paths.js").paths.skill_policies.json;
     this.policies = {};
     this.load();
   }
