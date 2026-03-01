@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taonix 控制台 v15.0.0 - Intelligent Profiling</title>
+    <title>Taonix 控制台 v16.3.0 - Resource Hub</title>
     <style>
       :root {
         --primary: #3b82f6;
@@ -16,6 +16,7 @@
         --warning: #f59e0b;
         --danger: #ef4444;
         --perf: #8b5cf6;
+        --gc: #ec4899;
       }
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
@@ -35,7 +36,7 @@
         margin-bottom: 10px;
       }
       h1 { font-size: 18px; display: flex; align-items: center; gap: 8px; }
-      .badge { background: var(--perf); padding: 2px 10px; border-radius: 10px; font-size: 10px; }
+      .badge { background: var(--primary); padding: 2px 10px; border-radius: 10px; font-size: 10px; }
       
       .main-grid {
         display: grid;
@@ -57,41 +58,41 @@
       .scroll-area { flex: 1; overflow-y: auto; max-height: 850px; padding-right: 2px; }
       .item { padding: 4px; border-bottom: 1px solid var(--border); font-size: 9px; line-height: 1.2; }
       
-      /* Perf UI (v15.0.0) */
       .perf-bar { height: 4px; background: #334155; border-radius: 2px; margin-top: 4px; overflow: hidden; }
       .perf-fill { height: 100%; background: var(--perf); transition: width 0.5s; }
       .perf-label { font-size: 8px; color: var(--text-muted); display: flex; justify-content: space-between; margin-top: 2px; }
 
+      .gc-badge { background: var(--gc); color: white; padding: 1px 4px; border-radius: 4px; font-size: 7px; margin-left: 5px; }
       .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--success); margin-right: 3px; }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>🚀 Taonix <span class="badge">v15.0.0</span></h1>
-        <div><span class="status-dot"></span>效能自省模式已開啟</div>
+        <h1>🚀 Taonix Hub <span class="badge">v16.3.0</span></h1>
+        <div><span class="status-dot"></span>樞紐自律調度中</div>
       </header>
 
       <div class="main-grid">
         <!-- Col 1: Registry -->
         <div class="card"><h2>👥 Registry</h2><div class="scroll-area" id="registryList"></div></div>
 
-        <!-- Col 2: Performance (NEW v15.0.0) -->
+        <!-- Col 2: Performance & Load -->
         <div class="card">
-          <h2>⚡ Execution Perf</h2>
-          <div class="scroll-area" id="perfList">
-            <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:9px">等待數據注入...</div>
+          <h2>⚡ Perf & Load</h2>
+          <div class="scroll-area" id="perfList"></div>
+        </div>
+
+        <!-- Col 3: Resource Map -->
+        <div class="card">
+          <h2>🧹 Lifecycle & GC</h2>
+          <div class="scroll-area" id="gcList">
+            <div style="text-align:center; padding:20px; color:var(--text-muted); font-size:9px">載入調度數據...</div>
           </div>
         </div>
 
-        <!-- Col 3: Cluster -->
-        <div class="card">
-          <h2>🐳 Cluster</h2>
-          <div class="scroll-area" id="clusterList"></div>
-        </div>
-
         <!-- Col 4: Value -->
-        <div class="card"><h2>📈 Productivity</h2><div id="valStats" class="item"></div></div>
+        <div class="card"><h2>📈 Value</h2><div id="valStats" class="item"></div></div>
 
         <!-- Col 5: Workflows -->
         <div class="card"><h2>⛓️ Workflows</h2><div class="scroll-area" id="workflowList"></div></div>
@@ -117,9 +118,8 @@
           if (bbRes.ok) {
             const bb = await bbRes.json();
             renderPerf(bb.facts || {});
-            renderCluster(bb.facts || {});
+            renderGC(bb.thoughts || []);
             renderThoughts(bb.thoughts || []);
-            renderSquads(bb.facts || {});
           }
 
           const prodRes = await fetch('/.data/productivity_stats.json');
@@ -141,28 +141,22 @@
 
       function renderPerf(facts) {
         const perfFacts = Object.entries(facts).filter(([k]) => k.startsWith('performance_'));
-        if (perfFacts.length > 0) {
-          document.getElementById('perfList').innerHTML = perfFacts.map(([k, f]) => {
-            const agent = k.replace('performance_', '');
-            const ms = f.value.lastDuration;
-            const pct = Math.min((ms / 5000) * 100, 100);
-            return `
-              <div class="item" style="border:none">
-                <b>${agent}</b>
-                <div class="perf-bar"><div class="perf-fill" style="width:${pct}%"></div></div>
-                <div class="perf-label"><span>最後執行</span><span>${ms}ms</span></div>
-              </div>
-            `;
-          }).join('');
-        }
+        document.getElementById('perfList').innerHTML = perfFacts.map(([k, f]) => {
+          const agent = k.replace('performance_', '');
+          const ms = f.value.lastDuration;
+          const pct = Math.min((ms / 5000) * 100, 100);
+          return `<div class="item"><b>${agent}</b>: ${ms}ms <div class="perf-bar"><div class="perf-fill" style="width:${pct}%"></div></div></div>`;
+        }).join('');
       }
 
-      function renderCluster(facts) {
-        if (facts.discovered_containers) {
-          document.getElementById('clusterList').innerHTML = facts.discovered_containers.value.map(c => `
-            <div class="item" style="font-size:8px">🐳 ${c.name}<br/><span style="color:var(--text-muted)">${c.status}</span></div>
-          `).join('');
-        }
+      function renderGC(thoughts) {
+        const gcThoughts = thoughts.filter(t => t.agent === 'gc').reverse().slice(0, 5);
+        document.getElementById('gcList').innerHTML = gcThoughts.map(t => `
+          <div class="item" style="color:var(--gc)">
+            ⏱️ ${new Date(t.timestamp).toLocaleTimeString()}<br/>
+            ${t.content}
+          </div>
+        `).join('') || '<div class="item">尚無回收紀錄</div>';
       }
 
       function renderValue(s) {
@@ -177,22 +171,12 @@
         document.getElementById('registryList').innerHTML = Object.entries(agents).map(([name]) => `<div class="item">${name}</div>`).join('');
       }
 
-      function renderSquads(facts) {
-        const squadFacts = Object.entries(facts).filter(([k]) => k.startsWith('active_squad_'));
-        document.getElementById('squadList').innerHTML = squadFacts.map(([_, f]) => `<div class="item">S:${f.value.squadId.substring(6)}</div>`).join('');
-      }
-
-      function renderAudits(text) {
-        const lines = text.trim().split('\n').reverse().slice(0, 5);
-        document.getElementById('auditList').innerHTML = lines.map(line => `<div class="item">${JSON.parse(line).skillName}</div>`).join('');
-      }
-
       function renderThoughts(thoughts) {
-        document.getElementById('thoughtList').innerHTML = thoughts.reverse().slice(0, 10).map(t=>`<div class="item"><b>${t.agent}</b>: ${t.content.substring(0,15)}</div>`).join('');
+        document.getElementById('thoughtList').innerHTML = thoughts.reverse().slice(0, 10).map(t=>`<div class="item"><b>${t.agent}</b>: ${t.content.substring(0,25)}</div>`).join('');
       }
 
       function renderEvents(logs) {
-        document.getElementById('eventList').innerHTML = logs.slice(0, 10).map(l=>`<div class="item">${l.routed_to}</div>`).join('');
+        document.getElementById('eventList').innerHTML = logs.slice(0, 10).map(l=>`<div class="item">${l.intent?.substring(0,15)}</div>`).join('');
       }
 
       setInterval(update, 2000);
