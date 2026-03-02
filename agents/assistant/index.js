@@ -15,6 +15,7 @@ import { distributedEventBus } from "../../ai-engine/lib/distributed-event-bus.j
 import { executionProfiler } from "../../ai-engine/lib/execution-profiler.js";
 import { bottleneckAnalyzer } from "../../ai-engine/lib/bottleneck-analyzer.js";
 import { collaborationCulture } from "../../ai-engine/lib/collaboration-culture.js";
+import { contextRecovery } from "../../ai-engine/lib/context-recovery.js";
 
 const args = process.argv.slice(2);
 // ...

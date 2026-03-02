@@ -5,7 +5,9 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.join(__dirname, "..");
-const PORT = 3000;
+// v19.0.0: 支持外部數據路徑注入，達成物理級解耦
+const DATA_DIR = process.env.TAONIX_DATA_DIR || path.join(PROJECT_ROOT, ".data");
+const PORT = process.env.PORT || 3000;
 
 const MIME_TYPES = {
   ".html": "text/html",
@@ -18,12 +20,19 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
+  // 1. 心跳檢查接口
+  if (req.url === "/health") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify({ status: "alive", data_dir: DATA_DIR }));
+  }
+
   let url = req.url === "/" ? "/index.html" : req.url;
   let filePath;
 
-  // 數據路徑代理：將 /.data/ 對映到專案根目錄的 .data/
+  // 2. 數據路徑映射 (Data Proxy)
   if (url.startsWith("/.data/")) {
-    filePath = path.join(PROJECT_ROOT, url);
+    const fileName = url.replace("/.data/", "");
+    filePath = path.join(DATA_DIR, fileName);
   } else {
     filePath = path.join(__dirname, url);
   }
@@ -34,20 +43,21 @@ const server = http.createServer((req, res) => {
   fs.readFile(filePath, (err, content) => {
     if (err) {
       res.writeHead(err.code === "ENOENT" ? 404 : 500);
-      res.end(err.code === "ENOENT" ? "404 Not Found" : "Server Error");
+      res.end(`[Console] Error ${err.code}: ${filePath}`);
     } else {
       res.writeHead(200, { 
         "Content-Type": contentType,
-        "Access-Control-Allow-Origin": "*" // 允許跨域，方便除錯
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-store" // 確保數據始終最新
       });
       res.end(content);
     }
   });
 });
 
-// 明確監聽 0.0.0.0 以支援 Docker 埠號轉發
 server.listen(PORT, "0.0.0.0", () => {
-  console.log(`🌐 Taonix Web Console (Adaptive) 已啟動`);
-  console.log(`   - 內部地址: http://0.0.0.0:${PORT}`);
-  console.log(`   - 宿主機存取: http://localhost:[您的對映埠號]`);
+  console.log(`\n🏆 Taonix Web Console v19.0.0 (Hardened)`);
+  console.log(`   - Data Source: ${DATA_DIR}`);
+  console.log(`   - Listen Addr: http://0.0.0.0:${PORT}`);
+  console.log(`   - Access Hint: 若在容器外執行，請確保 .data 目錄已正確掛載。\n`);
 });
