@@ -400,8 +400,8 @@
       "id": "goal_1772457409835",
       "title": "開發 Taonix v20.0.0：1. 實作 Taonix Skill 原生封裝 (Standard Tooling) 2. 支援 Skill 層級的意圖預校驗 3. 建立 Taonix-Native 指令集引導 4. 實現 Skill 與 MCP 的零延遲橋接",
       "description": "由 AutonomousPlanner 自動建立",
-      "status": "in_progress",
-      "progress": 60,
+      "status": "completed",
+      "progress": 100,
       "created": "2026-03-02T13:16:49.835Z",
       "deadline": "2026-03-05T13:16:49.835Z",
       "subGoals": [
@@ -410,6 +410,22 @@
         "sub_goal_1772457409835_2",
         "sub_goal_1772457409835_3",
         "sub_goal_1772457409835_4"
+      ]
+    },
+    "goal_1772468287444": {
+      "id": "goal_1772468287444",
+      "title": "開發 Taonix v21.0.0：1. 實作 Agent 動態人格適應模型 (Adaptive Persona) 2. 支援基於任務緊急度的語氣調節機制 3. 建立 Agent 協作默契指標 (Synergy Score) 4. 實作黑板心智的跨 Session 情感沉澱",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "in_progress",
+      "progress": 80,
+      "created": "2026-03-02T16:18:07.444Z",
+      "deadline": "2026-03-05T16:18:07.444Z",
+      "subGoals": [
+        "sub_goal_1772468287444_0",
+        "sub_goal_1772468287444_1",
+        "sub_goal_1772468287444_2",
+        "sub_goal_1772468287444_3",
+        "sub_goal_1772468287444_4"
       ]
     }
   },
@@ -1421,6 +1437,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-03-02T13:16:49.839Z"
+    },
+    "sub_goal_1772468287444_0": {
+      "id": "sub_goal_1772468287444_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-02T16:18:07.444Z"
+    },
+    "sub_goal_1772468287444_1": {
+      "id": "sub_goal_1772468287444_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-02T16:18:07.445Z"
+    },
+    "sub_goal_1772468287444_2": {
+      "id": "sub_goal_1772468287444_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-02T16:18:07.445Z"
+    },
+    "sub_goal_1772468287444_3": {
+      "id": "sub_goal_1772468287444_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-02T16:18:07.446Z"
+    },
+    "sub_goal_1772468287444_4": {
+      "id": "sub_goal_1772468287444_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-02T16:18:07.447Z"
     }
   }
 }
