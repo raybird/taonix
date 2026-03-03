@@ -2,6 +2,26 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v24.0.1] - 2026-03-03
+
+### Fixed
+- **P0 語法錯誤（4 處）** — 修復 `persona-adapter`、`semantic-validator`、`resource-gc`、`host-probe` 中的字串斷行導致模組無法載入
+- **P1 硬編碼路徑（2 處）** — `container-control`、`container-orchestrator` 改用 `config/paths.js` 統一路徑管理，修復本機環境無法啟動的問題
+- **P2 測試與實作 API 不一致（7 處）**
+  - Designer: `component-generator` 補上 `props` 欄位、`ux-analyzer` 新增路徑存在性檢查與目錄權限容錯
+  - Tester: `test-generator` 支援專案根目錄路徑回退、`test-plan` 補上 `name`/`phases` 與 complexity 分級、`test-runner` 補上 `passed`/`failed`/`total` 欄位
+  - Assistant: `analyzer` 新增 `task` 意圖類別
+  - Product: `feature-analyzer` 補上 `analysis` 欄位
+- **P3 依賴與整合（3 處）**
+  - 根 `package.json` 加入 `commander`（所有 Agent CLI 共用）
+  - `integration/package.json` 加入 `@modelcontextprotocol/sdk` 依賴
+  - `agent-dispatcher` 改為展開位置參數，相容 commander CLI 呼叫方式
+  - `persona-adapter` 補上 `blackboard` import 與安全的事實讀取
+
+### Test Results
+- 整合測試：3/3 通過
+- Agent 單元測試：60/60 通過（8 個 Agent 全數通過）
+
 ## [v24.0.0] - 2026-03-03
 
 ### Changed
