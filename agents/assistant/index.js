@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { emitResult } from "../lib/ipc-output.js";
 import { scheduleTask } from "./lib/scheduler-helper.js";
 import { searchMemory } from "./lib/memory-helper.js";
 import { analyzeRequest } from "./lib/analyzer.js";
@@ -54,6 +55,7 @@ switch (command) {
     const taskId = `task_${Date.now()}`;
     eventBus.publish("TASK_ASSIGNED", { taskId, targetAgent, task }, "assistant");
     console.log(`📡 已發布廣播任務 [${taskId}] 指派給 ${targetAgent}`);
+    emitResult({ success: true, data: { taskId, targetAgent, task } });
     break;
 
   case "monitor":
@@ -75,6 +77,7 @@ switch (command) {
     } else {
       console.log("ℹ️ 目前無主動建議任務。");
     }
+    emitResult({ success: true, data: { taskCount: tasks.length, tasks } });
     break;
 
   case "guard":
@@ -106,36 +109,49 @@ switch (command) {
           result: summary.content,
           sessionId: sessionId,
         });
+        emitResult({ success: true, data: { summarized: true, content: summary.content } });
       } else {
         console.log("[ContextGuard] 未達摘要閾值或無需摘要");
+        emitResult({ success: true, data: { summarized: false } });
       }
     } catch (e) {
       console.error(`[ContextGuard] 錯誤: ${e.message}`);
+      emitResult({ success: false, error: e.message });
     }
     break;
 
   case "schedule":
     if (args.length < 3) {
       console.error("用法: assistant schedule <task> <cron>");
+      emitResult({ success: false, error: "用法: assistant schedule <task> <cron>" });
       process.exit(1);
     }
     await scheduleTask(args[1], args[2]);
+    emitResult({ success: true, data: { task: args[1], cron: args[2] } });
     break;
 
   case "memory":
     if (args.length < 2) {
       console.error("用法: assistant memory <query>");
+      emitResult({ success: false, error: "用法: assistant memory <query>" });
       process.exit(1);
     }
-    await searchMemory(args.slice(1).join(" "));
+    {
+      const memoryResult = await searchMemory(args.slice(1).join(" "));
+      emitResult({ success: true, data: memoryResult });
+    }
     break;
 
   case "analyze":
     if (args.length < 2) {
       console.error("用法: assistant analyze <input>");
+      emitResult({ success: false, error: "用法: assistant analyze <input>" });
       process.exit(1);
     }
-    await analyzeRequest(args.slice(1).join(" "));
+    {
+      const analyzeResult = await analyzeRequest(args.slice(1).join(" "));
+      emitResult({ success: true, data: analyzeResult });
+    }
     break;
 
   case "feedback":
@@ -147,6 +163,7 @@ switch (command) {
     }
     evolutionEngine.recordFeedback({ type: "manual", rating, agent });
     console.log(`✅ 已記錄反饋：${agent} - ${rating} 星`);
+    emitResult({ success: true, data: { rating, agent } });
     break;
 
   case "evolution":
@@ -166,6 +183,7 @@ switch (command) {
         console.log(`  [${s.priority}] ${s.type}: ${s.agent || s.issue || ""}`);
       });
     }
+    emitResult({ success: true, data: { performance: perf, suggestions } });
     break;
 
   case "summarize":
@@ -181,9 +199,11 @@ switch (command) {
     actions.slice(-5).forEach((a) => {
       console.log(`  - ${a.content.substring(0, 60)}`);
     });
+    emitResult({ success: true, data: { stats, topics, actions } });
     break;
 
   default:
     console.error(`未知指令: ${command}`);
+    emitResult({ success: false, error: `未知指令: ${command}` });
     process.exit(1);
 }

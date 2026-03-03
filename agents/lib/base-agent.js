@@ -1,6 +1,7 @@
 import { blackboard } from "../../memory/blackboard.js";
 import { AICaller } from "../../ai-engine/lib/ai-caller.js";
 import { personaAdapter } from "../../ai-engine/lib/persona-adapter.js";
+import { emitResult } from "./ipc-output.js";
 
 /**
  * Taonix Base Agent (v21.0.0 - Socially Aware)
@@ -41,10 +42,14 @@ export class BaseAgent {
 
       blackboard.recordThought(this.name, `任務完成。評價得分: ${evalScore}/100。`);
       
-      return { success: true, taskId, data: result, score: evalScore };
+      const successResult = { success: true, taskId, data: result, score: evalScore };
+      emitResult(successResult);
+      return successResult;
     } catch (e) {
       blackboard.recordThought(this.name, `執行失敗: ${e.message}`);
-      return { success: false, taskId, error: e.message };
+      const failResult = { success: false, taskId, error: e.message };
+      emitResult(failResult);
+      return failResult;
     }
   }
 

@@ -2,6 +2,26 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v25.0.0] - 2026-03-03
+
+### Added
+- **結構化 IPC 協議 (Structured IPC Protocol)** — 統一 Dispatcher ↔ Agent 通訊管道
+  - 新增 `agents/lib/ipc-output.js` IPC 輸出工具，提供 `emitResult()` 函式
+  - Dispatcher 啟動 Agent 時注入 `TAONIX_IPC=1` 環境變數，啟用結構化模式
+  - Dispatcher 透過 stdin 傳送 JSON 結構化輸入（command、args、metadata）
+  - Agent 透過 `__TAONIX_RESULT__` sentinel 前綴輸出結構化 JSON 結果（success、taskId、data、score）
+  - 向後相容：未升級的 Agent 自動回退至 exit-code + raw stdout 行為
+  - `BaseAgent` 子類別（Explorer、Coder、Oracle、Reviewer、Designer）自動獲得 IPC 能力
+  - 手動遷移 Tester、Product、Assistant 三個獨立 Agent
+  - 整合測試新增結構化 IPC 驗證與向後相容測試
+
+### Fixed
+- 修復整合測試中 Blackboard Sync 跨進程同步問題（子進程 debounced save 後重新載入）
+
+### Test Results
+- 整合測試：6/6 通過（含 2 項新增 IPC 驗證）
+- Coder 單元測試：6/6 通過
+
 ## [v24.0.1] - 2026-03-03
 
 ### Fixed

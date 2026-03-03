@@ -4,9 +4,11 @@ import { eventBus } from "./event-bus.js";
 import { blackboard } from "../../memory/blackboard.js";
 import { getTimeoutByComplexity } from "./complexity-analyzer.js";
 
+const IPC_SENTINEL = "__TAONIX_RESULT__";
+
 /**
- * Agent Dispatcher (v22.0.0 - Honor-Driven)
- * 整合團隊成就系統，實作基於榮譽事實的動態能力加權。
+ * Agent Dispatcher (v25.0.0 - Structured IPC)
+ * 整合團隊成就系統與結構化 IPC 協議，實作基於榮譽事實的動態能力加權。
  */
 export class AgentDispatcher {
   constructor() {
@@ -36,7 +38,8 @@ export class AgentDispatcher {
       const result = await this.executeWithTimeout(agent, task, params, timeoutMs);
       
       if (result.success) {
-        this.reportCompletion(taskId, agent, result.output);
+        const summary = result.output || JSON.stringify(result.data || "").substring(0, 500);
+        this.reportCompletion(taskId, agent, summary);
         return result;
       } else {
         throw new Error(result.error || "未知執行錯誤");
@@ -77,7 +80,16 @@ export class AgentDispatcher {
     return new Promise((resolve) => {
       // 將 params 物件的值展開為位置參數（相容 commander CLI）
       const paramArgs = params ? Object.values(params).map(String) : [];
-      const child = spawn("node", [agentScript, task, ...paramArgs], { stdio: "pipe" });
+      const child = spawn("node", [agentScript, task, ...paramArgs], {
+        stdio: "pipe",
+        env: { ...process.env, TAONIX_IPC: "1" }
+      });
+
+      // 透過 stdin 傳送結構化輸入
+      const inputPayload = { command: task, args: params || {}, metadata: { agent } };
+      child.stdin.write(JSON.stringify(inputPayload));
+      child.stdin.end();
+
       let output = "";
       const timer = setTimeout(() => {
         child.kill();
@@ -87,9 +99,36 @@ export class AgentDispatcher {
       child.stderr.on("data", (d) => output += d.toString());
       child.on("close", (code) => {
         clearTimeout(timer);
-        resolve({ success: code === 0, output, code });
+
+        // 嘗試從 stdout 擷取 sentinel 結構化結果
+        const structured = this.extractStructuredResult(output);
+        if (structured) {
+          resolve(structured);
+        } else {
+          // 回退至原始 exit-code 行為
+          resolve({ success: code === 0, output, code });
+        }
       });
     });
+  }
+
+  /**
+   * 從 stdout 中擷取 __TAONIX_RESULT__ sentinel 行並解析為結構化物件。
+   * @returns {object|null} 解析後的結構化結果，或 null（回退至原行為）
+   */
+  extractStructuredResult(output) {
+    const lines = output.split("\n");
+    for (let i = lines.length - 1; i >= 0; i--) {
+      const idx = lines[i].indexOf(IPC_SENTINEL);
+      if (idx !== -1) {
+        try {
+          return JSON.parse(lines[i].substring(idx + IPC_SENTINEL.length));
+        } catch {
+          return null;
+        }
+      }
+    }
+    return null;
   }
 
   reportCompletion(taskId, agent, output) {

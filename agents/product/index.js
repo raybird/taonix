@@ -4,6 +4,7 @@ import { Command } from "commander";
 import { generatePRD } from "./lib/prd-generator.js";
 import { analyzeFeature } from "./lib/feature-analyzer.js";
 import { createUserStory } from "./lib/user-story.js";
+import { emitResult } from "../lib/ipc-output.js";
 
 const program = new Command();
 
@@ -20,9 +21,13 @@ program
   .action(async (title, options) => {
     try {
       const result = await generatePRD(title, options.type);
-      console.log(JSON.stringify({ success: true, data: result }, null, 2));
+      const output = { success: true, data: result };
+      emitResult(output);
+      console.log(JSON.stringify(output, null, 2));
     } catch (error) {
-      console.error(JSON.stringify({ success: false, error: error.message }));
+      const output = { success: false, error: error.message };
+      emitResult(output);
+      console.error(JSON.stringify(output));
       process.exit(1);
     }
   });
@@ -35,9 +40,13 @@ program
   .action(async (feature, options) => {
     try {
       const result = await analyzeFeature(feature, options.description);
-      console.log(JSON.stringify({ success: true, data: result }, null, 2));
+      const output = { success: true, data: result };
+      emitResult(output);
+      console.log(JSON.stringify(output, null, 2));
     } catch (error) {
-      console.error(JSON.stringify({ success: false, error: error.message }));
+      const output = { success: false, error: error.message };
+      emitResult(output);
+      console.error(JSON.stringify(output));
       process.exit(1);
     }
   });
@@ -51,9 +60,13 @@ program
   .action(async (role, action, benefit) => {
     try {
       const result = await createUserStory(role, action, benefit);
-      console.log(JSON.stringify({ success: true, data: result }, null, 2));
+      const output = { success: true, data: result };
+      emitResult(output);
+      console.log(JSON.stringify(output, null, 2));
     } catch (error) {
-      console.error(JSON.stringify({ success: false, error: error.message }));
+      const output = { success: false, error: error.message };
+      emitResult(output);
+      console.error(JSON.stringify(output));
       process.exit(1);
     }
   });

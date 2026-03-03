@@ -4,6 +4,7 @@ import { Command } from "commander";
 import { generateTest } from "./lib/test-generator.js";
 import { runTests } from "./lib/test-runner.js";
 import { createTestPlan } from "./lib/test-plan.js";
+import { emitResult } from "../lib/ipc-output.js";
 
 const program = new Command();
 
@@ -20,9 +21,13 @@ program
   .action(async (file, options) => {
     try {
       const result = await generateTest(file, options.type);
-      console.log(JSON.stringify({ success: true, data: result }, null, 2));
+      const output = { success: true, data: result };
+      emitResult(output);
+      console.log(JSON.stringify(output, null, 2));
     } catch (error) {
-      console.error(JSON.stringify({ success: false, error: error.message }));
+      const output = { success: false, error: error.message };
+      emitResult(output);
+      console.error(JSON.stringify(output));
       process.exit(1);
     }
   });
@@ -35,9 +40,13 @@ program
   .action(async (options) => {
     try {
       const result = await runTests(options.path, options.coverage);
-      console.log(JSON.stringify({ success: true, data: result }, null, 2));
+      const output = { success: true, data: result };
+      emitResult(output);
+      console.log(JSON.stringify(output, null, 2));
     } catch (error) {
-      console.error(JSON.stringify({ success: false, error: error.message }));
+      const output = { success: false, error: error.message };
+      emitResult(output);
+      console.error(JSON.stringify(output));
       process.exit(1);
     }
   });
@@ -50,9 +59,13 @@ program
   .action(async (feature, options) => {
     try {
       const result = await createTestPlan(feature, options.description);
-      console.log(JSON.stringify({ success: true, data: result }, null, 2));
+      const output = { success: true, data: result };
+      emitResult(output);
+      console.log(JSON.stringify(output, null, 2));
     } catch (error) {
-      console.error(JSON.stringify({ success: false, error: error.message }));
+      const output = { success: false, error: error.message };
+      emitResult(output);
+      console.error(JSON.stringify(output));
       process.exit(1);
     }
   });

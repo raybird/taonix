@@ -1,6 +1,6 @@
 # Taonix Roadmap
 
-> 目前狀態：v23.0.0 (全球心智共識完全體)
+> 目前狀態：v25.0.0 (結構化 IPC 協議)
 
 ---
 
@@ -13,7 +13,7 @@
 | AI Engine      | ✅   | 意圖理解 + 技能建築師 (元進化)               |
 | Skills         | ✅   | Agentskills.io 標準化 + 工業級沙盒執行       |
 | Memory         | ✅   | 黑板模式 + 集體經驗庫 + 情感持久化           |
-| Orchestration  | ✅   | 長程任務狀態機 + 榮譽驅動調度                |
+| Orchestration  | ✅   | 長程任務狀態機 + 榮譽驅動調度 + 結構化 IPC   |
 | Web 控制台     | ✅   | 全方位監控 + 協作拓樸圖 + 效能儀表板        |
 | 環境閉環       | ✅   | Git Observer + 反應式 Tester                 |
 | 共識機制       | ✅   | Gossip 協議 + 全球心智共識 + Revision ID     |
@@ -97,12 +97,19 @@
 - [✅] **跨節點熱遷移 (Live Migration)**: 故障節點自動移交任務執行權。
 - [✅] **集體榮譽共享 (Honor Sharing)**: 全球節點間的成就即時同步。
 
+### Phase 15: 結構化通訊協議 (v25.0)
+- [✅] **結構化 IPC 協議 (Structured IPC)**: Dispatcher ↔ Agent 間的 JSON 結構化通訊管道。
+- [✅] **Sentinel 輸出機制**: `__TAONIX_RESULT__` 前綴精確擷取結構化結果，相容 Agent 日誌輸出。
+- [✅] **結構化輸入 (stdin JSON)**: Dispatcher 透過 stdin 傳送任務參數，取代 CLI 位置參數。
+- [✅] **向後相容回退**: 未升級 Agent 自動回退至 exit-code + raw stdout 行為。
+
 ---
 
 ## 版本里程碑 (精簡版)
 
 | 版本   | 日期       | 重大變更                                           |
 | ------ | ---------- | -------------------------------------------------- |
+| v25.0  | 2026-03-03 | **結構化 IPC**：Sentinel 協議 + stdin JSON + 向後相容 |
 | v23.0  | 2026-03-03 | **全球心智共識**：Live Migration + Honor Sharing    |
 | v22.0  | 2026-03-02 | **榮譽驅動**：成就系統 + 榮譽調度 + 自發式優化     |
 | v21.0  | 2026-03-02 | **協作默契**：適應性人格 + 情感持久化               |
