@@ -2,6 +2,7 @@ import { spawn } from "child_process";
 import path from "path";
 import { eventBus } from "./event-bus.js";
 import { blackboard } from "../../memory/blackboard.js";
+import { getTimeoutByComplexity } from "./complexity-analyzer.js";
 
 /**
  * Agent Dispatcher (v22.0.0 - Honor-Driven)
@@ -11,7 +12,7 @@ export class AgentDispatcher {
   constructor() {
     this.agentsDir = path.join(process.cwd(), "agents");
     this.maxRetries = 3;
-    this.timeoutMs = 30000;
+    this.timeoutMs = 120_000;
   }
 
   async dispatch(intent, retryCount = 0) {
@@ -24,11 +25,15 @@ export class AgentDispatcher {
       console.log(`[Dispatcher] 🎖️ 偵測到 Agent ${agent} 具備榮譽成就，調度權重加成: +${honorBonus}%`);
     }
 
-    console.log(`[Dispatcher] 分發任務 ${taskId} (嘗試 ${retryCount + 1}/${this.maxRetries})...`);
+    const timeoutMs = intent.complexity
+      ? getTimeoutByComplexity(intent.complexity)
+      : this.timeoutMs;
+
+    console.log(`[Dispatcher] 分發任務 ${taskId} (嘗試 ${retryCount + 1}/${this.maxRetries}, 超時: ${timeoutMs / 1000}s)...`);
     eventBus.publish("TASK_STARTED", { taskId, agent, task, timestamp: Date.now(), honor_bonus: honorBonus }, "dispatcher");
 
     try {
-      const result = await this.executeWithTimeout(agent, task, params);
+      const result = await this.executeWithTimeout(agent, task, params, timeoutMs);
       
       if (result.success) {
         this.reportCompletion(taskId, agent, result.output);
@@ -66,15 +71,16 @@ export class AgentDispatcher {
     return Math.min(bonus, 50); // 最高 50% 加成
   }
 
-  async executeWithTimeout(agent, task, params) {
+  async executeWithTimeout(agent, task, params, timeoutMs) {
+    const effectiveTimeout = timeoutMs || this.timeoutMs;
     const agentScript = path.join(this.agentsDir, agent, "index.js");
     return new Promise((resolve) => {
       const child = spawn("node", [agentScript, task, JSON.stringify(params || {})], { stdio: "pipe" });
       let output = "";
       const timer = setTimeout(() => {
         child.kill();
-        resolve({ success: false, error: "Task execution timeout (30s)" });
-      }, this.timeoutMs);
+        resolve({ success: false, error: `Task execution timeout (${effectiveTimeout / 1000}s)` });
+      }, effectiveTimeout);
       child.stdout.on("data", (d) => output += d.toString());
       child.stderr.on("data", (d) => output += d.toString());
       child.on("close", (code) => {

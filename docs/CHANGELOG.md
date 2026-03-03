@@ -2,6 +2,23 @@
 
 All notable changes to Taonix will be documented in this file.
 
+## [v24.0.0] - 2026-03-03
+
+### Changed
+- **AICaller 改用 opencode run** — 預設 AI 呼叫方式從 `npx openai` 切換至 `opencode run`，簡化依賴並提升穩定性
+  - 新增 `setSystemPrompt()` 方法，修復 BaseAgent 執行時拋錯的 bug
+  - 保留 `ollama` 作為備用 provider
+  - 移除 `openai` provider 的 `npx` 呼叫方式
+- **動態超時機制** — Agent Dispatcher 依據任務複雜度動態調整超時時間
+  - 新增 `getTimeoutByComplexity()`：低 1 分鐘 / 中 3 分鐘 / 高 10 分鐘
+  - 預設超時從 30 秒提高至 120 秒
+  - MCP Hub 整合複雜度分析，自動傳遞 complexity level 給 Dispatcher
+
+### Fixed
+- 修復 `BaseAgent` 呼叫不存在的 `AICaller.setSystemPrompt()` 導致所有 Agent 執行崩潰
+- 修復 `tests/test-integration.js` 中 console.log 換行符格式錯誤
+- 更新 `.env.example` 反映 opencode 為預設 AI provider
+
 ## [v23.1.0] - 2026-03-03
 
 ### Changed

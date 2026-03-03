@@ -101,4 +101,14 @@ export function getComplexityLabel(level) {
   return labels[level] || "未知";
 }
 
-export default { analyzeComplexity, getComplexityLabel };
+const timeoutMap = {
+  low:    60_000,   //  1 分鐘
+  medium: 180_000,  //  3 分鐘
+  high:   600_000,  // 10 分鐘
+};
+
+export function getTimeoutByComplexity(level) {
+  return timeoutMap[level] || 120_000;
+}
+
+export default { analyzeComplexity, getComplexityLabel, getTimeoutByComplexity };

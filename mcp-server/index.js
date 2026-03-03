@@ -8,6 +8,7 @@ import { blackboard } from "../memory/blackboard.js";
 import { agentDispatcher } from "../ai-engine/lib/agent-dispatcher.js";
 import { AICaller } from "../ai-engine/lib/ai-caller.js";
 import { semanticValidator } from "../ai-engine/lib/semantic-validator.js";
+import { analyzeComplexity } from "../ai-engine/lib/complexity-analyzer.js";
 
 /**
  * Taonix MCP Server (v23.0.0 - Semantic Alignment)
@@ -66,10 +67,12 @@ class TaonixHubServer {
         const routeRes = await this.aiCaller.call(routingPrompt);
         const targetAgent = routeRes.content.trim().toLowerCase();
 
+        const { level } = analyzeComplexity(args.intent);
         const execRes = await agentDispatcher.dispatch({
           agent: targetAgent,
           task: args.intent,
-          params: {}
+          params: {},
+          complexity: level
         });
 
         return {

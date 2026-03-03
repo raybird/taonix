@@ -1,6 +1,6 @@
 {
   "system": "Taonix Unified Intelligence Hub",
-  "version": "23.1.0",
+  "version": "24.0.0",
   "philosophy": "多智能體樞紐：對外提供單一智慧入口，內部自組織專家協作。",
   "requirements": {
     "node": ">=22.0.0",

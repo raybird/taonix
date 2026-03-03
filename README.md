@@ -1,4 +1,4 @@
-# Taonix v23.1.0
+# Taonix v24.0.0
 
 > 事件驅動的多智能體 AI 作業系統 — 為 TeleNexus 而生
 

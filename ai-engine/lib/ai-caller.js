@@ -1,45 +1,42 @@
 #!/usr/bin/env node
 
 /**
- * AICaller (v13.1.0)
- * 修復 Risk B: 支援 systemPrompt，確保語義路由與技能生成的精準度。
+ * AICaller (v24.0.0)
+ * 預設使用 opencode run 作為 AI 呼叫方式，保留 ollama 作為備用。
+ * 支援 setSystemPrompt() 供 BaseAgent 設定角色提示詞。
  */
 export class AICaller {
   constructor(options = {}) {
-    this.provider = options.provider || "openai";
-    this.model = options.model || "gpt-4";
-    this.baseUrl = options.baseUrl || null;
+    this.provider = options.provider || "opencode";
+    this.model = options.model || null; // opencode 使用其自身設定的預設 model
+    this.systemPrompt = "You are a helpful assistant.";
+  }
+
+  setSystemPrompt(prompt) {
+    this.systemPrompt = prompt;
   }
 
   async call(prompt, options = {}) {
-    const { systemPrompt = "You are a helpful assistant.", temperature = 0.7 } = options;
+    const { systemPrompt = this.systemPrompt, temperature = 0.7 } = options;
+
+    const fullPrompt = `[系統指令]\n${systemPrompt}\n\n[使用者請求]\n${prompt}`;
 
     let cmd;
-    // 將 systemPrompt 整合進 messages 數組
-    const messages = [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: prompt }
-    ];
-
-    if (this.provider === "openai") {
-      const escapedMessages = JSON.stringify(messages).replace(/'/g, "'\\''");
-      cmd = `echo '${escapedMessages}' | npx -y openai@latest chat.completions.create --model ${this.model} --stream false`;
+    if (this.provider === "opencode") {
+      const escaped = fullPrompt.replace(/'/g, "'\\''");
+      const modelFlag = this.model ? ` -m "${this.model}"` : "";
+      cmd = `opencode run '${escaped}'${modelFlag} --format default`;
     } else if (this.provider === "ollama") {
-      // Ollama 支援 --system 參數
       const escapedPrompt = prompt.replace(/"/g, '\\"');
       const escapedSystem = systemPrompt.replace(/"/g, '\\"');
       cmd = `ollama run ${this.model} "${escapedPrompt}" --system "${escapedSystem}"`;
-    } else {
-      // Fallback
-      const escapedMessages = JSON.stringify(messages).replace(/'/g, "'\\''");
-      cmd = `echo '${escapedMessages}' | npx -y openai@latest chat.completions.create --model ${this.model}`;
     }
 
     try {
       const { execSync } = await import("child_process");
       const result = execSync(cmd, {
         encoding: "utf-8",
-        timeout: 60000,
+        timeout: 600_000,
         maxBuffer: 10 * 1024 * 1024,
       });
       return this.parseResponse(result);
@@ -49,8 +46,10 @@ export class AICaller {
   }
 
   parseResponse(response) {
+    const content = (response || "").trim();
+    // 嘗試 JSON parse（相容舊格式）
     try {
-      const data = JSON.parse(response);
+      const data = JSON.parse(content);
       if (data.choices && data.choices[0]) {
         return {
           content: data.choices[0].message?.content || data.choices[0].text,
@@ -58,9 +57,9 @@ export class AICaller {
           provider: this.provider,
         };
       }
-      return { content: response, model: this.model, provider: this.provider };
     } catch {
-      return { content: response, model: this.model, provider: this.provider };
+      // opencode default 格式為純文字，直接使用
     }
+    return { content, model: this.model, provider: this.provider };
   }
 }

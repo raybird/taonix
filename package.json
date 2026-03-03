@@ -1,6 +1,6 @@
 {
   "name": "taonix",
-  "version": "23.1.0",
+  "version": "24.0.0",
   "description": "事件驅動的多智能體 AI 作業系統",
   "type": "module",
   "main": "ai-engine/index.js",
