@@ -1,16 +1,29 @@
-export async function analyzeFeature(featureName, description = "") {
+export async function analyzeFeature(featureName, options = {}) {
+  const description = typeof options === "string" ? options : (options.description || "");
+  const complexityHint = typeof options === "object" ? options.complexity : null;
+
+  const complexity = complexityHint || estimateComplexity(featureName, description);
+  const dependencies = findDependencies(featureName);
+  const risks = identifyRisks(featureName);
+
   const analysis = {
-    name: featureName,
-    description,
-    complexity: estimateComplexity(featureName, description),
-    dependencies: findDependencies(featureName),
-    risks: identifyRisks(featureName),
+    complexity,
+    dependencies,
+    risks,
     suggestions: [],
   };
 
   analysis.suggestions = generateSuggestions(analysis);
 
-  return analysis;
+  return {
+    name: featureName,
+    description,
+    analysis,
+    complexity,
+    dependencies,
+    risks,
+    suggestions: analysis.suggestions,
+  };
 }
 
 function estimateComplexity(name, desc) {

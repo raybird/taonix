@@ -21,8 +21,7 @@ export class SemanticValidator {
     const templates = intentLibrary.templates;
     const templateContext = Object.entries(templates)
       .map(([k, v]) => `- ${k}: ${v}`)
-      .join("
-");
+      .join("\n");
 
     // 2. AI 語義判定
     const prompt = `你是一個嚴格的 AI 任務網關。請判斷以下意圖是否明確且可由目前的工程 Agent (coder, oracle, explorer, reviewer) 執行。

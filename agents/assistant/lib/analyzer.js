@@ -2,7 +2,7 @@ export class IntentAnalyzer {
   constructor() {
     this.intents = {
       schedule: {
-        keywords: ["排程", "schedule", "定時", "每", "任務", "提醒"],
+        keywords: ["排程", "schedule", "定時", "每", "提醒"],
         actions: ["建立", "查看", "取消", "執行"],
       },
       memory: {
@@ -16,6 +16,10 @@ export class IntentAnalyzer {
       communication: {
         keywords: ["告訴", "通知", "訊息", "發送", "telegram"],
         actions: ["發送", "通知", "告訴"],
+      },
+      task: {
+        keywords: ["任務", "task", "待辦", "工作項目"],
+        actions: ["建立", "新增", "分配", "完成"],
       },
       execution: {
         keywords: ["執行", "run", "做", "完成", "開始"],
@@ -75,6 +79,7 @@ export class IntentAnalyzer {
   getSuggestions(intent) {
     const suggestions = {
       schedule: ["建立排程", "查看排程", "取消排程"],
+      task: ["建立任務", "查看任務", "分配任務"],
       memory: ["搜尋記憶", "儲存資訊", "清除記憶"],
       analysis: ["深入分析", "生成報告", "提供建議"],
       communication: ["發送通知", "傳送訊息", "建立提醒"],

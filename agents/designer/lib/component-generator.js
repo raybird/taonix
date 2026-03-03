@@ -29,6 +29,7 @@ export async function generateComponent(name, type) {
     name,
     type,
     spec,
+    props: spec,
     code: generateCode(name, type, spec),
     usage: `import { ${capitalize(name)} } from './components/${name}';`,
   };

@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { eventBus } from "../ai-engine/lib/event-bus.js";
 import { blackboard } from "../memory/blackboard.js";
+import { paths } from "../config/paths.js";
 
 /**
  * Taonix Cluster Controller (v12.0.0)
@@ -9,7 +10,7 @@ import { blackboard } from "../memory/blackboard.js";
  */
 export class ClusterController {
   constructor() {
-    this.signalDir = "/app/workspace/.data/control_signals";
+    this.signalDir = paths.controlSignals;
     if (!fs.existsSync(this.signalDir)) fs.mkdirSync(this.signalDir, { recursive: true });
   }
 

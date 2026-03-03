@@ -10,6 +10,10 @@ export async function analyzeUX(directory) {
   };
 
   try {
+    if (!fs.existsSync(directory)) {
+      return { error: `目錄不存在: ${directory}` };
+    }
+
     const files = getAllFiles(directory, [".html", ".jsx", ".tsx", ".vue"]);
 
     for (const file of files) {
@@ -36,22 +40,26 @@ function getAllFiles(dir, extensions) {
 
   if (!fs.existsSync(dir)) return files;
 
-  const items = fs.readdirSync(dir, { withFileTypes: true });
+  try {
+    const items = fs.readdirSync(dir, { withFileTypes: true });
 
-  for (const item of items) {
-    const fullPath = path.join(dir, item.name);
-    if (
-      item.isDirectory() &&
-      !item.name.startsWith(".") &&
-      item.name !== "node_modules"
-    ) {
-      files.push(...getAllFiles(fullPath, extensions));
-    } else if (
-      item.isFile() &&
-      extensions.some((ext) => item.name.endsWith(ext))
-    ) {
-      files.push(fullPath);
+    for (const item of items) {
+      const fullPath = path.join(dir, item.name);
+      if (
+        item.isDirectory() &&
+        !item.name.startsWith(".") &&
+        item.name !== "node_modules"
+      ) {
+        files.push(...getAllFiles(fullPath, extensions));
+      } else if (
+        item.isFile() &&
+        extensions.some((ext) => item.name.endsWith(ext))
+      ) {
+        files.push(fullPath);
+      }
     }
+  } catch {
+    // 忽略權限不足的目錄
   }
 
   return files;

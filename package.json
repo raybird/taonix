@@ -21,5 +21,8 @@
     "ai"
   ],
   "author": "Taonix Team",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.0.0"
+  }
 }

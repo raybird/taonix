@@ -1,5 +1,6 @@
 import { synergyEngine } from "./synergy-engine.js";
 import { collaborationCulture } from "./collaboration-culture.js";
+import { blackboard } from "../../memory/blackboard.js";
 
 /**
  * Taonix Adaptive Persona Adapter (v21.0.0)
@@ -16,8 +17,7 @@ export class PersonaAdapter {
     const basePersona = collaborationCulture.getPersonaPrompt(agentName);
     const synergyScore = partnerName ? (synergyEngine.synergyMatrix[synergyEngine._getPairKey(agentName, partnerName)] || 50) : 50;
     
-    let adaptation = "
-[動態人格調整]: ";
+    let adaptation = "\n[動態人格調整]: ";
     
     // 1. 基於默契的調整
     if (synergyScore > 80) {
@@ -29,7 +29,8 @@ export class PersonaAdapter {
     }
 
     // 2. 基於緊急度的調整 (v21.0.0 強化版)
-    const activeTask = blackboard.getActiveTask();
+    const facts = blackboard.getFacts();
+    const activeTask = facts.active_task?.value;
     const priority = activeTask?.priority || taskMetadata.priority || "normal";
 
     if (priority === "critical" || priority === "high") {

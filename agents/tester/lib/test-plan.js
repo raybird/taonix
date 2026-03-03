@@ -1,9 +1,21 @@
-export async function createTestPlan(featureName, description = "") {
+export async function createTestPlan(featureName, options = {}) {
+  const description = typeof options === "string" ? options : (options.description || "");
+  const complexity = typeof options === "object" ? (options.complexity || "medium") : "medium";
+
+  const testTypes = determineTestTypes(featureName, complexity);
+  const phases = testTypes.map((t, i) => ({
+    id: `phase_${i + 1}`,
+    name: t,
+    testCases: generateTestCases(featureName).filter(() => true),
+  }));
+
   const plan = {
+    name: featureName,
     feature: featureName,
     description,
     scope: determineScope(featureName),
-    testTypes: determineTestTypes(featureName),
+    testTypes,
+    phases,
     testCases: generateTestCases(featureName),
     environment: {
       browsers: ["Chrome", "Firefox", "Safari"],
@@ -30,7 +42,7 @@ function determineScope(name) {
   return key ? scopeMap[key] : { units: 8, integration: 4, e2e: 2 };
 }
 
-function determineTestTypes(name) {
+function determineTestTypes(name, complexity = "medium") {
   const types = ["單元測試", "整合測試"];
 
   if (
@@ -53,6 +65,14 @@ function determineTestTypes(name) {
     name.toLowerCase().includes("performance")
   ) {
     types.push("效能測試");
+  }
+
+  // 根據複雜度追加測試階段
+  if (complexity === "high") {
+    types.push("壓力測試");
+    types.push("安全性測試");
+  } else if (complexity === "medium") {
+    types.push("回歸測試");
   }
 
   return types;

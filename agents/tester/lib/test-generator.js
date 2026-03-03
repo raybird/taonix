@@ -1,12 +1,26 @@
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PROJECT_ROOT = path.resolve(__dirname, "..", "..", "..");
 
 export async function generateTest(filePath, type = "unit") {
-  if (!fs.existsSync(filePath)) {
+  let resolvedPath = filePath;
+  let content = "";
+
+  // 嘗試多個路徑解析：CWD → 專案根目錄
+  if (fs.existsSync(filePath)) {
+    resolvedPath = filePath;
+    content = fs.readFileSync(resolvedPath, "utf-8");
+  } else if (!path.isAbsolute(filePath) && fs.existsSync(path.join(PROJECT_ROOT, filePath))) {
+    resolvedPath = path.join(PROJECT_ROOT, filePath);
+    content = fs.readFileSync(resolvedPath, "utf-8");
+  } else if (path.isAbsolute(filePath)) {
     throw new Error(`File not found: ${filePath}`);
   }
+  // 相對路徑但檔案不存在時，根據副檔名生成模板
 
-  const content = fs.readFileSync(filePath, "utf-8");
   const ext = path.extname(filePath);
   const baseName = path.basename(filePath, ext);
 

@@ -1,6 +1,7 @@
 import { envRunner } from "./environment-runner.js";
 import { blackboard } from "../memory/blackboard.js";
 import { eventBus } from "../ai-engine/lib/event-bus.js";
+import { paths } from "../config/paths.js";
 import fs from "fs";
 
 /**
@@ -9,7 +10,7 @@ import fs from "fs";
  */
 export class ContainerOrchestrator {
   constructor() {
-    this.probeDir = "/app/workspace/.data/cluster_probes";
+    this.probeDir = paths.clusterProbes;
     if (!fs.existsSync(this.probeDir)) fs.mkdirSync(this.probeDir, { recursive: true });
   }
 

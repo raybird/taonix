@@ -24,11 +24,9 @@ export class ResourceGC {
     
     // 1. 清理日誌
     if (fs.existsSync(paths.eventLogs)) {
-      const logs = fs.readFileSync(paths.eventLogs, "utf-8").split("
-");
+      const logs = fs.readFileSync(paths.eventLogs, "utf-8").split("\n");
       if (logs.length > this.maxLogLines) {
-        fs.writeFileSync(paths.eventLogs, logs.slice(-this.maxLogLines).join("
-"));
+        fs.writeFileSync(paths.eventLogs, logs.slice(-this.maxLogLines).join("\n"));
         blackboard.recordThought("gc", `已截斷事件日誌至最後 ${this.maxLogLines} 行。`);
       }
     }

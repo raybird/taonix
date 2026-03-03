@@ -25,10 +25,8 @@ export class HostProbe {
 
       const stats = {
         timestamp: new Date().toISOString(),
-        disk: dfResult.output.split("
-")[1],
-        memory: memResult.output.split("
-")[1],
+        disk: dfResult.output.split("\n")[1],
+        memory: memResult.output.split("\n")[1],
         uptime: loadResult.output.trim()
       };
 

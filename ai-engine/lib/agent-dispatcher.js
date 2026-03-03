@@ -75,7 +75,9 @@ export class AgentDispatcher {
     const effectiveTimeout = timeoutMs || this.timeoutMs;
     const agentScript = path.join(this.agentsDir, agent, "index.js");
     return new Promise((resolve) => {
-      const child = spawn("node", [agentScript, task, JSON.stringify(params || {})], { stdio: "pipe" });
+      // 將 params 物件的值展開為位置參數（相容 commander CLI）
+      const paramArgs = params ? Object.values(params).map(String) : [];
+      const child = spawn("node", [agentScript, task, ...paramArgs], { stdio: "pipe" });
       let output = "";
       const timer = setTimeout(() => {
         child.kill();
