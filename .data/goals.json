@@ -443,6 +443,22 @@
         "sub_goal_1772482587974_3",
         "sub_goal_1772482587974_4"
       ]
+    },
+    "goal_1772496983867": {
+      "id": "goal_1772496983867",
+      "title": "開發 Taonix v23.0.0：1. 實作基於 Gossip 的全球心智事實一致性協議 (Global Fact Consensus) 2. 支援任務執行權的跨節點熱遷移 (Live Migration) 3. 實作 P2P 頻寬流量壓縮與指紋同步優化 4. 建立分散式節點的集體榮譽共享機制",
+      "description": "由 AutonomousPlanner 自動建立",
+      "status": "completed",
+      "progress": 100,
+      "created": "2026-03-03T00:16:23.867Z",
+      "deadline": "2026-03-06T00:16:23.867Z",
+      "subGoals": [
+        "sub_goal_1772496983867_0",
+        "sub_goal_1772496983867_1",
+        "sub_goal_1772496983867_2",
+        "sub_goal_1772496983867_3",
+        "sub_goal_1772496983867_4"
+      ]
     }
   },
   "subGoals": {
@@ -1533,6 +1549,46 @@
       "status": "pending",
       "progress": 0,
       "created": "2026-03-02T20:16:27.977Z"
+    },
+    "sub_goal_1772496983867_0": {
+      "id": "sub_goal_1772496983867_0",
+      "title": "需求分析",
+      "description": "分析並定義需求",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-03T00:16:23.868Z"
+    },
+    "sub_goal_1772496983867_1": {
+      "id": "sub_goal_1772496983867_1",
+      "title": "架構設計",
+      "description": "設計系統架構",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-03T00:16:23.869Z"
+    },
+    "sub_goal_1772496983867_2": {
+      "id": "sub_goal_1772496983867_2",
+      "title": "實作核心功能",
+      "description": "實現主要功能",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-03T00:16:23.870Z"
+    },
+    "sub_goal_1772496983867_3": {
+      "id": "sub_goal_1772496983867_3",
+      "title": "測試驗證",
+      "description": "撰寫測試並驗證",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-03T00:16:23.870Z"
+    },
+    "sub_goal_1772496983867_4": {
+      "id": "sub_goal_1772496983867_4",
+      "title": "優化與部署",
+      "description": "效能優化並部署",
+      "status": "pending",
+      "progress": 0,
+      "created": "2026-03-03T00:16:23.871Z"
     }
   }
 }

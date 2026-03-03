@@ -1,20 +1,20 @@
 import { eventBus } from "./event-bus.js";
 import { blackboard } from "../../memory/blackboard.js";
+import { trafficOptimizer } from "./traffic-optimizer.js";
 
 /**
- * Taonix P2P Bridge (v13.0.0)
- * 負責分散式節點間的事件中轉與心智同步。
+ * Taonix P2P Bridge (v23.0.0 - Optimized)
+ * 負責分散式節點間的高效心智同步與頻寬管理。
  */
 export class P2PBridge {
   constructor() {
-    this.nodes = new Map(); // 儲存已發現的遠端節點
+    this.nodes = new Map();
     this.init();
   }
 
   init() {
-    console.log("[P2PBridge] 橋接器啟動中，準備接入分散式心智網路...");
+    console.log("[P2PBridge] 橋接器啟動：正在監聽跨網同步請求...");
 
-    // 1. 監聽本地事件並評估是否需要廣播
     eventBus.subscribeAll((event) => {
       if (event.metadata && event.metadata.broadcast) {
         this.broadcastToPeers(event);
@@ -23,12 +23,19 @@ export class P2PBridge {
   }
 
   /**
-   * 向所有已知節點廣播事件
+   * 向所有已知節點廣播事實 (具備頻寬優化)
    */
   async broadcastToPeers(event) {
-    console.log(`[P2PBridge] 正在廣播事件 ${event.name} 至遠端節點...`);
-    // 實作層：將調用 P2P 傳輸協議 (libp2p 或類似方案)
-    blackboard.recordThought("p2p-bridge", `事件 ${event.name} 已發送至全球分散式網路。`);
+    if (event.name === "FACT_UPDATED") {
+      const { key, value } = event.payload;
+      
+      // v23.0.0 新增：指紋過濾，避免無謂重覆廣播
+      if (!trafficOptimizer.shouldBroadcast(key, value)) return;
+
+      const compressed = trafficOptimizer.compressPackage(event.payload);
+      console.log(`[P2PBridge] 廣播優化後事實包: ${key} (Sig: ${compressed._sig})`);
+      // 實際傳輸層調用...
+    }
   }
 
   /**
