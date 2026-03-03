@@ -56,7 +56,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log(`\n🏆 Taonix Web Console v19.0.0 (Hardened)`);
+  console.log(`\n🏆 Taonix Web Console v23.0.0 (Hardened)`);
   console.log(`   - Data Source: ${DATA_DIR}`);
   console.log(`   - Listen Addr: http://0.0.0.0:${PORT}`);
   console.log(`   - Access Hint: 若在容器外執行，請確保 .data 目錄已正確掛載。\n`);

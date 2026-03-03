@@ -10,7 +10,7 @@ import { AICaller } from "../ai-engine/lib/ai-caller.js";
 import { semanticValidator } from "../ai-engine/lib/semantic-validator.js";
 
 /**
- * Taonix MCP Server (v17.0.0 - Semantic Alignment)
+ * Taonix MCP Server (v23.0.0 - Semantic Alignment)
  * 樞紐 2.0：具備語義預審與防禦性調度能力。
  */
 const tools = [
@@ -30,7 +30,7 @@ const tools = [
 class TaonixHubServer {
   constructor() {
     this.server = new Server(
-      { name: "taonix-hub", version: "17.0.0" },
+      { name: "taonix-hub", version: "23.0.0" },
       { capabilities: { tools: {} } }
     );
     this.aiCaller = new AICaller();

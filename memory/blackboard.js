@@ -18,6 +18,7 @@ class Blackboard {
       hypotheses: [],   // 待驗證的假設
       activeTask: null  // 當前全域任務
     };
+    this._saveTimer = null;
     this.load();
   }
 
@@ -32,13 +33,19 @@ class Blackboard {
   }
 
   save() {
+    // Debounce: 合併高頻寫入，避免並發 I/O 競態
+    if (this._saveTimer) clearTimeout(this._saveTimer);
+    this._saveTimer = setTimeout(() => this._flushSave(), 300);
+  }
+
+  _flushSave() {
     try {
       const dir = path.dirname(this.stateFile);
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(this.stateFile, JSON.stringify(this.memory, null, 2));
-      
+
       // 同步發布狀態更新事件 (v14.1.1 Fix: 補齊 Schema 必要欄位)
-      eventBus.publish("BLACKBOARD_UPDATED", { 
+      eventBus.publish("BLACKBOARD_UPDATED", {
         summary: "State snapshot saved",
         source: "blackboard",
         timestamp: Date.now()

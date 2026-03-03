@@ -42,14 +42,14 @@ class PartyModeCoordinator {
       agentEntry.startTime = new Date().toISOString();
 
       try {
-        const result = await this.executeAgent(Agent, task, options);
+        const result = await this.executeAgent(agent, task, options);
         agentEntry.status = "completed";
         agentEntry.result = result;
-        session.results.push({ agent: Agent, result });
+        session.results.push({ agent, result });
       } catch (error) {
         agentEntry.status = "failed";
         agentEntry.error = error.message;
-        session.results.push({ agent: Agent, error: error.message });
+        session.results.push({ agent, error: error.message });
       } finally {
         agentEntry.endTime = new Date().toISOString();
       }

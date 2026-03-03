@@ -1,0 +1,23 @@
+{
+  "name": "@taonix/product-agent",
+  "version": "1.0.0",
+  "description": "Taonix Product Agent - 邏輯規劃與需求定義 Agent",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "taonix-product": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test test.js"
+  },
+  "keywords": [
+    "taonix",
+    "agent",
+    "product",
+    "planning",
+    "requirements"
+  ],
+  "author": "Taonix Team",
+  "license": "MIT"
+}

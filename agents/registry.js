@@ -9,7 +9,7 @@ import { eventBus } from "../ai-engine/lib/event-bus.js";
  */
 export class AgentRegistry {
   constructor() {
-    this.registryFile = require("../config/paths.js").paths.agent_registry.json;
+    this.registryFile = paths.registry;
     this.agents = new Map();
     this.load();
   }

@@ -2,81 +2,85 @@
 
 ## 概述
 
-第三階段將 Taonix MCP Server 整合到 TeleNexus 系統。
+Taonix 透過 MCP 協議與 TeleNexus 整合，對外暴露單一 `taonix_hub` 工具，接收自然語言意圖後自動調度內部 Agent。
 
-## 目錄結構
-
-```
-taonix/
-├── agents/           # Agent CLI 工具
-├── mcp-server/      # MCP Server
-├── integration/     # TeleNexus 整合
-│   ├── client.js     # MCP Client
-│   ├── agents.js     # Agent 封裝
-│   └── telenexus-config.json
-└── docs/            # 文件
-```
-
-## 快速開始
-
-### 1. 啟動 MCP Server
+## 啟動 MCP Server
 
 ```bash
-cd mcp-server
-npm install
-node index.js
+# 從專案根目錄
+node mcp-server/index.js
 ```
 
-### 2. 在 TeleNexus 中註冊
+## MCP Client 設定
 
-在 TeleNexus config 中新增：
+在 TeleNexus 或其他 MCP Client 設定檔中新增：
 
 ```json
 {
   "mcpServers": {
     "taonix": {
       "command": "node",
-      "args": ["./taonix/mcp-server/index.js"]
+      "args": ["/path/to/taonix/mcp-server/index.js"]
     }
   }
 }
 ```
 
-### 3. 使用 Agent 工具
+## taonix_hub 工具
 
-| Agent | 工具                                                          |
-| ----- | ------------------------------------------------------------- |
-| 滄溟  | github_trending, web_search                                   |
-| 鑄焰  | read_file, write_file, list_files, run_command, code_review   |
-| 明鏡  | analyze_structure, analyze_dependencies, suggest_architecture |
-| 守闕  | check_quality, check_format, check_logic                      |
+Taonix 對外僅提供**單一工具** `taonix_hub`，取代早期版本的 13 個獨立工具。
 
-## 工具對應
+**呼叫方式：**
 
-### Explorer (滄溟)
+```json
+{
+  "name": "taonix_hub",
+  "arguments": {
+    "intent": "幫我分析這個專案的架構"
+  }
+}
+```
 
-- `explorer_github_trending` - 取得 GitHub Trending
-- `explorer_web_search` - 網頁搜尋
+Hub 內部自動完成語義驗證、Agent 調度與技能匹配。
 
-### Coder (鑄焰)
+### 意圖對應表
 
-- `coder_read_file` - 讀取檔案
-- `coder_write_file` - 寫入檔案
-- `coder_list_files` - 列出檔案
-- `coder_run_command` - 執行指令
-- `coder_code_review` - Code Review
+| 意圖範例 | 自動分派 Agent |
+|----------|----------------|
+| 「搜尋最近 Python 趨勢」 | Explorer（滄溟） |
+| 「幫我寫一個排序演算法」 | Coder（鑄焰） |
+| 「分析這個專案的架構」 | Oracle（明鏡） |
+| 「審查這段程式碼的品質」 | Reviewer（守闕） |
+| 「設計一個登入頁面」 | Designer（天工） |
+| 「定義這個功能的需求」 | Product（鴻圖） |
+| 「執行測試」 | Tester（試煉） |
+| 「規劃開發流程」 | Assistant（助理） |
 
-### Oracle (明鏡)
+### 回傳格式
 
-- `oracle_analyze_structure` - 分析結構
-- `oracle_analyze_dependencies` - 分析依賴
-- `oracle_suggest_architecture` - 架構建議
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"intent\":\"...\",\"agent\":{...},\"content\":\"...\",\"skill\":null,\"agents\":[...]}"
+    }
+  ]
+}
+```
 
-### Reviewer (把關)
+## 從舊版遷移
 
-- `reviewer_check_quality` - 品質檢查
-- `reviewer_check_format` - 格式檢查
-- `reviewer_check_logic` - 邏輯檢查
+v16.0.0 之前的版本暴露多個獨立 MCP 工具（如 `explorer_github_trending`、`coder_read_file` 等）。現已統一為 `taonix_hub` 單一入口：
+
+| 舊工具 | 遷移方式 |
+|--------|----------|
+| `explorer_github_trending` | `taonix_hub({ intent: "搜尋 GitHub 趨勢" })` |
+| `coder_read_file` | `taonix_hub({ intent: "讀取檔案 path/to/file" })` |
+| `oracle_analyze_structure` | `taonix_hub({ intent: "分析專案結構" })` |
+| `reviewer_check_quality` | `taonix_hub({ intent: "檢查程式碼品質" })` |
+
+所有意圖皆由 Hub 內部的意圖理解引擎自動路由至對應 Agent。
 
 ## 整合狀態
 
@@ -84,4 +88,4 @@ node index.js
 - [x] Client 封裝
 - [x] Agent 映射
 - [x] Config 定義
-- [ ] TeleNexus 實際註冊（需重啟 TeleNexus）
+- [x] 統一 Hub 入口（v16.0.0+）

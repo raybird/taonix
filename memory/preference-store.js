@@ -1,9 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = path.join(__dirname, "../.data");
+import { paths } from "../config/paths.js";
 
 class PreferenceStore {
   constructor() {
@@ -22,16 +19,16 @@ class PreferenceStore {
   }
 
   ensureDataDir() {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
+    if (!fs.existsSync(paths.data)) {
+      fs.mkdirSync(paths.data, { recursive: true });
     }
   }
 
   load() {
-    const prefFile = path.join(DATA_DIR, "preferences.json");
-    const statsFile = path.join(DATA_DIR, "stats.json");
-    const profileFile = path.join(DATA_DIR, "user-profile.json");
-    const workflowsFile = path.join(DATA_DIR, "workflows.json");
+    const prefFile = paths.preferences;
+    const statsFile = paths.stats;
+    const profileFile = paths.userProfile;
+    const workflowsFile = paths.workflows;
 
     if (fs.existsSync(prefFile)) {
       const data = JSON.parse(fs.readFileSync(prefFile, "utf-8"));
@@ -55,10 +52,10 @@ class PreferenceStore {
   }
 
   save() {
-    const prefFile = path.join(DATA_DIR, "preferences.json");
-    const statsFile = path.join(DATA_DIR, "stats.json");
-    const profileFile = path.join(DATA_DIR, "user-profile.json");
-    const workflowsFile = path.join(DATA_DIR, "workflows.json");
+    const prefFile = paths.preferences;
+    const statsFile = paths.stats;
+    const profileFile = paths.userProfile;
+    const workflowsFile = paths.workflows;
 
     fs.writeFileSync(
       prefFile,

@@ -8,7 +8,7 @@ import path from "path";
  */
 export class PolicyManager {
   constructor() {
-    this.policyFile = require("../config/paths.js").paths.skill_policies.json;
+    this.policyFile = paths.skillPolicies;
     this.policies = {};
     this.load();
   }

@@ -10,8 +10,8 @@ import { blackboard } from "../memory/blackboard.js";
  */
 export class EvolutionManager {
   constructor() {
-    this.historyFile = require("../config/paths.js").paths.evolution_history.json;
-    this.agentskillsDir = "/app/workspace/projects/taonix/skills/agentskills";
+    this.historyFile = paths.evolution;
+    this.agentskillsDir = paths.skills;
     this.history = [];
     this.load();
   }

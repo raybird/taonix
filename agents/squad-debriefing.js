@@ -15,10 +15,17 @@ export class SquadDebriefing {
 
   init() {
     console.log("[Debriefing] 小隊後驗總結系統已啟動...");
-    eventBus.subscribe("TASK_COMPLETED", async (event) => {
+    this._unsubscribe = eventBus.subscribe("TASK_COMPLETED", async (event) => {
       // 僅針對複雜或成功小隊任務進行深度總結
       await this.runDebrief(event.payload);
     });
+  }
+
+  destroy() {
+    if (this._unsubscribe) {
+      this._unsubscribe();
+      this._unsubscribe = null;
+    }
   }
 
   async runDebrief(payload) {

@@ -1,7 +1,7 @@
 import { agentRegistry } from "./registry.js";
 
 /**
- * 初始化核心 Agent 註冊資料 (v5.0.0)
+ * 初始化核心 Agent 註冊資料 (v23.1.0)
  */
 export function initCoreAgents() {
   console.log("🚀 正在註冊核心 Agent 能力...");
@@ -29,6 +29,21 @@ export function initCoreAgents() {
   agentRegistry.register("assistant", {
     capabilities: ["planning", "coordination", "summarization"],
     description: "助理 - 核心協調與任務規劃"
+  });
+
+  agentRegistry.register("reviewer", {
+    capabilities: ["code_review", "security", "quality_assurance"],
+    description: "守闕 - 負責程式碼審查與品質把關"
+  });
+
+  agentRegistry.register("designer", {
+    capabilities: ["design", "ux", "prototyping"],
+    description: "天工 - 負責 UI/UX 設計與元件規範"
+  });
+
+  agentRegistry.register("product", {
+    capabilities: ["product_planning", "requirements", "prioritization"],
+    description: "鴻圖 - 負責產品規劃與需求分析"
   });
 
   console.log("✅ 核心 Agent 註冊完成。");

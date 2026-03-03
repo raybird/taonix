@@ -1,4 +1,4 @@
-import { paths } from "../config/paths.js";
+import { paths } from "../../config/paths.js";
 import fs from "fs";
 import path from "path";
 import { eventBus } from "./event-bus.js";
@@ -10,7 +10,7 @@ import { blackboard } from "../../memory/blackboard.js";
  */
 export class TaskStateMachine {
   constructor() {
-    this.storageFile = require("../config/paths.js").paths.task_states.json;
+    this.storageFile = paths.tasks;
     this.tasks = new Map();
     this.load();
   }

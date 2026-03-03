@@ -16,7 +16,7 @@ export class IntentLibrary {
   }
 
   init() {
-    console.log("[IntentLib] 意圖模板庫已載入，共 ${Object.keys(this.templates).length} 組模板。");
+    console.log(`[IntentLib] 意圖模板庫已載入，共 ${Object.keys(this.templates).length} 組模板。`);
     // 同步模板到黑板，讓外部 Agent 可讀取
     blackboard.updateFact("intent_templates", this.templates, "intent-library");
   }

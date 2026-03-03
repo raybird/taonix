@@ -55,6 +55,7 @@ export class ConsensusEngine {
 
   checkConsensus(proposalId) {
     const proposal = this.activeProposals.get(proposalId);
+    if (!proposal || !proposal.plan) return;
     const squadFact = blackboard.getFacts()[`active_squad_${proposal.plan.taskId}`];
     if (!squadFact) return;
 

@@ -1,0 +1,25 @@
+{
+  "name": "taonix",
+  "version": "23.1.0",
+  "description": "事件驅動的多智能體 AI 作業系統",
+  "type": "module",
+  "main": "ai-engine/index.js",
+  "scripts": {
+    "start": "node mcp-server/index.js",
+    "engine": "node ai-engine/index.js",
+    "console": "node web-console/server.js",
+    "test": "node tests/test-integration.js",
+    "postinstall": "cd mcp-server && npm install"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "keywords": [
+    "taonix",
+    "mcp",
+    "multi-agent",
+    "ai"
+  ],
+  "author": "Taonix Team",
+  "license": "MIT"
+}

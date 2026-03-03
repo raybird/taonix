@@ -1,4 +1,5 @@
 import vm from "vm";
+import path from "path";
 import { paths } from "../config/paths.js";
 import fs from "fs";
 
@@ -14,7 +15,7 @@ export class SkillSandbox {
       maxExecutionTime: 5000,
       ...policy
     };
-    this.logPath = paths.sandboxAudit;
+    this.logPath = paths.audit;
   }
 
   async run(code, context = {}) {
@@ -61,8 +62,21 @@ export class SkillSandbox {
       const hostname = target.hostname.toLowerCase();
 
       // 1. 禁止本地迴路與私有網段
-      const blacklist = ["localhost", "127.0.0.1", "0.0.0.0", "::1", "192.168.", "10.", "172.16."];
-      if (blacklist.some(b => hostname.includes(b))) {
+      const isBlocked =
+        hostname === "localhost" ||
+        hostname === "127.0.0.1" ||
+        hostname === "0.0.0.0" ||
+        hostname === "::1" ||
+        hostname.startsWith("192.168.") ||
+        hostname.startsWith("10.") ||
+        hostname.startsWith("172.16.") || hostname.startsWith("172.17.") ||
+        hostname.startsWith("172.18.") || hostname.startsWith("172.19.") ||
+        hostname.startsWith("172.2") || hostname.startsWith("172.30.") ||
+        hostname.startsWith("172.31.") ||
+        hostname.startsWith("169.254.") ||
+        hostname.startsWith("fc00:") || hostname.startsWith("fd") ||
+        hostname.startsWith("fe80:");
+      if (isBlocked) {
         throw new Error(`[Sandbox] 安全攔截：禁止訪問敏感網段 (${hostname})。`);
       }
 
@@ -93,3 +107,5 @@ export class SkillSandbox {
     }
   }
 }
+
+export const skillSandbox = new SkillSandbox();

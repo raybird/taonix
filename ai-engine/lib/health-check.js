@@ -39,7 +39,7 @@ export class HealthCheck {
     }
 
     // 3. 沙盒審計日誌檢查
-    const auditExists = fs.existsSync(paths.sandboxAudit);
+    const auditExists = fs.existsSync(paths.audit);
     report.checks.push({ name: "sandbox_audit", status: auditExists ? "healthy" : "warning" });
 
     blackboard.updateFact("system_health_report", report, "health-check");

@@ -1,20 +1,86 @@
 {
   "system": "Taonix Unified Intelligence Hub",
-  "version": "16.3.1",
+  "version": "23.1.0",
   "philosophy": "多智能體樞紐：對外提供單一智慧入口，內部自組織專家協作。",
+  "requirements": {
+    "node": ">=22.0.0",
+    "module_system": "ESM"
+  },
   "entry_points": {
-    "mcp": "node mcp-server/index.js",
-    "assistant": "node agents/assistant/index.js"
+    "mcp": "mcp-server/index.js",
+    "engine": "ai-engine/index.js",
+    "console": "web-console/server.js",
+    "assistant": "agents/assistant/index.js"
+  },
+  "quickstart": {
+    "install": "npm install",
+    "start_mcp": "node mcp-server/index.js",
+    "start_engine": "node ai-engine/index.js \"你的意圖指令\"",
+    "start_console": "node web-console/server.js",
+    "test": "node tests/test-integration.js"
   },
   "capabilities": [
     {
       "name": "taonix_hub",
       "type": "unified_entry",
-      "description": "接收自然語言意圖，自動調度 Coder, Oracle, Explorer, Reviewer 完成實體執行。",
-      "mcp_tool": "taonix_hub"
+      "description": "接收自然語言意圖，自動調度專家 Agent 完成實體執行。",
+      "mcp_tool": "taonix_hub",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "intent": {
+            "type": "string",
+            "description": "任務意圖（自然語言）"
+          }
+        },
+        "required": ["intent"]
+      }
     }
   ],
-  "internal_agents": ["coder", "oracle", "explorer", "reviewer", "designer", "self-healer"],
+  "internal_agents": [
+    "explorer",
+    "coder",
+    "oracle",
+    "reviewer",
+    "designer",
+    "product",
+    "tester",
+    "assistant",
+    "self-healer"
+  ],
+  "skills": [
+    "agent-coordinator",
+    "brainstorming",
+    "doc-generator",
+    "executing-plans",
+    "performance-optimization",
+    "receiving-code-review",
+    "remote-example",
+    "requesting-code-review",
+    "security-audit",
+    "systematic-debugging",
+    "test-driven-development",
+    "verification-before-completion",
+    "writing-plans"
+  ],
+  "directory_structure": {
+    "agents/": "Agent CLI 工具與獨立進入點",
+    "ai-engine/": "核心 AI 引擎（意圖理解、Agent 調度、內容生成）",
+    "config/": "路徑管理與系統設定",
+    "docs/": "技術文件與變更紀錄",
+    "integration/": "TeleNexus 整合模組",
+    "mcp-server/": "MCP Server 統一入口",
+    "memory/": "Blackboard 共享記憶、偏好儲存、意圖庫",
+    "party/": "多 Agent 組隊協作引擎",
+    "planning/": "規劃引擎與任務分解",
+    "skills/": "技能框架（13 個內建技能）",
+    "tests/": "整合測試",
+    "tools/": "內部工具模組",
+    "web-console/": "Web 控制台（port 3000）"
+  },
+  "environment_variables": {
+    "TAONIX_DATA_DIR": "資料存放根目錄（預設為專案目錄）"
+  },
   "protocols": {
     "messaging": "EventBus (Typed Schemas)",
     "orchestration": "Priority-driven Resource Throttling",

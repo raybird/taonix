@@ -18,6 +18,7 @@ export const paths = {
   blackboard: path.join(DATA_DIR, "blackboard_state.json"),
   eventLogs: path.join(DATA_DIR, "event_logs.jsonl"),
   goals: path.join(DATA_DIR, "goals.json"),
+  goalsArchive: path.join(DATA_DIR, "goals-archive.json"),
   productivity: path.join(DATA_DIR, "productivity_stats.json"),
   experience: path.join(DATA_DIR, "experience_base.json"),
   tasks: path.join(DATA_DIR, "task_states.json"),
@@ -26,5 +27,13 @@ export const paths = {
   evolution: path.join(DATA_DIR, "evolution_history.json"),
   skills: path.join(BASE_DIR, "skills", "agentskills"),
   controlSignals: path.join(DATA_DIR, "control_signals"),
-  clusterProbes: path.join(DATA_DIR, "cluster_probes")
+  clusterProbes: path.join(DATA_DIR, "cluster_probes"),
+  skillPolicies: path.join(DATA_DIR, "skill_policies.json"),
+  errorSummary: path.join(DATA_DIR, "error-summary.md"),
+  aiConfig: path.join(BASE_DIR, "ai-config.yaml"),
+  runtimeStatus: path.join(DATA_DIR, "runtime-status.md"),
+  preferences: path.join(DATA_DIR, "preferences.json"),
+  stats: path.join(DATA_DIR, "stats.json"),
+  userProfile: path.join(DATA_DIR, "user-profile.json"),
+  workflows: path.join(DATA_DIR, "workflows.json")
 };

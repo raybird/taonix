@@ -3,11 +3,11 @@ import { blackboard } from "../memory/blackboard.js";
 import { eventBus } from "../ai-engine/lib/event-bus.js";
 
 /**
- * Taonix v14.1.0 整合測試腳本
+ * Taonix v23.0.0 整合測試腳本
  * 驗證全角色實體化後的端到端執行與黑板聯動。
  */
 async function runIntegrationTest() {
-  console.log("🧪 啟動 Taonix v14.1.0 全系統整合測試...");
+  console.log("🧪 啟動 Taonix v23.0.0 全系統整合測試...");
 
   const testResults = [];
 
@@ -47,7 +47,7 @@ async function runIntegrationTest() {
   const allPassed = testResults.every(r => r.success);
   if (allPassed) {
     console.log("
-🏆 所有整合測試通過！Taonix v14.1.0 已準備好發布。");
+🏆 所有整合測試通過！Taonix v23.0.0 已準備好發布。");
     process.exit(0);
   } else {
     console.error("

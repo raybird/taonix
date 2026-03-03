@@ -2,12 +2,13 @@ import { AgentListener } from "../ai-engine/lib/agent-listener.js";
 import { blackboard } from "../memory/blackboard.js";
 import { envRunner } from "../tools/environment-runner.js";
 import { clusterController } from "../tools/container-control.js";
+import { paths } from "../config/paths.js";
 import fs from "fs";
 
 export class SelfHealingAgent {
   constructor() {
     this.listener = new AgentListener("self-healer");
-    this.errorLog = "/app/workspace/context/error-summary.md";
+    this.errorLog = paths.errorSummary;
   }
 
   async start() {
@@ -53,8 +54,8 @@ export class SelfHealingAgent {
   }
 
   async checkConfigConsistency() {
-    const configPath = "/app/ai-config.yaml";
-    const runtimePath = "/app/workspace/context/runtime-status.md";
+    const configPath = paths.aiConfig;
+    const runtimePath = paths.runtimeStatus;
 
     if (fs.existsSync(configPath) && fs.existsSync(runtimePath)) {
       const config = fs.readFileSync(configPath, "utf-8");
