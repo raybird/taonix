@@ -2,8 +2,34 @@
 
 > 本文件為 Taonix 的技術細節參考。快速上手請見[根目錄 README](../README.md)。
 
+## 安裝與啟動
+
+### 最短安裝流程
+
+```bash
+npm install
+node tests/test-integration.js
+node ai-engine/index.js "分析這個專案的架構"
+```
+
+如果整合測試通過，代表目前環境已可執行 `taonix` 的核心 runtime。
+
+### AI Provider
+
+`taonix` 目前透過 `AICaller` 呼叫外部 CLI provider，不使用專案內的 `ai-config.yaml`。
+
+| Provider | CLI 形式 | 設定方式 |
+|----------|----------|----------|
+| `opencode` | `opencode run` | `TAONIX_AI_PROVIDER=opencode` |
+| `gemini` | `gemini "<prompt>"` | `TAONIX_AI_PROVIDER=gemini` |
+| `codex` | `codex exec "<prompt>"` | `TAONIX_AI_PROVIDER=codex` |
+| `ollama` | `ollama run <model>` | `TAONIX_AI_PROVIDER=ollama` + `TAONIX_AI_MODEL=<model>` |
+
+`AICaller.call()` 支援呼叫端直接傳 `cliArgs`，可用於 provider-specific flags。
+
 ## 目錄
 
+- [安裝與啟動](#安裝與啟動)
 - [Agent 團隊](#agent-團隊)
 - [技能清單](#技能清單)
 - [MCP 工具](#mcp-工具)
@@ -79,7 +105,7 @@ Taonix 對外暴露**單一 MCP 工具** `taonix_hub`，取代早期版本的多
 
 ### taonix_hub
 
-接收自然語言意圖，自動執行語義驗證、Agent 調度、技能匹配，並回傳結構化結果。
+接收自然語言意圖，自動執行語義驗證、`TaonixAI.run()`、runtime-first agent dispatch / skill execution，並回傳結構化結果。
 
 **inputSchema：**
 
@@ -222,6 +248,20 @@ const skills = await getSkills();
 // 取得學習統計
 const stats = await getLearningStats();
 ```
+
+### AICaller CLI 參數傳入
+
+```javascript
+import { AICaller } from "./ai-engine/lib/ai-caller.js";
+
+const ai = new AICaller({ provider: "codex", model: "gpt-5" });
+
+const res = await ai.call("檢查這個 repo 的測試風險", {
+  cliArgs: ["--json", "--skip-git-repo-check"]
+});
+```
+
+Gemini 預設使用 positional prompt；若呼叫端傳入 `-p` / `--prompt` / `-i` / `--prompt-interactive`，`AICaller` 會依旗標位置插入 prompt。
 
 ### 回傳結構
 

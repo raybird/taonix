@@ -4,15 +4,12 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { blackboard } from "../memory/blackboard.js";
-import { agentDispatcher } from "../ai-engine/lib/agent-dispatcher.js";
-import { AICaller } from "../ai-engine/lib/ai-caller.js";
+import { run } from "../ai-engine/index.js";
 import { semanticValidator } from "../ai-engine/lib/semantic-validator.js";
-import { analyzeComplexity } from "../ai-engine/lib/complexity-analyzer.js";
 
 /**
- * Taonix MCP Server (v23.0.0 - Semantic Alignment)
- * 樞紐 2.0：具備語義預審與防禦性調度能力。
+ * Taonix MCP Server (v26.0.0 - Runtime Convergence)
+ * 樞紐 3.0：單一控制面，統一委派至 TaonixAI。
  */
 const tools = [
   {
@@ -31,10 +28,9 @@ const tools = [
 class TaonixHubServer {
   constructor() {
     this.server = new Server(
-      { name: "taonix-hub", version: "23.0.0" },
+      { name: "taonix-hub", version: "26.0.0" },
       { capabilities: { tools: {} } }
     );
-    this.aiCaller = new AICaller();
     this.setupHandlers();
   }
 
@@ -62,27 +58,13 @@ class TaonixHubServer {
           };
         }
 
-        // 2. 內部調度
-        const routingPrompt = `你是一個專業的任務調度器。請根據意圖選擇 Agent：explorer, coder, oracle, reviewer。\n意圖: ${args.intent}\n僅返回 Agent 名稱。`;
-        const routeRes = await this.aiCaller.call(routingPrompt);
-        const targetAgent = routeRes.content.trim().toLowerCase();
-
-        const { level } = analyzeComplexity(args.intent);
-        const execRes = await agentDispatcher.dispatch({
-          agent: targetAgent,
-          task: args.intent,
-          params: {},
-          complexity: level
-        });
+        // 2. 單一控制面：一律交給 TaonixAI
+        const execRes = await run(args.intent);
 
         return {
           content: [{
             type: "text",
-            text: JSON.stringify({
-              status: execRes.success ? "completed" : "failed",
-              agent_used: targetAgent,
-              insight: execRes.output?.substring(0, 1000)
-            }, null, 2)
+            text: JSON.stringify(execRes, null, 2)
           }]
         };
       }

@@ -1,6 +1,9 @@
 import { analyzeIntent } from "./lib/intent-understanding.js";
 import { dispatchAgent } from "./lib/agent-dispatch.js";
 import { generateContent } from "./lib/content-generation.js";
+import { buildTaskSpec } from "./lib/task-spec.js";
+import { buildResultSpec } from "./lib/result-spec.js";
+import { executeBuiltInTask } from "./lib/builtin-executor.js";
 import { createSkillEngine } from "../skills/index.js";
 import { createContext } from "../skills/matcher.js";
 import { learning } from "../memory/learning.js";
@@ -22,6 +25,7 @@ export class TaonixAI {
   async process(input) {
     const intent = await analyzeIntent(input);
     const agents = await dispatchAgent(intent);
+    const taskSpec = buildTaskSpec(intent, agents);
 
     const skillContext = createContext(input, {
       intent: { type: intent.intent },
@@ -29,25 +33,46 @@ export class TaonixAI {
     });
 
     let skillResult = null;
-    const matchedSkill = await skillEngine.findSkill(skillContext);
+    let matchedSkill = null;
+    let executionResult = null;
 
-    if (matchedSkill) {
-      skillResult = await skillEngine.execute(matchedSkill.name, skillContext);
+    if (taskSpec.executionMode === "builtin") {
+      executionResult = buildResultSpec(
+        taskSpec,
+        await executeBuiltInTask(taskSpec),
+      );
+    } else {
+      matchedSkill = await skillEngine.findSkill(skillContext);
 
-      await learning.learn({
-        input,
-        skill: matchedSkill.name,
-        agents: agents.all,
-        result: skillResult,
-      });
+      if (matchedSkill) {
+        skillResult = await skillEngine.execute(matchedSkill.name, skillContext);
+        executionResult = buildResultSpec(taskSpec, {
+          success: true,
+          data: skillResult,
+          meta: { source: "skill-engine", skill: matchedSkill.name },
+        });
+
+        await learning.learn({
+          input,
+          skill: matchedSkill.name,
+          agents: agents.all,
+          result: skillResult,
+        });
+      } else {
+        executionResult = buildResultSpec(taskSpec, {
+          success: false,
+          error: `No execution path for capability: ${taskSpec.capability}`,
+        });
+      }
     }
 
-    const result = await generateContent(intent, agents);
+    const result = await generateContent(intent, agents, executionResult, taskSpec);
 
     return {
       ...result,
       skill: skillResult ? matchedSkill.name : null,
       skillGuidance: skillResult,
+      taskSpec,
       agents: agents.all,
     };
   }

@@ -18,7 +18,8 @@ export class AgentDispatcher {
   }
 
   async dispatch(intent, retryCount = 0) {
-    const { agent, task, params } = intent;
+    const normalizedTask = this.normalizeTaskIntent(intent);
+    const { agent, task, params } = normalizedTask;
     const taskId = `exec_${Date.now()}_r${retryCount}`;
 
     // v22.0.0 新增：計算榮譽加成
@@ -35,10 +36,12 @@ export class AgentDispatcher {
     eventBus.publish("TASK_STARTED", { taskId, agent, task, timestamp: Date.now(), honor_bonus: honorBonus }, "dispatcher");
 
     try {
-      const result = await this.executeWithTimeout(agent, task, params, timeoutMs);
+      const result = await this.executeTask(agent, normalizedTask, timeoutMs);
       
       if (result.success) {
+        result.taskId = result.taskId || taskId;
         const summary = result.output || JSON.stringify(result.data || "").substring(0, 500);
+        this.recordAgentResult(taskId, agent, result);
         this.reportCompletion(taskId, agent, summary);
         return result;
       } else {
@@ -58,6 +61,23 @@ export class AgentDispatcher {
     }
   }
 
+  normalizeTaskIntent(intent) {
+    if (intent?.capability) {
+      return {
+        ...intent,
+        agent: intent.targetAgent || intent.agent,
+        task: intent.capability,
+        params: intent.args || intent.params || {},
+      };
+    }
+
+    return {
+      ...intent,
+      task: intent.task,
+      params: intent.params || {},
+    };
+  }
+
   /**
    * 評估榮譽事實的加成比例 (v22.0.0)
    */
@@ -72,6 +92,49 @@ export class AgentDispatcher {
     });
 
     return Math.min(bonus, 50); // 最高 50% 加成
+  }
+
+  async executeTask(agent, taskSpec, timeoutMs) {
+    const runtimeResult = await this.executeViaRuntime(agent, taskSpec);
+    if (runtimeResult) {
+      return runtimeResult;
+    }
+
+    return this.executeWithTimeout(agent, taskSpec.task, taskSpec.params, timeoutMs);
+  }
+
+  async executeViaRuntime(agent, taskSpec) {
+    try {
+      const runtimeModule = await import(`../../agents/${agent}/runtime.js`);
+      if (typeof runtimeModule.executeTask !== "function") {
+        return null;
+      }
+
+      const data = await runtimeModule.executeTask({
+        ...taskSpec,
+        args: taskSpec.args || taskSpec.params || {},
+      });
+
+      return {
+        success: true,
+        data,
+        output: JSON.stringify(data),
+        mode: "runtime",
+      };
+    } catch (error) {
+      if (
+        error.code === "ERR_MODULE_NOT_FOUND" ||
+        /Cannot find module/.test(error.message)
+      ) {
+        return null;
+      }
+
+      return {
+        success: false,
+        error: error.message,
+        mode: "runtime",
+      };
+    }
   }
 
   async executeWithTimeout(agent, task, params, timeoutMs) {
@@ -134,6 +197,14 @@ export class AgentDispatcher {
   reportCompletion(taskId, agent, output) {
     blackboard.updateFact(`last_success_${agent}`, { taskId, timestamp: Date.now() }, "dispatcher");
     eventBus.publish("TASK_FINISHED", { taskId, agent, status: "success", summary: output.substring(0, 200) }, "dispatcher");
+  }
+
+  recordAgentResult(taskId, agent, result) {
+    blackboard.updateFact(`last_result_${agent}`, {
+      ...(result.data || {}),
+      taskId,
+      mode: result.mode || "unknown",
+    }, "dispatcher");
   }
 
   reportFailure(taskId, agent, error) {

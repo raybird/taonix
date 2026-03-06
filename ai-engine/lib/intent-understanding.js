@@ -1,3 +1,5 @@
+import { getCapability } from "./capability-registry.js";
+
 const intentPatterns = {
   github_trending: [
     "趋势",
@@ -20,19 +22,6 @@ const intentPatterns = {
   read_file: ["读取檔案", "讀取檔案", "read file", "看檔案", "查看檔案"],
   write_file: ["写入", "寫入", "write", "新建檔案"],
   run_command: ["执行", "執行", "run", "跑", "运行", "運作"],
-};
-
-const agentMapping = {
-  github_trending: "explorer",
-  web_search: "explorer",
-  code_review: "coder",
-  analyze_structure: "oracle",
-  analyze_deps: "oracle",
-  check_quality: "reviewer",
-  check_format: "reviewer",
-  read_file: "coder",
-  write_file: "coder",
-  run_command: "coder",
 };
 
 const paramPatterns = {
@@ -66,11 +55,13 @@ export async function analyzeIntent(input) {
   }
 
   const params = extractParams(input);
-  const agent = agentMapping[matchedIntent] || "unknown";
+  const capabilityMeta = getCapability(matchedIntent);
+  const agent = capabilityMeta?.agent || "unknown";
 
   return {
     input,
     intent: matchedIntent,
+    capability: matchedIntent,
     confidence,
     agent,
     params,
@@ -88,6 +79,22 @@ function extractParams(input) {
         params[paramName] = value;
       }
     }
+  }
+
+  if (params.tool === "web" || lowerInput.includes("新聞") || lowerInput.includes("news")) {
+    params.query = input;
+  }
+
+  if (lowerInput.includes("./") || lowerInput.includes("/")) {
+    const pathMatch = input.match(/(\.?\.?\/[^\s]+)/);
+    if (pathMatch) {
+      params.filepath = pathMatch[1];
+      params.directory = pathMatch[1];
+    }
+  }
+
+  if (lowerInput.includes("指令") || lowerInput.includes("command")) {
+    params.command = input;
   }
 
   return params;

@@ -22,6 +22,41 @@ All notable changes to Taonix will be documented in this file.
 - 整合測試：6/6 通過（含 2 項新增 IPC 驗證）
 - Coder 單元測試：6/6 通過
 
+## [v26.0.0] - 2026-03-06
+
+### Changed
+- **Runtime Convergence** — 核心執行鏈收斂為單一控制面
+  - `mcp-server` 不再自建第二套路由，統一委派至 `TaonixAI.run()`
+  - `TaonixAI` 改為產生 `TaskSpec` / `ResultSpec`，並回傳真實 execution result
+  - 新增 built-in capability registry，統一 `intent` / `task` / `agent` 對應
+- **Runtime-first Agent Dispatch** — Dispatcher 優先直接載入 agent runtime module，CLI 僅保留 fallback
+  - 新增 `agents/*/runtime.js`
+  - `agent-dispatcher` 現在保留 `taskId`、同步寫入 `last_result_*` 事實，並維持相容舊 IPC 測試
+- **Skill Runtime Repair** — 修復 Skill Architect / Sandbox / Loader / Registry 契約不一致
+  - `SkillArchitect` 改為生成可驗證的 skill object expression
+  - `sandbox` 支援 object-expression、`export default`、`module.exports`
+  - `registry` 保留 `scriptCode`，ESM 載入失敗時可回退至 sandbox 執行
+  - `remote-loader` 與 `skill engine` 統一 skill module 形狀
+- **AICaller Multi-CLI Support** — AI CLI 呼叫擴充並可由呼叫端帶參數
+  - 支援 `opencode run` / `gemini` / `codex exec` / `ollama run`
+  - 新增 `TAONIX_AI_PROVIDER` / `TAONIX_AI_MODEL`
+  - `AICaller.call()` 新增 `cliArgs`
+  - `gemini` 預設改為官方建議的 positional prompt 形式；若呼叫端指定 `-p` / `-i` 等 flag，則依旗標插入 prompt
+- **Integration Test Upgrade** — 整合測試升級為真實 user flow + golden shape 驗證
+  - 新增 `tests/golden/ai-engine-flow-shapes.json`
+  - 測試覆蓋 `github_trending` / `web_search` / `analyze_structure` / `check_quality`
+
+### Fixed
+- 修復 built-in capability 誤觸 skill auto-generation 的行為
+- 修復 `TASK_ASSIGNED` event payload 與 schema 不一致
+- 修復 `SkillArchitect` 產生 `Unexpected token 'export'` 的結構性問題
+- 修復 `content-generation` 對失敗 result 的錯誤格式化
+
+### Test Results
+- 整合測試：10/10 通過
+- 真實 AI flow 驗證：4/4 通過
+- Skill sandbox 相容驗證：object-expression / `export default` 皆通過
+
 ## [v24.0.1] - 2026-03-03
 
 ### Fixed
