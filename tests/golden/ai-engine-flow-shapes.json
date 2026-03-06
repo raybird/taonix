@@ -1,0 +1,34 @@
+[
+  {
+    "name": "github trending flow",
+    "prompt": "請分析目前的 github trending",
+    "expectedIntent": "github_trending",
+    "expectedAgent": "explorer",
+    "expectedCapability": "github_trending",
+    "expectedStatus": "failed"
+  },
+  {
+    "name": "web search flow",
+    "prompt": "幫我搜索一下 AI 的最新新聞",
+    "expectedIntent": "web_search",
+    "expectedAgent": "explorer",
+    "expectedCapability": "web_search",
+    "expectedStatus": "completed"
+  },
+  {
+    "name": "structure analysis flow",
+    "prompt": "分析這個專案的架構",
+    "expectedIntent": "analyze_structure",
+    "expectedAgent": "oracle",
+    "expectedCapability": "analyze_structure",
+    "expectedStatus": "completed"
+  },
+  {
+    "name": "quality check flow",
+    "prompt": "檢查這個專案的代碼品質",
+    "expectedIntent": "check_quality",
+    "expectedAgent": "reviewer",
+    "expectedCapability": "check_quality",
+    "expectedStatus": "completed"
+  }
+]

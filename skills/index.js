@@ -3,6 +3,7 @@ import { matchSkill } from "./matcher.js";
 import { skillSandbox } from "./sandbox.js";
 import { policyManager } from "./policy-manager.js";
 import { skillArchitect } from "./skill-architect.js";
+import { isBuiltInCapability } from "../ai-engine/lib/capability-registry.js";
 
 export class SkillEngine {
   constructor() {
@@ -16,10 +17,19 @@ export class SkillEngine {
   }
 
   async findSkill(context) {
+    if (isBuiltInCapability(context.intent?.type)) {
+      return null;
+    }
+
     let matched = await matchSkill(context, this.skills);
     
-    // v8.0.0: 如果沒有匹配到技能，但需求描述清晰，則觸發自動生成
-    if (!matched && context.input && context.input.length > 5) {
+    const allowAutoSkill =
+      (context.intent?.type === "unknown" || context.intent?.type === "skill") &&
+      context.input &&
+      context.input.length > 5;
+
+    // 只有未知或明確 skill 請求才觸發自動生成
+    if (!matched && allowAutoSkill) {
       console.log("[Skills] 未找到匹配技能，啟動元進化引擎...");
       try {
         const evolution = await skillArchitect.draftSkill(context.input);
@@ -43,11 +53,13 @@ export class SkillEngine {
     let result;
     if (skill.scriptCode) {
       const permissions = policyManager.getPermissions(skillName);
-      result = await skillSandbox.run(skill.scriptCode, context, {
+      const runtimeModule = await skillSandbox.run(skill.scriptCode, context, {
         skillName: skill.name,
         allowFS: permissions.allowFS,
-        allowNetwork: permissions.allowNetwork
+        allowNetwork: permissions.allowNetwork,
+        requireExecute: true
       });
+      result = await runtimeModule.execute(context);
     } else {
       result = await skill.execute(context);
     }

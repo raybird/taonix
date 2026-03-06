@@ -18,11 +18,12 @@ export class SkillSandbox {
     this.logPath = paths.audit;
   }
 
-  async run(code, context = {}) {
+  async run(code, context = {}, options = {}) {
+    const policy = this.createPolicy(options);
     const auditRecord = {
       timestamp: new Date().toISOString(),
-      skillName: context.skillName || "unknown",
-      policy: this.policy,
+      skillName: options.skillName || context.skillName || "unknown",
+      policy,
       status: "started"
     };
 
@@ -31,15 +32,20 @@ export class SkillSandbox {
       console: console,
       setTimeout: setTimeout,
       Buffer: Buffer,
-      fs: this.policy.allowFS ? this.createRestrictedFS() : this.createBlockedService("FS"),
-      fetch: this.policy.allowNetwork ? this.createRestrictedNetwork() : this.createBlockedService("Network"),
+      fs: policy.allowFS ? this.createRestrictedFS() : this.createBlockedService("FS"),
+      fetch: policy.allowNetwork ? this.createRestrictedNetwork() : this.createBlockedService("Network"),
+      ctx: context,
       ...context.data
     };
 
     try {
-      const script = new vm.Script(code);
+      const script = new vm.Script(this.normalizeCode(code));
       vm.createContext(sandbox);
-      const result = await script.runInContext(sandbox, { timeout: this.policy.maxExecutionTime });
+      const result = await script.runInContext(sandbox, { timeout: policy.maxExecutionTime });
+
+      if (options.requireExecute && (!result || typeof result.execute !== "function")) {
+        throw new Error("[Sandbox] 技能模組未導出 execute(ctx) 方法。");
+      }
       
       this.logAudit({ ...auditRecord, status: "success" });
       return result;
@@ -51,6 +57,36 @@ export class SkillSandbox {
 
   createBlockedService(name) {
     return () => { throw new Error(`[Sandbox] ${name} 存取遭拒：目前的 Policy 已停用此功能。`); };
+  }
+
+  createPolicy(options = {}) {
+    return {
+      ...this.policy,
+      allowFS: options.allowFS ?? this.policy.allowFS,
+      allowNetwork: options.allowNetwork ?? this.policy.allowNetwork,
+      maxExecutionTime: options.maxExecutionTime ?? this.policy.maxExecutionTime,
+    };
+  }
+
+  normalizeCode(code) {
+    let trimmed = (code || "").trim();
+    if (!trimmed) {
+      throw new Error("[Sandbox] 技能代碼為空。");
+    }
+
+    if (trimmed.startsWith("export default")) {
+      trimmed = trimmed.replace(/^export\s+default\s+/, "");
+    } else if (trimmed.startsWith("module.exports")) {
+      trimmed = trimmed.replace(/^module\.exports\s*=\s*/, "");
+    }
+
+    trimmed = trimmed.replace(/;\s*$/, "");
+
+    if (trimmed.startsWith("{")) {
+      return `(${trimmed})`;
+    }
+
+    return trimmed;
   }
 
   /**

@@ -1,15 +1,16 @@
-import { agentDispatcher } from "../ai-engine/lib/agent-dispatcher.js";
-import { blackboard } from "../memory/blackboard.js";
-import { eventBus } from "../ai-engine/lib/event-bus.js";
-import { spawn } from "child_process";
+import fs from "fs";
 import path from "path";
+import { agentDispatcher } from "../ai-engine/lib/agent-dispatcher.js";
+import { run as runTaonix } from "../ai-engine/index.js";
+import { blackboard } from "../memory/blackboard.js";
+import { spawn } from "child_process";
 
 /**
- * Taonix v25.0.0 整合測試腳本
- * 驗證全角色實體化後的端到端執行、黑板聯動與結構化 IPC 協議。
+ * Taonix v26.0.0 整合測試腳本
+ * 驗證 runtime dispatch、黑板同步，以及 TaonixAI.run() 的真實 user flows。
  */
 async function runIntegrationTest() {
-  console.log("🧪 啟動 Taonix v25.0.0 全系統整合測試...");
+  console.log("🧪 啟動 Taonix v26.0.0 全系統整合測試...");
 
   const testResults = [];
 
@@ -59,6 +60,11 @@ async function runIntegrationTest() {
   const backwardCompat = await testBackwardCompatibility();
   testResults.push({ name: "Backward Compatibility", success: backwardCompat });
 
+  // 6. 驗證 TaonixAI.run() 真實 user flows
+  console.log("\n[Step 6] 驗證 TaonixAI.run() user flows...");
+  const flowResults = await testAiEngineFlows();
+  testResults.push(...flowResults);
+
   // 總結
   console.log("\n📊 整合測試總結:");
   testResults.forEach(r => console.log(`${r.success ? "✅" : "❌"} ${r.name}`));
@@ -71,6 +77,30 @@ async function runIntegrationTest() {
     console.error("\n❌ 部分測試失敗，請檢查 Agent 實體邏輯。");
     process.exit(1);
   }
+}
+
+async function testAiEngineFlows() {
+  const fixturesPath = path.join(process.cwd(), "tests", "golden", "ai-engine-flow-shapes.json");
+  const fixtures = JSON.parse(fs.readFileSync(fixturesPath, "utf-8"));
+  const results = [];
+
+  for (const fixture of fixtures) {
+    const res = await runTaonix(fixture.prompt);
+    const success =
+      res.intent === fixture.expectedIntent &&
+      res.agent?.agent === fixture.expectedAgent &&
+      res.taskSpec?.capability === fixture.expectedCapability &&
+      res.result?.status === fixture.expectedStatus &&
+      typeof res.content === "string" &&
+      !!res.taskSpec?.traceId;
+
+    results.push({
+      name: `AI Flow: ${fixture.name}`,
+      success,
+    });
+  }
+
+  return results;
 }
 
 /**

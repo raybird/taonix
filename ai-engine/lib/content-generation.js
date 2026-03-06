@@ -63,17 +63,24 @@ const responseTemplates = {
   },
 };
 
-export async function generateContent(intent, agentResult) {
+export async function generateContent(intent, agentResult, executionResult = null, taskSpec = null) {
   const { intent: intentType, raw: userInput } = intent;
-
   const template = responseTemplates[intentType] || responseTemplates.default;
+  const data = executionResult?.data ?? null;
+  const content = executionResult?.success === false
+    ? `執行失敗：${executionResult.error}`
+    : data
+      ? template(data)
+      : "沒有可用的執行結果。";
 
   return {
     intent: intentType,
     userInput,
     agent: agentResult.primary,
-    content: "等待 Agent 執行結果...",
+    task: taskSpec,
+    content,
     template: intentType,
+    result: executionResult,
   };
 }
 

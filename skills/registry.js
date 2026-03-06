@@ -67,15 +67,22 @@ export async function loadSkills() {
           if (metadata && metadata.name) {
             // 載入腳本實作
             let execute = async (ctx) => ({ status: "not_implemented", ...metadata });
+            let scriptCode = null;
             if (fs.existsSync(scriptPath)) {
-              const module = await import(`file://${scriptPath}`);
-              const impl = module.default || module;
-              if (impl.execute) execute = impl.execute;
+              scriptCode = fs.readFileSync(scriptPath, "utf-8");
+              try {
+                const module = await import(`file://${scriptPath}`);
+                const impl = module.default || module;
+                if (impl.execute) execute = impl.execute;
+              } catch (e) {
+                console.warn(`[Registry] 技能 ${metadata.name} ESM 載入失敗，回退至沙盒執行: ${e.message}`);
+              }
             }
 
             skills.set(metadata.name, {
               ...metadata,
               execute,
+              scriptCode,
               isStandard: true
             });
             console.log(`[Registry] 載入標準技能: ${metadata.name}`);

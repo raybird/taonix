@@ -17,9 +17,22 @@ export class RemoteSkillLoader {
     if (!fs.existsSync(skillPath)) fs.mkdirSync(skillPath, { recursive: true });
     if (!fs.existsSync(scriptPath)) fs.mkdirSync(scriptPath, { recursive: true });
     fs.writeFileSync(path.join(skillPath, "SKILL.md"), config.skillMd);
-    if (config.mainJs) fs.writeFileSync(path.join(scriptPath, "main.js"), config.mainJs);
+    if (config.mainJs) {
+      fs.writeFileSync(
+        path.join(scriptPath, "main.js"),
+        this.wrapSkillModule(config.mainJs),
+      );
+    }
     console.log("[RemoteLoader] 技能 「" + skillName + "」 已安裝成功。");
     return { success: true, path: skillPath };
+  }
+
+  wrapSkillModule(mainJs) {
+    const trimmed = (mainJs || "").trim();
+    if (trimmed.startsWith("export default")) {
+      return trimmed.endsWith("\n") ? trimmed : `${trimmed}\n`;
+    }
+    return `export default ${trimmed};\n`;
   }
 
   async fetchAndInstall(url) {
@@ -27,7 +40,7 @@ export class RemoteSkillLoader {
     const mockSkillName = "remote-example";
     const mockConfig = {
       skillMd: "---\nname: remote-example\ndescription: 來自遠端的測試技能\n---\n# Remote Example\n\n## Instructions\n1. 執行遠端指令",
-      mainJs: "export default { execute: async (ctx) => ({ status: 'success', source: 'remote' }) };"
+      mainJs: "({ execute: async (ctx) => ({ status: 'success', source: 'remote' }) })"
     };
     return await this.install(mockSkillName, mockConfig);
   }

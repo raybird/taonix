@@ -53,7 +53,7 @@ switch (command) {
       process.exit(1);
     }
     const taskId = `task_${Date.now()}`;
-    eventBus.publish("TASK_ASSIGNED", { taskId, targetAgent, task }, "assistant");
+    eventBus.publish("TASK_ASSIGNED", { taskId, agent: targetAgent, task }, "assistant");
     console.log(`📡 已發布廣播任務 [${taskId}] 指派給 ${targetAgent}`);
     emitResult({ success: true, data: { taskId, targetAgent, task } });
     break;
@@ -63,7 +63,7 @@ switch (command) {
     eventBus.subscribeAll((event) => {
       const time = new Date(event.timestamp).toLocaleTimeString();
       console.log(`[${time}] ${event.name.padEnd(15)} | 來源: ${event.source.padEnd(10)} | ID: ${event.id}`);
-      if (event.name === "TASK_ASSIGNED") console.log(`   ➔ 目標: ${event.payload.targetAgent}, 任務: ${event.payload.task}`);
+      if (event.name === "TASK_ASSIGNED") console.log(`   ➔ 目標: ${event.payload.agent}, 任務: ${event.payload.task}`);
     });
     // 保持程序運行
     process.stdin.resume();

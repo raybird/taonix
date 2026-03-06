@@ -1,6 +1,6 @@
 {
   "system": "Taonix Unified Intelligence Hub",
-  "version": "24.0.0",
+  "version": "26.0.0",
   "philosophy": "多智能體樞紐：對外提供單一智慧入口，內部自組織專家協作。",
   "requirements": {
     "node": ">=22.0.0",
@@ -14,6 +14,7 @@
   },
   "quickstart": {
     "install": "npm install",
+    "verify": "node tests/test-integration.js",
     "start_mcp": "node mcp-server/index.js",
     "start_engine": "node ai-engine/index.js \"你的意圖指令\"",
     "start_console": "node web-console/server.js",
@@ -79,7 +80,9 @@
     "web-console/": "Web 控制台（port 3000）"
   },
   "environment_variables": {
-    "TAONIX_DATA_DIR": "資料存放根目錄（預設為專案目錄）"
+    "TAONIX_DATA_DIR": "資料存放根目錄（預設為專案目錄）",
+    "TAONIX_AI_PROVIDER": "AI CLI provider（opencode / gemini / codex / ollama）",
+    "TAONIX_AI_MODEL": "AI model 名稱（依 provider 而定）"
   },
   "protocols": {
     "messaging": "EventBus (Typed Schemas)",

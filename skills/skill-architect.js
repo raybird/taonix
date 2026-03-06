@@ -28,7 +28,7 @@ export class SkillArchitect {
   "name": "技能名稱 (kebab-case)",
   "description": "描述",
   "skillMd": "符合 agentskills.io 規範的 Markdown",
-  "mainJs": "符合規範的 ESM 程式碼，必須匯出具備 execute(ctx) 方法的物件"
+  "mainJs": "JavaScript 物件表達式字串，例如 ({ async execute(ctx) { return { ok: true }; } })"
 }`;
 
     let retryCount = 0;
@@ -42,7 +42,10 @@ export class SkillArchitect {
         console.log("[SkillArchitect] 正在進行沙盒驗證 (嘗試 " + (retryCount + 1) + ")...");
         
         // 執行驗證
-        await skillSandbox.run(draft.mainJs, { dryRun: true }, { skillName: draft.name });
+        await skillSandbox.run(draft.mainJs, { dryRun: true }, {
+          skillName: draft.name,
+          requireExecute: true
+        });
 
         // 通過驗證，執行安裝
         await this.loader.install(draft.name, {
