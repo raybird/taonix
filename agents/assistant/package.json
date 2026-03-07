@@ -1,9 +1,0 @@
-{
-  "name": "@taonix/assistant",
-  "version": "1.0.0",
-  "type": "module",
-  "bin": {
-    "taonix-assistant": "./index.js"
-  },
-  "dependencies": {}
-}

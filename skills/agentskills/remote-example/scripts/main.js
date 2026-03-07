@@ -1,1 +1,0 @@
-export default { execute: async (ctx) => ({ status: 'success', source: 'remote' }) };
