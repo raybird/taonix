@@ -1,30 +1,29 @@
 {
-  "system": "Taonix Unified Intelligence Hub",
-  "version": "26.0.0",
-  "philosophy": "多智能體樞紐：對外提供單一智慧入口，內部自組織專家協作。",
+  "system": "Taonix AI Task Runtime",
+  "version": "27.0.0",
+  "philosophy": "單一 runtime 入口、穩定 task/result 契約、runtime-first execution。",
   "requirements": {
     "node": ">=22.0.0",
     "module_system": "ESM"
   },
   "entry_points": {
-    "mcp": "mcp-server/index.js",
-    "engine": "ai-engine/index.js",
-    "console": "web-console/server.js",
-    "assistant": "agents/assistant/index.js"
+    "cli": "src/interfaces/cli/index.js",
+    "mcp": "src/interfaces/mcp/stdio.js",
+    "runtime": "src/core/runtime/index.js"
   },
   "quickstart": {
     "install": "npm install",
-    "verify": "node tests/test-integration.js",
-    "start_mcp": "node mcp-server/index.js",
-    "start_engine": "node ai-engine/index.js \"你的意圖指令\"",
-    "start_console": "node web-console/server.js",
-    "test": "node tests/test-integration.js"
+    "verify": "npm test",
+    "start_mcp": "node src/interfaces/mcp/stdio.js",
+    "start_runtime": "node src/interfaces/cli/index.js run \"你的意圖指令\"",
+    "start_cli": "node src/interfaces/cli/index.js capabilities",
+    "test": "npm test"
   },
   "capabilities": [
     {
       "name": "taonix_hub",
       "type": "unified_entry",
-      "description": "接收自然語言意圖，自動調度專家 Agent 完成實體執行。",
+      "description": "接收自然語言或結構化 task，統一委派至 runtime pipeline。",
       "mcp_tool": "taonix_hub",
       "input_schema": {
         "type": "object",
@@ -32,52 +31,46 @@
           "intent": {
             "type": "string",
             "description": "任務意圖（自然語言）"
+          },
+          "task": {
+            "type": "object",
+            "description": "正式 TaskSpec 輸入"
           }
-        },
-        "required": ["intent"]
+        }
       }
+    },
+    {
+      "name": "analyze_structure",
+      "type": "capability",
+      "execution_mode": "in_process"
+    },
+    {
+      "name": "check_quality",
+      "type": "capability",
+      "execution_mode": "in_process"
+    },
+    {
+      "name": "web_search",
+      "type": "capability",
+      "execution_mode": "in_process"
+    },
+    {
+      "name": "github_trending",
+      "type": "capability",
+      "execution_mode": "in_process"
     }
   ],
-  "internal_agents": [
-    "explorer",
-    "coder",
-    "oracle",
-    "reviewer",
-    "designer",
-    "product",
-    "tester",
-    "assistant",
-    "self-healer"
-  ],
-  "skills": [
-    "agent-coordinator",
-    "brainstorming",
-    "doc-generator",
-    "executing-plans",
-    "performance-optimization",
-    "receiving-code-review",
-    "remote-example",
-    "requesting-code-review",
-    "security-audit",
-    "systematic-debugging",
-    "test-driven-development",
-    "verification-before-completion",
-    "writing-plans"
-  ],
+  "internal_agents": [],
+  "skills": [],
   "directory_structure": {
-    "agents/": "Agent CLI 工具與獨立進入點",
-    "ai-engine/": "核心 AI 引擎（意圖理解、Agent 調度、內容生成）",
-    "config/": "路徑管理與系統設定",
+    "src/core/contracts/": "正式 task/result/capability/event 契約",
+    "src/core/runtime/": "router / dispatcher / executor / child protocol",
+    "src/core/plugins/": "capability registry 與 loader",
+    "src/core/telemetry/": "task log / trace log / event sink",
+    "src/capabilities/": "顯式 capability modules",
+    "src/interfaces/": "CLI 與 MCP 薄介面",
     "docs/": "技術文件與變更紀錄",
-    "integration/": "TeleNexus 整合模組",
-    "mcp-server/": "MCP Server 統一入口",
-    "memory/": "Blackboard 共享記憶、偏好儲存、意圖庫",
-    "party/": "多 Agent 組隊協作引擎",
-    "planning/": "規劃引擎與任務分解",
-    "skills/": "技能框架（13 個內建技能）",
-    "tests/": "整合測試",
-    "tools/": "內部工具模組",
-    "web-console/": "Web 控制台（port 3000）"
+    "tests/": "contracts/runtime/capabilities/integration/e2e 測試"
   },
   "environment_variables": {
     "TAONIX_DATA_DIR": "資料存放根目錄（預設為專案目錄）",
@@ -85,8 +78,9 @@
     "TAONIX_AI_MODEL": "AI model 名稱（依 provider 而定）"
   },
   "protocols": {
-    "messaging": "EventBus (Typed Schemas)",
-    "orchestration": "Priority-driven Resource Throttling",
-    "lifecycle": "Hourly Garbage Collection (GC)"
+    "task_contract": "TaskSpec / ResultSpec",
+    "routing": "deterministic router with optional classifier",
+    "execution": "in-process first, child-process fallback",
+    "telemetry": "replaceable event sink"
   }
 }

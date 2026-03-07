@@ -1,15 +1,35 @@
 {
   "name": "taonix",
-  "version": "26.0.0",
-  "description": "事件驅動的多智能體 AI 作業系統",
+  "version": "27.0.0",
+  "description": "Taonix AI task runtime",
   "type": "module",
-  "main": "ai-engine/index.js",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./runtime": "./src/core/runtime/index.js",
+    "./cli": "./src/interfaces/cli/index.js",
+    "./mcp": "./src/interfaces/mcp/index.js",
+    "./mcp-stdio": "./src/interfaces/mcp/stdio.js"
+  },
+  "bin": {
+    "taonix": "./src/interfaces/cli/index.js",
+    "taonix-mcp": "./src/interfaces/mcp/stdio.js"
+  },
+  "files": [
+    "src/",
+    "CLAUDE.md",
+    "MANIFEST.json",
+    "README.md",
+    "docs/README.md",
+    "docs/AGENTS.md",
+    "docs/SOP.md",
+    "docs/migration/"
+  ],
   "scripts": {
-    "start": "node mcp-server/index.js",
-    "engine": "node ai-engine/index.js",
-    "console": "node web-console/server.js",
-    "test": "node tests/test-integration.js",
-    "postinstall": "cd mcp-server && npm install"
+    "start": "node src/interfaces/mcp/stdio.js",
+    "cli": "node src/interfaces/cli/index.js",
+    "test": "node --test tests/contracts/*.test.js tests/runtime/*.test.js tests/capabilities/*.test.js tests/integration/*.test.js tests/e2e/*.test.js",
+    "runtime": "node src/interfaces/cli/index.js run"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -17,12 +37,13 @@
   "keywords": [
     "taonix",
     "mcp",
-    "multi-agent",
+    "runtime",
     "ai"
   ],
   "author": "Taonix Team",
   "license": "MIT",
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
     "commander": "^12.0.0"
   }
 }

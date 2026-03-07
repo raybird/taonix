@@ -1,67 +1,49 @@
-# Taonix Agent 團隊手冊 (AGENTS.md)
+# Taonix Runtime Roles
 
-> Taonix 擁有一支高度專業、自動化且能自組織的專家 Agent 團隊。
+這份文件只描述 v27 仍然有效的角色邊界，不再把人格化 agent 團隊視為核心架構。
 
-## 核心開發小隊
+## Core Runtime
 
-### 🧭 Explorer (滄溟)
-- **職責**: 搜尋資訊、趨勢追蹤、網頁擷取。
-- **特質**: 好奇且快速，是系統獲取外部知識的觸手。
-- **能力標籤**: `searching`, `browsing`, `github_trending`
+### Router
 
-### 💻 Coder (鑄焰)
-- **職責**: 程式實作、代碼重構、檔案操作、Bug 修復。
-- **特質**: 嚴謹且高效，具備環境感知能力的反應式執行。
-- **能力標籤**: `coding`, `refactoring`, `filesystem`
+- responsibility: 將自然語言或結構化輸入轉成正式 `TaskSpec`
+- implementation: `src/core/runtime/router.js`
 
-### 🔮 Oracle (明鏡)
-- **職責**: 架構分析、依賴檢查、深度邏輯推導。
-- **特質**: 冷靜理性，負責提供高維度的洞見與建議。
-- **能力標籤**: `analysis`, `architecture`, `reasoning`
+### Dispatcher
 
-### 🛡️ Reviewer (守闕)
-- **職責**: 代碼審查、格式檢查、安全性把關。
-- **特質**: 毒舌中肯，確保每一行代碼都符合高質量標準。
-- **能力標籤**: `code_review`, `security`, `quality_assurance`
+- responsibility: 執行正式 `TaskSpec`
+- rule: in-process first, child-process fallback
+- implementation: `src/core/runtime/dispatcher.js`
 
-### 🎨 Designer (天工)
-- **職責**: 創意設計、UX 流程規劃、介面原型設計。
-- **特質**: 兼具美感與實用性，從使用者角度出發打造最佳體驗。
-- **能力標籤**: `design`, `ux`, `prototyping`
+### Capability
 
-### 📋 Product (鴻圖)
-- **職責**: 產品規劃、需求分析、優先級排序、用戶故事撰寫。
-- **特質**: 擅長將模糊需求轉化為可執行的工程任務。
-- **能力標籤**: `product_planning`, `requirements`, `prioritization`
+- responsibility: 顯式註冊、可單測的功能模組
+- implementation: `src/capabilities/*`
 
-## 測試與自動化
+### Telemetry
 
-### 🧪 Tester (試煉)
-- **職責**: 測試案例生成、自動化測試執行、環境驗證。
-- **核心機制**: 訂閱 Git 事件，實現「代碼一變、測試自跑」的閉環。
-- **能力標籤**: `testing`, `validation`, `ci`
+- responsibility: 記錄 task / trace / event
+- implementation: `src/core/telemetry/*`
 
-## 指揮與管理層
+## Capability Runtime
 
-### 🤖 Assistant (助理)
-- **職責**: 任務規劃、跨 Agent 協調、長程工作流編排。
-- **核心機制**: 長程任務狀態機 (v9.0) 的驅動者。
-- **能力標籤**: `planning`, `coordination`, `summarization`
+能力模組直接位於 `src/capabilities/*`：
 
-### ⚖️ Arbitrator (仲裁者)
-- **職責**: 衝突解決、根因分析、Human-in-the-loop 決策支援。
-- **核心機制**: 監聽任務錯誤並提出 AI 修復建議。
+- `analyze-structure`
+- `check-quality`
+- `web-search`
+- `github-trending`
 
-## 進化與架構層
+不要再透過 `agents/*` 或其他間接殼層承載 capability 實作。
 
-### 🏗️ Skill Architect (建築師)
-- **職責**: 技能編寫、自我演進、能力擴充。
-- **特質**: 具備元進化能力，能根據需求自動生成新技能。
+## Removed Legacy Concepts
 
-### 🩺 Self-Healer (自癒者)
-- **職責**: 系統健康監控、環境異常修復、叢集級自動自癒。
-- **核心機制**: 具備 SSH 即時修復 + 檔案中轉備援的雙軌制控制邏輯，實現對外部異常容器的自動重啟閉環。
-- **能力標籤**: `diagnosis`, `auto_repair`, `health_check`
+以下概念已不再屬於核心系統：
 
----
-*Taonix Agent 團隊正透過「集體智慧」持續進化中。*
+- arbitrator
+- self-healer
+- achievement / honor driven dispatch
+- gossip / p2p / mesh consensus
+- skill architect as default runtime path
+
+若未來要重新引入，必須以正式 contracts、測試與明確呼叫路徑重建。
